@@ -1,9 +1,10 @@
 <?php
 
 namespace DLX;
+
 use \Exception;
 
-class Processor {
+class Grid {
 
 	/**
 	 * @var bool
@@ -16,6 +17,20 @@ class Processor {
 	 * @var ColumnNode
 	 */
 	protected $h;
+
+	/**
+	 * The column count (not including $h)
+	 *
+	 * @var int
+	 */
+	protected $columns;
+
+	/**
+	 * The row count (not including headers)
+	 *
+	 * @var int
+	 */
+	protected $rows;
 
 	/**
 	 * The path to the current state
@@ -35,9 +50,10 @@ class Processor {
 	/**
 	 * @param $headers
 	 * @param $nodes
+
 	 *
 	 * @throws Exception
-	 * @return Processor
+	 * @return Grid
 	 */
 	public function __construct($headers, $nodes) {
 		$this->h = new ColumnNode('-h-');
@@ -80,6 +96,8 @@ class Processor {
 			$new = new ColumnNode($header);
 			$left = $this->insertRight($new, $left);
 		}
+
+		$this->columns = count($headers);
 	}
 
 	/**
@@ -108,9 +126,15 @@ class Processor {
 			return;
 		}
 
+		if (0 !== (count($nodes) % $this->columns)) {
+			throw new Exception('Node count is not a multiple of header count');
+		}
+
+		$this->rows = (int) (count($nodes) / $this->columns);
+
 		// the following gets a little weird. basically, what it's doing is
 		// traversing the 1-D array grid by counting x across the columns
-		// and then when it hits the end, drops down a y to the next row
+		// and then when it hits the edge, drops down a y to the next row
 		// and resets x and counts across the columns again.
 		// but as it adds nodes into the grid, the lowest node gets set in
 		// the columns array, and the right-most node gets set in the rows array
@@ -146,16 +170,12 @@ class Processor {
 				++$y;
 			}
 		}
-
-		if (0 !== $x) {
-			throw new Exception('Node count was not a multiple of header count');
-		}
 	}
 
 	/**
 	 * Search the space for the solutions
 	 *
-	 * @param void
+	 * @param int $k
 	 *
 	 * @return array solution set
 	 */
@@ -172,20 +192,20 @@ class Processor {
 			}
 
 			$this->cover($column);
-
 			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
 				// TODO: this isn't quite right...
 				// the path should end up as A, D | E, F, C | B, G;
-				$this->addPath($row->getColumn( ));
+				$path = array($row->getColumn( )->name);
 
 				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
 					$this->cover($right->getColumn( ));
+					$path[] = $right->getColumn( );
 				}
+
+				$this->addPath(implode(';', $path));
 
 				$this->search($k + 1);
 
-				// TODO: this isn't quite right...
-				// the path should end up as A, D | E, F, C | B, G;
 				$this->removePath( );
 
 				for ($left = $row->getLeft( ); $left !== $row; $left = $left->getLeft( )) {
@@ -271,12 +291,25 @@ class Processor {
 	/**
 	 * Add a value to the solution path
 	 *
+	 * @param string $path
+	 *
+	 * @return void
+	 */
+	protected function addPath($path) {
+		array_push($this->path, $path);
+	}
+
+	/**
+	 * Modify the latest path entry
+	 *
 	 * @param Node $c
 	 *
 	 * @return void
 	 */
-	protected function addPath(Node $c) {
-		array_push($this->path, $c->name);
+	protected function modifyPath(Node $c) {
+		$last = array_pop($this->path);
+		$last .= ';'.$c->name;
+		array_push($this->path, $last);
 	}
 
 	/**
@@ -379,6 +412,24 @@ class Processor {
 	}
 
 	/**
+	 * @param void
+	 *
+	 * @return int
+	 */
+	public function getColumnCount( ) {
+		return $this->columns;
+	}
+
+	/**
+	 * @param void
+	 *
+	 * @return int
+	 */
+	public function getRowCount( ) {
+		return $this->rows;
+	}
+
+	/**
 	 * Print the grid in a human-readable format
 	 *
 	 * @param bool $echo
@@ -403,31 +454,35 @@ class Processor {
 		// starting on the first column and checking if it has a node in the $next row, and if not,
 		// proceeding to the next column. if it does find a node in the $next row, then it fills that
 		// row, and then starts the search loop over from the first column again.
-		for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
-			$down = $right->getDown( );
+		while ($this->rows >= $next) {
+			for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
+				$down = $right->getDown( );
 
-			// keep going down until the $next row
-			// but stop if it loops back to zero
-			while ((0 < $down->getRow( )) && ($down->getRow( ) < $next)) {
-				$down = $down->getDown( );
-			}
-
-			// fill the next row if a match is found
-			if ($down->getRow( ) === $next) {
-				$row = array_fill(0, count($headers), 0);
-
-				$row[$trans[$down->getColumn( )->name]] = 1;
-
-				for ($sub_right = $down->getRight( ); $sub_right !== $down; $sub_right = $sub_right->getRight( )) {
-					$row[$trans[$sub_right->getColumn( )->name]] = 1;
+				// keep going down until the $next row
+				// but stop if it loops back to zero
+				while ((0 < $down->getRow( )) && ($down->getRow( ) < $next)) {
+					$down = $down->getDown( );
 				}
 
-				$grid[] = $row;
-				++$next;
+				// fill the next row if a match is found
+				if ($down->getRow( ) === $next) {
+					$row = array_fill(0, count($headers), 0);
 
-				// restart the outer loop
-				$right = $this->h;
+					$row[$trans[$down->getColumn( )->name]] = 1;
+
+					for ($sub_right = $down->getRight( ); $sub_right !== $down; $sub_right = $sub_right->getRight( )) {
+						$row[$trans[$sub_right->getColumn( )->name]] = 1;
+					}
+
+					$grid[] = $row;
+					++$next;
+
+					// restart the outer loop
+					$right = $this->h;
+				}
 			}
+
+			++$next;
 		}
 
 		// build the table
