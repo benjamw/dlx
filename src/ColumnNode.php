@@ -5,9 +5,9 @@ namespace DLX;
 class ColumnNode extends Node {
 
 	/**
-	 * @var string
+	 * @var int
 	 */
-	public $name;
+	protected $col;
 
 	/**
 	 * The number of rows in the column
@@ -18,18 +18,15 @@ class ColumnNode extends Node {
 
 
 	/**
-	 * @param string $name optional
+	 * @param int $col
 	 *
 	 * @return ColumnNode
 	 */
-	public function __construct($name = null) {
+	public function __construct($col) {
 		parent::__construct(0, $this);
 
+		$this->col = (int) $col;
 		$this->count = 0;
-
-		if ( ! empty($name)) {
-			$this->name = $name;
-		}
 	}
 
 	/**
@@ -38,7 +35,16 @@ class ColumnNode extends Node {
 	 * @return string
 	 */
 	public function __toString( ) {
-		return $this->name;
+		return $this->col;
+	}
+
+	/**
+	 * @param void
+	 *
+	 * @return int
+	 */
+	public function getCol( ) {
+		return $this->col;
 	}
 
 	/**

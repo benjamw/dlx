@@ -48,20 +48,19 @@ class Grid {
 
 
 	/**
-	 * @param $headers
-	 * @param $nodes
-
+	 * @param array|string $nodes
+	 * @param int $columns the grid column count
 	 *
 	 * @throws Exception
 	 * @return Grid
 	 */
-	public function __construct($headers, $nodes) {
-		$this->h = new ColumnNode('-h-');
+	public function __construct($nodes, $columns) {
+		$this->h = new ColumnNode(0);
 		$this->path = array( );
 		$this->solutions = array( );
 
 		try {
-			$this->constructHeaders($headers);
+			$this->constructHeaders($columns);
 			$this->constructNodes($nodes);
 		}
 		catch (Exception $e) {
@@ -79,31 +78,27 @@ class Grid {
 	}
 
 	/**
-	 * Construct the header row from the given headers
+	 * Construct the header row
 	 *
-	 * @param $headers
+	 * @param int $columns the grid column count
 	 *
 	 * @return void
 	 */
-	protected function constructHeaders($headers) {
-		if (empty($headers)) {
-			return;
-		}
-
+	protected function constructHeaders($columns) {
 		$left = $this->h;
 
-		foreach ($headers as $header) {
-			$new = new ColumnNode($header);
+		for ($n = 1; $n <= (int) $columns; ++$n) {
+			$new = new ColumnNode($n);
 			$left = $this->insertRight($new, $left);
 		}
 
-		$this->columns = count($headers);
+		$this->columns = $columns;
 	}
 
 	/**
 	 * Construct the columns from the given nodes
 	 *
-	 * @param $nodes
+	 * @param array|string $nodes
 	 *
 	 * @throws Exception
 	 * @return void
@@ -193,16 +188,11 @@ class Grid {
 
 			$this->cover($column);
 			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
-				// TODO: this isn't quite right...
-				// the path should end up as A, D | E, F, C | B, G;
-				$path = array($row->getColumn( )->name);
+				$this->addPath($row->getRow( ));
 
 				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
 					$this->cover($right->getColumn( ));
-					$path[] = $right->getColumn( );
 				}
-
-				$this->addPath(implode(';', $path));
 
 				$this->search($k + 1);
 
@@ -297,19 +287,6 @@ class Grid {
 	 */
 	protected function addPath($path) {
 		array_push($this->path, $path);
-	}
-
-	/**
-	 * Modify the latest path entry
-	 *
-	 * @param Node $c
-	 *
-	 * @return void
-	 */
-	protected function modifyPath(Node $c) {
-		$last = array_pop($this->path);
-		$last .= ';'.$c->name;
-		array_push($this->path, $last);
 	}
 
 	/**
@@ -440,13 +417,13 @@ class Grid {
 		$grid = array( );
 
 		// parse through the headers
-		$headers = array( );
+		$cols = array( );
 		for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
-			$headers[] = $right->name;
+			$cols[] = $right->getCol( );
 		}
 
-		// make a translation array
-		$trans = array_flip($headers);
+		// translation array
+		$trans = array_flip($cols);
 
 		$next = 1;
 		// this loop will not complete in the normal 'for' loop fashion until the process completes.
@@ -466,12 +443,12 @@ class Grid {
 
 				// fill the next row if a match is found
 				if ($down->getRow( ) === $next) {
-					$row = array_fill(0, count($headers), 0);
+					$row = array_fill(0, count($cols), 0);
 
-					$row[$trans[$down->getColumn( )->name]] = 1;
+					$row[$trans[$down->getColumn( )->getCol( )]] = 1;
 
 					for ($sub_right = $down->getRight( ); $sub_right !== $down; $sub_right = $sub_right->getRight( )) {
-						$row[$trans[$sub_right->getColumn( )->name]] = 1;
+						$row[$trans[$sub_right->getColumn( )->getCol( )]] = 1;
 					}
 
 					$grid[] = $row;
@@ -488,8 +465,8 @@ class Grid {
 		// build the table
 		$html = "<table><thead><tr>";
 
-		foreach ($headers as $header) {
-			$html .= "<th>{$header}</th>";
+		foreach ($cols as $col) {
+			$html .= "<th>{$col}</th>";
 		}
 
 		$html .= "</tr></thead><tbody>";
