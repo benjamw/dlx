@@ -48,6 +48,8 @@ class Grid {
 
 
 	/**
+	 * $nodes can be a 2D array
+	 *
 	 * @param array|string $nodes
 	 * @param int $columns the grid column count
 	 *
@@ -97,6 +99,7 @@ class Grid {
 
 	/**
 	 * Construct the columns from the given nodes
+	 * $nodes can be a 2D array
 	 *
 	 * @param array|string $nodes
 	 *
@@ -119,6 +122,11 @@ class Grid {
 
 		if (empty($columns)) {
 			return;
+		}
+
+		if (is_array($nodes[0])) {
+			// flatten the 2D array
+			$nodes = call_user_func_array('array_merge', $nodes);
 		}
 
 		if (0 !== (count($nodes) % $this->columns)) {
