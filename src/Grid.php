@@ -49,20 +49,23 @@ class Grid {
 
 	/**
 	 * $nodes can be a 2D array
+	 * $secondary is the count of secondary columns in the grid.
+	 * secondary columns should always be last
 	 *
 	 * @param array|string $nodes
 	 * @param int $columns the grid column count
+	 * @param int $secondary the secondary column count
 	 *
 	 * @throws Exception
 	 * @return Grid
 	 */
-	public function __construct($nodes, $columns) {
+	public function __construct($nodes, $columns, $secondary = 0) {
 		$this->h = new ColumnNode(0);
 		$this->path = array( );
 		$this->solutions = array( );
 
 		try {
-			$this->constructHeaders($columns);
+			$this->constructHeaders($columns, $secondary);
 			$this->constructNodes($nodes);
 		}
 		catch (Exception $e) {
@@ -83,14 +86,15 @@ class Grid {
 	 * Construct the header row
 	 *
 	 * @param int $columns the grid column count
+	 * @param int $secondary optional the secondary column count
 	 *
 	 * @return void
 	 */
-	protected function constructHeaders($columns) {
+	protected function constructHeaders($columns, $secondary = 0) {
 		$left = $this->h;
 
 		for ($n = 1; $n <= (int) $columns; ++$n) {
-			$new = new ColumnNode($n);
+			$new = new ColumnNode($n, (($columns - $n) < $secondary));
 			$left = $this->insertRight($new, $left);
 		}
 
@@ -183,7 +187,7 @@ class Grid {
 	 * @return void
 	 */
 	public function search($k = 0) {
-		if ($this->h->getRight( ) === $this->h) {
+		if (($this->h->getRight( ) === $this->h) || $this->onlyEmptySecondaryLeft( )) {
 			$this->addSolution( );
 			return;
 		}
@@ -232,6 +236,12 @@ class Grid {
 
 		while ($next !== $this->h) {
 			if (($count = $next->getCount( )) < $lowest) {
+				// don't use secondary columns if they are empty
+				if ((0 === $count) && ($next->secondary)) {
+					$next = $next->getRight( );
+					continue;
+				}
+
 				$nextColumn = $next;
 				$lowest = $count;
 			}
@@ -284,6 +294,25 @@ class Grid {
 
 		$column->getRight( )->setLeft($column);
 		$column->getLeft( )->setRight($column);
+	}
+
+	/**
+	 * @param void
+	 *
+	 * @return bool
+	 */
+	protected function onlyEmptySecondaryLeft( ) {
+		$next = $this->h->getRight( );
+
+		while ($next !== $this->h) {
+			if ( ! $next->secondary || $next->getCount( )) {
+				return false;
+			}
+
+			$next = $next->getRight( );
+		}
+
+		return true;
 	}
 
 	/**

@@ -5,6 +5,13 @@ namespace DLX;
 class ColumnNode extends Node {
 
 	/**
+	 * If true, this column does not need to be covered
+	 *
+	 * @var bool
+	 */
+	public $secondary;
+
+	/**
 	 * @var int
 	 */
 	protected $col;
@@ -19,13 +26,15 @@ class ColumnNode extends Node {
 
 	/**
 	 * @param int $col
+	 * @param bool $secondary
 	 *
 	 * @return ColumnNode
 	 */
-	public function __construct($col) {
+	public function __construct($col, $secondary = false) {
 		parent::__construct(0, $this);
 
 		$this->col = (int) $col;
+		$this->secondary = (bool) $secondary;
 		$this->count = 0;
 	}
 
