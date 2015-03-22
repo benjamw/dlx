@@ -180,7 +180,7 @@ class Grid {
 	 *
 	 * @param int $k
 	 *
-	 * @return array solution set
+	 * @return void
 	 */
 	public function search($k = 0) {
 		if ($this->h->getRight( ) === $this->h) {
