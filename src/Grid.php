@@ -217,6 +217,8 @@ class Grid {
 
 			$this->uncover($column);
 		}
+
+			return;
 	}
 
 	/**
@@ -236,8 +238,8 @@ class Grid {
 
 		while ($next !== $this->h) {
 			if (($count = $next->getCount( )) < $lowest) {
-				// don't use secondary columns if they are empty
-				if ((0 === $count) && ($next->secondary)) {
+				// don't use secondary columns
+				if ($next->secondary) {
 					$next = $next->getRight( );
 					continue;
 				}
