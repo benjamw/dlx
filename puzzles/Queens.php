@@ -80,7 +80,6 @@ class Queens {
 				$rowNames[] = 'R'.str_pad(floor($n / $this->size) + 1, $len, '0', STR_PAD_LEFT) . 'F'.str_pad(($n % $this->size) + 1, $len, '0', STR_PAD_LEFT);
 			}
 		}
-g($rowNames);
 
 		$this->rowNames = $rowNames;
 	}
