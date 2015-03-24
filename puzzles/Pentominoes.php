@@ -144,8 +144,19 @@ class Pentominoes
 	protected function createColNames( ) {
 		$colNames = array(''); // cols are 1-index
 
-// TODO: build this...
-// there needs to be a column for each piece, and a column for each position on the board
+		foreach (self::$PIECES as $pieceName => $pieceData) {
+			$colNames[] = $pieceName;
+		}
+
+		foreach ($this->layout as $row => $cols) {
+			foreach ($cols as $col => $value) {
+				if ( ! $value) {
+					continue;
+				}
+
+				$colNames[] = "[{$row},{$col}]";
+			}
+		}
 
 		$this->colNames = $colNames;
 	}
