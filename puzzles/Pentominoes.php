@@ -57,14 +57,37 @@ class Pentominoes
 	 * @return Pentominoes
 	 */
 	public function __construct($rows = 6, $cols = 10) {
-		if (is_array($rows)) {
+		if (is_string($rows)) {
+			$this->layout = self::layoutToArray($rows);
+		}
+		elseif (is_array($rows)) {
+			$count = 0;
+
+			// this is a simple dimensions test
+			// this does not take into account the checkerboard validity of the layout
+			foreach ($rows as $row) {
+				foreach ($row as $node) {
+					if (1 === $node) {
+						++$count;
+					}
+				}
+			}
+
+			if (60 !== $count) {
+				throw new Exception('Invalid layout size');
+			}
+
 			$this->layout = $rows;
 		}
 		else {
 			$this->layout = array( );
 
-			for ($i = 0; $i < $cols; ++$i) {
-				$this->layout[] = array_fill(0, $rows, 1);
+			if (60 !== ($rows * $cols)) {
+				throw new Exception('Invalid layout size');
+			}
+
+			for ($i = 0; $i < $rows; ++$i) {
+				$this->layout[] = array_fill(0, $cols, 1);
 			}
 		}
 
@@ -168,6 +191,22 @@ class Pentominoes
 		}
 
 		echo '<pre>'.implode("\n", $array).'</pre>';
+	}
+
+	/**
+	 * Convert a layout given in string format
+	 * to an array that the class can use
+	 *
+	 * @param $string
+	 *
+	 * @return array
+	 */
+	public static function layoutToArray($string) {
+		$layout = array( );
+
+		// TODO: build this
+
+		return $layout;
 	}
 
 }
