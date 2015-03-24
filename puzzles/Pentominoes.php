@@ -50,13 +50,37 @@ class Pentominoes
 	/**
 	 * A custom layout can be passed as a 2D array into the first argument
 	 *
-	 * @param int $rows optional
+	 * @param string|array|int $rows optional
 	 * @param int $cols optional
 	 *
 	 * @throws Exception
 	 * @return Pentominoes
 	 */
 	public function __construct($rows = 6, $cols = 10) {
+		try {
+			$this->createLayout($rows, $cols);
+			$this->createGrid( );
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
+	}
+
+	/**
+	 * The layout can be passed as a string or a 2D array into $rows
+	 * or as row and column dimensions
+	 *
+	 * If a layout is passed as an array, the indexes for the array
+	 * should be valid coordinates for the board. '0' is allowed to
+	 * block out certain positions without having to break the array.
+	 *
+	 * @param string|array|int $rows
+	 * @param int $cols
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	protected function createLayout($rows, $cols) {
 		if (is_string($rows)) {
 			$this->layout = self::layoutToArray($rows);
 		}
@@ -89,13 +113,6 @@ class Pentominoes
 			for ($i = 0; $i < $rows; ++$i) {
 				$this->layout[] = array_fill(0, $cols, 1);
 			}
-		}
-
-		try {
-			$this->createGrid( );
-		}
-		catch (Exception $e) {
-			throw $e;
 		}
 	}
 
