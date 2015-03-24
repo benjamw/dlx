@@ -12,22 +12,23 @@ class Pentominoes
 	 * This uses the FILNPTUVWXYZ naming scheme
 	 *
 	 * array(mirror, symmetry, points array)
+	 *     array(array(x, y), ...)
 	 *
 	 * @var array
 	 */
 	public static $PIECES = array(
-		'F' => array(true, 4, array( )),
-		'I' => array(false, 2, array( )),
-		'L' => array(true, 4, array( )),
-		'N' => array(true, 4, array( )),
-		'P' => array(true, 4, array( )),
-		'T' => array(false, 4, array( )),
-		'U' => array(false, 4, array( )),
-		'V' => array(false, 4, array( )),
-		'W' => array(false, 4, array( )),
-		'X' => array(false, 1, array( )),
-		'Y' => array(true, 4, array( )),
-		'Z' => array(true, 2, array( )),
+		'F' => array( true, 4, array(array(1, 0), array(2, 0), array(0, 1), array(1, 1), array(1, 2))),
+		'I' => array(false, 2, array(array(0, 0), array(0, 1), array(0, 2), array(0, 3), array(0, 4))),
+		'L' => array( true, 4, array(array(0, 0), array(0, 1), array(0, 2), array(0, 3), array(1, 3))),
+		'N' => array( true, 4, array(array(0, 0), array(1, 0), array(1, 1), array(2, 1), array(3, 1))),
+		'P' => array( true, 4, array(array(0, 0), array(1, 0), array(0, 1), array(1, 1), array(0, 2))),
+		'T' => array(false, 4, array(array(0, 0), array(1, 0), array(2, 0), array(1, 1), array(1, 2))),
+		'U' => array(false, 4, array(array(0, 0), array(2, 0), array(0, 1), array(1, 1), array(2, 1))),
+		'V' => array(false, 4, array(array(0, 0), array(0, 1), array(0, 2), array(1, 2), array(2, 2))),
+		'W' => array(false, 4, array(array(0, 0), array(0, 1), array(1, 1), array(1, 2), array(2, 2))),
+		'X' => array(false, 1, array(array(1, 0), array(0, 1), array(1, 1), array(2, 1), array(1, 2))),
+		'Y' => array( true, 4, array(array(0, 0), array(0, 1), array(1, 1), array(0, 2), array(0, 3))),
+		'Z' => array( true, 2, array(array(0, 0), array(1, 0), array(1, 1), array(1, 2), array(2, 2))),
 	);
 
 	/**
