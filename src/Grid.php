@@ -129,15 +129,20 @@ class Grid {
 		}
 
 		if (is_array($nodes[0])) {
+			$this->rows = count($nodes);
+
 			// flatten the 2D array
 			$nodes = call_user_func_array('array_merge', $nodes);
 		}
+		else {
+			$count = count($nodes);
 
-		if (0 !== (count($nodes) % $this->columns)) {
-			throw new Exception('Node count is not a multiple of header count');
+			if (0 !== ($count % $this->columns)) {
+				throw new Exception('Node count is not a multiple of header count');
+			}
+
+			$this->rows = (int) ($count / $this->columns);
 		}
-
-		$this->rows = (int) (count($nodes) / $this->columns);
 
 		// the following gets a little weird. basically, what it's doing is
 		// traversing the 1-D array grid by counting x across the columns
@@ -172,7 +177,7 @@ class Grid {
 
 			++$x;
 
-			if ($x >= count($columns)) {
+			if ($x >= $this->columns) {
 				$x = 0;
 				++$y;
 			}
