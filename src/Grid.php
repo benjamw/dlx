@@ -201,7 +201,7 @@ class Grid {
 	 * @throws Exception
 	 * @return void
 	 */
-	public function select($selectedRows) {
+	public function selectRows($selectedRows) {
 		foreach ($selectedRows as $selectedRow) {
 			// find the columns this row affects
 			$column = $this->findColumn($selectedRow);
@@ -228,6 +228,36 @@ class Grid {
 				// that's it, don't do anything else
 			}
 		}
+	}
+
+	/**
+	 * Manually select starting rows from given cols
+	 *   $selectedCols = array(
+	 *       array( [columns in a single row] ),
+	 *       array( [other columns in a single row] ),
+	 *       ...
+	 *   );
+	 *
+	 * @param array $selectedCols array of col indexes (1-index)
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function selectCols($selectedCols) {
+		$rows = array( );
+
+		foreach ($selectedCols as $selectedCol) {
+			$row = false;
+
+			// find the rows these columns share
+// TODO: search the given columns and find the $row they all have in common
+
+			if ( ! $row) {
+				$rows[] = $row;
+			}
+		}
+
+		$this->selectRows($rows);
 	}
 
 	/**

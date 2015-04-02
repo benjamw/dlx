@@ -147,13 +147,26 @@ abstract class Polyominoes
 	/**
 	 * Manually place pieces
 	 *
-	 * @param array $pieces
+	 * @param array $pieces (not sure of the best syntax to use here...)
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
 	public function place($pieces) {
+		// convert pieces to cols
+		$cols = array( );
+		foreach ($pieces as $idx => $piece) {
+			foreach ($piece as $col) {
+				$cols[$idx][] = array_search($col, $this->colNames);
+			}
+		}
 
+		try {
+			$this->grid->selectCols($cols);
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
 	}
 
 	/**
