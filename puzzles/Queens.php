@@ -120,6 +120,29 @@ class Queens {
 	}
 
 	/**
+	 * Manually place queens
+	 *
+	 * @param array $pieces array of board locations (A2, B4, etc.)
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function place($pieces) {
+		// convert pieces to rows
+		$rows = array( );
+		foreach ($pieces as $piece) {
+			$rows[] = array_search($piece, $this->rowNames);
+		}
+
+		try {
+			$this->grid->select($rows);
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
+	}
+
+	/**
 	 * @param void
 	 *
 	 * @return array
@@ -135,7 +158,7 @@ class Queens {
 	 * @return array
 	 */
 	public function getSolutions( ) {
-		$solutions = $this->grid->getSolutions( );
+		$solutions = $this->grid->getSolutions('rows');
 
 		foreach ($solutions as & $solution) {
 			sort($solution);
