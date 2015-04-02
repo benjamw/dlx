@@ -37,14 +37,20 @@ class Grid {
 	 *
 	 * @var array
 	 */
-	protected $path;
+	protected $path = array(
+		'rows' => array( ),
+		'cols' => array( ),
+	);
 
 	/**
 	 * The solutions array
 	 *
 	 * @var array
 	 */
-	protected $solutions;
+	protected $solutions = array(
+		'rows' => array( ),
+		'cols' => array( ),
+	);
 
 
 	/**
@@ -61,8 +67,11 @@ class Grid {
 	 */
 	public function __construct($nodes, $columns, $secondary = 0) {
 		$this->h = new ColumnNode(0);
-		$this->path = array( );
-		$this->solutions = array( );
+		$this->path = array(
+			'rows' => array( ),
+			'cols' => array( ),
+		);
+		$this->solutions = $this->path;
 
 		try {
 			$this->constructHeaders($columns, $secondary);
@@ -205,10 +214,12 @@ class Grid {
 
 			$this->cover($column);
 			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
-				$this->addPath($row->getRow( ));
+				$this->addPath('rows', $row->getRow( ));
+				$this->addPath('cols', $row->getColumn( )->getCol( ));
 
 				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
 					$this->cover($right->getColumn( ));
+					$this->addPath('cols', $right->getColumn( )->getCol( ));
 				}
 
 				$this->search($k + 1);
@@ -223,7 +234,7 @@ class Grid {
 			$this->uncover($column);
 		}
 
-			return;
+		return;
 	}
 
 	/**
@@ -325,12 +336,23 @@ class Grid {
 	/**
 	 * Add a value to the solution path
 	 *
+	 * @param string $type the path type ('rows' | 'cols')
 	 * @param string $path
 	 *
 	 * @return void
 	 */
-	protected function addPath($path) {
-		array_push($this->path, $path);
+	protected function addPath($type, $path) {
+		if ('rows' === $type) {
+			array_push($this->path[$type], $path);
+		}
+		elseif ('cols' === $type) {
+			$index = count($this->path['rows']) - 1;
+			if ( ! array_key_exists($index, $this->path[$type])) {
+				$this->path[$type][$index] = array( );
+			}
+
+			array_push($this->path[$type][$index], $path);
+		}
 	}
 
 	/**
@@ -341,7 +363,8 @@ class Grid {
 	 * @return void
 	 */
 	protected function removePath( ) {
-		array_pop($this->path);
+		array_pop($this->path['rows']);
+		array_pop($this->path['cols']);
 	}
 
 	/**
@@ -352,16 +375,22 @@ class Grid {
 	 * @return void
 	 */
 	protected function addSolution( ) {
-		array_push($this->solutions, $this->path);
+		array_push($this->solutions['rows'], $this->path['rows']);
+		array_push($this->solutions['cols'], $this->path['cols']);
 	}
 
 	/**
-	 * @param void
+	 * @param string $type
 	 *
 	 * @return array
 	 */
-	public function getSolutions( ) {
-		return $this->solutions;
+	public function getSolutions($type = null) {
+		if (empty($type)) {
+			return $this->solutions;
+		}
+		else {
+			return $this->solutions[$type];
+		}
 	}
 
 	/**
