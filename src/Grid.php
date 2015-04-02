@@ -194,6 +194,43 @@ class Grid {
 	}
 
 	/**
+	 * Manually select starting rows
+	 *
+	 * @param array $selectedRows array of row indexes (1-index)
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function select($selectedRows) {
+		foreach ($selectedRows as $selectedRow) {
+			// find the columns this row affects
+			$column = $this->findColumn($selectedRow);
+
+			if (0 === $column->getCount( )) {
+				// this path has already failed
+				throw new Exception('Manually selected rows create an unsolvable problem');
+			}
+
+			$this->cover($column);
+			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
+				if ($selectedRow !== $row->getRow( )) {
+					continue;
+				}
+
+				$this->addPath('rows', $row->getRow( ));
+				$this->addPath('cols', $row->getColumn( )->getCol( ));
+
+				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
+					$this->cover($right->getColumn( ));
+					$this->addPath('cols', $right->getColumn( )->getCol( ));
+				}
+
+				// that's it, don't do anything else
+			}
+		}
+	}
+
+	/**
 	 * Search the space for the solutions
 	 *
 	 * @param int $k
@@ -268,6 +305,56 @@ class Grid {
 		}
 
 		return $nextColumn;
+	}
+
+	/**
+	 * Find the smallest ColumnNode in the given row
+	 *
+	 * @param $rowIndex
+	 *
+	 * @return ColumnNode
+	 */
+	protected function findColumn($rowIndex) {
+		$columns = array( );
+		$col = $this->h->getRight( );
+
+		while ($col !== $this->h) {
+			$row = $col->getDown( );
+
+			while ($row !== $col) {
+				if ($rowIndex === $row->getRow( )) {
+					$columns[] = $row->getColumn( );
+					$innerCol = $row->getRight( );
+
+					while ($innerCol !== $row) {
+						$columns[] = $innerCol->getColumn( );
+						$innerCol = $innerCol->getRight( );
+					}
+
+					// find the shortest one
+					$shortest = reset($columns);
+					$lowest = $shortest->getCount( );
+					foreach ($columns as $column) {
+						if ($column->secondary) {
+							continue;
+						}
+
+						if ($lowest > $column->getCount( )) {
+							$lowest = $column->getCount( );
+							$shortest = $column;
+						}
+					}
+
+					return $shortest;
+				}
+
+				$row = $row->getDown( );
+			}
+
+			$col = $col->getRight( );
+		}
+
+		return $this->h;
 	}
 
 	/**
