@@ -137,58 +137,41 @@ class Grid {
 			return;
 		}
 
-		if (is_array($nodes[0])) {
-			$this->rows = count($nodes);
+		if ( ! is_array($nodes[0])) {
+			$nodes = array_chunk($nodes, $this->columns);
 
-			// flatten the 2D array
-			$nodes = call_user_func_array('array_merge', $nodes);
-		}
-		else {
-			$count = count($nodes);
-
-			if (0 !== ($count % $this->columns)) {
+			if ($this->columns !== count(end($nodes))) {
 				throw new Exception('Node count is not a multiple of header count');
 			}
-
-			$this->rows = (int) ($count / $this->columns);
+			reset($nodes);
 		}
 
-		// the following gets a little weird. basically, what it's doing is
-		// traversing the 1-D array grid by counting x across the columns
-		// and then when it hits the edge, drops down a y to the next row
-		// and resets x and counts across the columns again.
-		// but as it adds nodes into the grid, the lowest node gets set in
-		// the columns array, and the right-most node gets set in the rows array
-		// so that new nodes can be placed below and to the right of those nodes.
+		$this->rows = count($nodes);
+
+		// as this adds nodes into the grid, the lowest node gets set in
+		// the $columns array, and the right-most node gets set in the $rows array
+		// so that new nodes can be placed below and to the right of previous nodes.
 		// the rows start at 1, because the headers are row 0
 
-		$x = 0;
-		$y = 1;
 		$rows = array( );
+		foreach ($nodes as $y => $row) {
+			foreach ($row as $x => $value) {
+				if ($value) {
+					$node = new Node($y + 1, $columns[$x]->getColumn( ));
 
-		foreach ($nodes as $value) {
-			if ($value) {
-				$node = new Node($y, $columns[$x]->getColumn( ));
+					// vertical
+					$this->insertBelow($node, $columns[$x]);
 
-				// vertical
-				$this->insertBelow($node, $columns[$x]);
+					// horizontal
+					if ( ! empty($rows[$y + 1])) {
+						$this->insertRight($node, $rows[$y + 1]);
+					}
 
-				// horizontal
-				if ( ! empty($rows[$y])) {
-					$this->insertRight($node, $rows[$y]);
+					$node->getColumn( )->changeCount(1);
+
+					$columns[$x] = $node;
+					$rows[$y + 1] = $node;
 				}
-
-				$node->getColumn( )->changeCount(1);
-
-				$columns[$x] = $node;
-				$rows[$y] = $node;
-			}
-
-			++$x;
-
-			if ($x >= $this->columns) {
-				$x = 0;
-				++$y;
 			}
 		}
 	}
