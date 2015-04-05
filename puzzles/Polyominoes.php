@@ -344,13 +344,15 @@ abstract class Polyominoes
 		$layout = array( );
 
 		$string = preg_replace('%\r\n?%', "\n", $string);
-		$lines = explode("\n", $string);
+		$lines = explode("\n", trim($string));
 
 		// make sure every line begins and ends with a dot ( . )
 		// and find the longest line
 		$len = 0;
 		$dots = true;
-		foreach ($lines as $line) {
+		foreach ($lines as & $line) { // mind the reference
+			$line = trim($line);
+
 			if ('.' !== $line{0}) {
 				$dots = false;
 				break;
@@ -365,6 +367,9 @@ abstract class Polyominoes
 				$len = strlen($line);
 			}
 		}
+		unset($line); // kill the reference
+
+		$len -= 2; // subtract two because dots
 
 		// make sure the top and bottom lines are all dots
 		if (false !== strpos($lines[0], '*')) {
@@ -386,15 +391,18 @@ abstract class Polyominoes
 
 			$row = array_fill(0, $len, 0);
 
-			$chars = explode('', trim($line));
+			$n = 0;
+			$chars = str_split($line);
 			foreach ($chars as $jdx => $char) {
 				if ((0 === $jdx) || ($jdx === (count($lines) - 1))) {
 					continue;
 				}
 
 				if ('*' === $char) {
-					$row[$jdx] = 1;
+					$row[$n] = 1;
 				}
+
+				++$n;
 			}
 
 			$layout[] = $row;
