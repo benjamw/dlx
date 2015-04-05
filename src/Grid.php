@@ -272,20 +272,25 @@ class Grid {
 	/**
 	 * Search the space for the solutions
 	 *
+	 * @param int $count solutions to return (0 to return all)
 	 * @param int $k
 	 *
-	 * @return void
+	 * @return bool stop processing
 	 */
-	public function search($k = 0) {
+	public function search($count = 0, $k = 0) {
 		if (($this->h->getRight( ) === $this->h) || $this->onlyEmptySecondaryLeft( )) {
 			$this->addSolution( );
-			return;
+			if ($count && ($count === count($this->solutions['rows']))) {
+				return true;
+			}
+
+			return false;
 		}
 		else {
 			$column = $this->chooseNextColumn( );
 			if (0 === $column->getCount( )) {
 				// this path has already failed
-				return;
+				return false;
 			}
 
 			$this->cover($column);
@@ -298,7 +303,9 @@ class Grid {
 					$this->addPath('cols', $right->getColumn( )->getCol( ));
 				}
 
-				$this->search($k + 1);
+				if ($this->search($count, $k + 1)) {
+					return true;
+				}
 
 				$this->removePath( );
 
@@ -310,7 +317,7 @@ class Grid {
 			$this->uncover($column);
 		}
 
-		return;
+		return false;
 	}
 
 	/**

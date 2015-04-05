@@ -143,12 +143,12 @@ class Queens {
 	}
 
 	/**
-	 * @param void
+	 * @param int $count solutions to return (0 to return all)
 	 *
 	 * @return array
 	 */
-	public function solve( ) {
-		$this->grid->search( );
+	public function solve($count = 0) {
+		$this->grid->search($count);
 		return $this->getSolutions( );
 	}
 
