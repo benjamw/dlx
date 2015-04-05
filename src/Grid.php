@@ -628,7 +628,7 @@ class Grid {
 			$cols[] = $right->getCol( );
 		}
 
-		// translation array
+		// translation array, because $cols may not be contiguous
 		$trans = array_flip($cols);
 
 		$next = 1;

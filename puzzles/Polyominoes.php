@@ -398,7 +398,7 @@ abstract class Polyominoes
 	 * @return array points
 	 */
 	public static function rotatePiece($degrees, $points) {
-		$points = array_values($points);
+		$points = array_values($points); // keys need to be clean
 		$points = array_map('array_values', $points);
 
 		switch ((int) $degrees) {

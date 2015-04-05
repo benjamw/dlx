@@ -16,18 +16,18 @@ class Lonpos extends Polyominoes
 	 */
 	public static $PIECES = array(
 		// L is first because it's the hardest to place
-		'L' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))),
-		'A' => array(1,  true, 4, array(array(1, 1, 1), array(1, 0, 0))),
-		'B' => array(1,  true, 4, array(array(1, 1, 1), array(1, 1, 0))),
-		'C' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))),
-		'D' => array(1,  true, 4, array(array(1, 1, 1, 1), array(0, 1, 0, 0))),
-		'E' => array(1,  true, 4, array(array(1, 1, 1, 0), array(0, 0, 1, 1))),
-		'F' => array(1, false, 4, array(array(1, 1), array(1, 0))),
-		'G' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 0), array(1, 0, 0))),
-		'H' => array(1, false, 4, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))),
-		'I' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 1))),
-		'J' => array(1, false, 2, array(array(1, 1, 1, 1))),
-		'K' => array(1, false, 1, array(array(1, 1), array(1, 1))),
+		'L' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))), // gray X
+		'A' => array(1,  true, 4, array(array(1, 1, 1), array(1, 0, 0))), // orange L
+		'B' => array(1,  true, 4, array(array(1, 1, 1), array(1, 1, 0))), // red P
+		'C' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))), // dk. blue L
+		'D' => array(1,  true, 4, array(array(1, 1, 1, 1), array(0, 1, 0, 0))), // pink Y
+		'E' => array(1,  true, 4, array(array(1, 1, 1, 0), array(0, 0, 1, 1))), // green N
+		'F' => array(1, false, 4, array(array(1, 1), array(1, 0))), // white V
+		'G' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 0), array(1, 0, 0))), // lt. blue V
+		'H' => array(1, false, 4, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))), // magenta W
+		'I' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 1))), // yellow U
+		'J' => array(1, false, 2, array(array(1, 1, 1, 1))), // purple I
+		'K' => array(1, false, 1, array(array(1, 1), array(1, 1))), // lime O
 	);
 
 	/**
