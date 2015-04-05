@@ -135,7 +135,7 @@ class Queens {
 		}
 
 		try {
-			$this->grid->select($rows);
+			$this->grid->selectRows($rows);
 		}
 		catch (Exception $e) {
 			throw $e;
