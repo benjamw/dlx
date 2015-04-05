@@ -165,6 +165,10 @@ abstract class Polyominoes
 	 * @return void
 	 */
 	public function place($pieces) {
+		if ( ! is_array($pieces[0])) {
+			$pieces = array($pieces);
+		}
+
 		// convert pieces to cols
 		$cols = array( );
 		foreach ($pieces as $idx => $piece) {
