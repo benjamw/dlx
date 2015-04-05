@@ -33,6 +33,13 @@ abstract class Polyominoes
 	public $layout;
 
 	/**
+	 * The layout index to column index translation array
+	 *
+	 * @var array
+	 */
+	public $translate;
+
+	/**
 	 * The total space size of the layout
 	 *
 	 * @var int
@@ -124,6 +131,11 @@ abstract class Polyominoes
 				$this->layout[] = array_fill(0, $cols, 1);
 			}
 		}
+
+		// because the layout may have holes in it, or other odd shapes,
+		// the grid indexes may not line up with the actual layout indexes
+		// so a translation array is needed
+		$this->translate = self::createTranslationArray($this->layout);
 	}
 
 	/**
@@ -388,6 +400,28 @@ abstract class Polyominoes
 	}
 
 	/**
+	 * @param $layout
+	 *
+	 * @return array
+	 */
+	public static function createTranslationArray($layout) {
+		$n = 0;
+		$translate = array( );
+		foreach ($layout as $y => $row) {
+			$len = count($row);
+
+			foreach ($row as $x => $space) {
+				if (1 === $space) {
+					$translate[($y * $len) + $x] = $n;
+					++$n;
+				}
+			}
+		}
+
+		return $translate;
+	}
+
+	/**
 	 * Rotate the given piece points about the origin
 	 * the given number of degrees (90 = CW)
 	 *
@@ -495,7 +529,7 @@ abstract class Polyominoes
 								continue 3;
 							}
 
-							$boardNodes[] = ($x + $px) + (($y + $py) * $boardWidth);
+							$boardNodes[] = $this->translate[($x + $px) + (($y + $py) * $boardWidth)];
 						}
 					}
 				}
