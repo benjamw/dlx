@@ -227,17 +227,43 @@ class Grid {
 	 * @return void
 	 */
 	public function selectCols($selectedCols) {
+		if ( ! is_array($selectedCols[0])) {
+			$selectedCols = array($selectedCols);
+		}
+
 		$rows = array( );
 
-		foreach ($selectedCols as $selectedCol) {
-			$row = false;
+		foreach ($selectedCols as $cols) {
+			$colRows = array_combine($cols, array_fill(0, count($cols), array( )));
 
 			// find the rows these columns share
-// TODO: search the given columns and find the $row they all have in common
+			$right = $this->h->getRight( );
+			while ($right !== $this->h) {
+				if ( ! in_array($right->getCol( ), $cols)) {
+					$right = $right->getRight( );
+					continue;
+				}
 
-			if ( ! $row) {
-				$rows[] = $row;
+				$col = $right->getCol( );
+				$down = $right->getDown( );
+				while ($down !== $right) {
+					$colRows[$col][] = $down->getRow( );
+					$down = $down->getDown( );
+				}
+
+				$right = $right->getRight( );
 			}
+
+			$intersect = call_user_func_array('array_intersect', $colRows);
+
+			if (1 > count($intersect)) {
+				throw new Exception('Given columns do not share a common row');
+			}
+			elseif (1 < count($intersect)) {
+				throw new Exception('Given columns share more than one common row');
+			}
+
+			$rows[] = reset($intersect);
 		}
 
 		$this->selectRows($rows);
