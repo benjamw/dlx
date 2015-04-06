@@ -511,7 +511,7 @@ class Grid {
 
 	/**
 	 * Add the complete solution path to the list of solutions
-	 * If the callback returns a falsy value, the solutions will not be stored locally
+	 * If the callback returns false, the solutions will not be stored locally
 	 *
 	 * @param callable $callback optional function
 	 *
@@ -521,7 +521,7 @@ class Grid {
 		++$this->solutionCount;
 
 		if (is_callable($callback)) {
-			if ( ! call_user_func($callback, $this->path)) {
+			if (false === call_user_func($callback, $this->path)) {
 				return;
 			}
 		}

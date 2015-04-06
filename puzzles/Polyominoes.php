@@ -296,7 +296,7 @@ abstract class Polyominoes
 	}
 
 	/**
-	 * If the callback returns a falsy value, the solutions will not be stored in Grid
+	 * If the callback returns false, the solutions will not be stored in Grid
 	 *
 	 * @param int $count optional solutions to return (0 to return all)
 	 * @param callable $callback optional function
