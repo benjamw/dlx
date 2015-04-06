@@ -296,12 +296,15 @@ abstract class Polyominoes
 	}
 
 	/**
-	 * @param int $count solutions to return (0 to return all)
+	 * If the callback returns a falsy value, the solutions will not be stored in Grid
+	 *
+	 * @param int $count optional solutions to return (0 to return all)
+	 * @param callable $callback optional function
 	 *
 	 * @return array
 	 */
-	public function solve($count = 0) {
-		$this->grid->search($count);
+	public function solve($count = 0, $callback = null) {
+		$this->grid->search($count, $callback);
 		return $this->getSolutions('cols');
 	}
 

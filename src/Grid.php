@@ -52,6 +52,11 @@ class Grid {
 		'cols' => array( ),
 	);
 
+	/**
+	 * @var int
+	 */
+	protected $solutionCount;
+
 
 	/**
 	 * $nodes can be a 2D array
@@ -72,6 +77,7 @@ class Grid {
 			'cols' => array( ),
 		);
 		$this->solutions = $this->path;
+		$this->solutionCount = 0;
 
 		try {
 			$this->constructHeaders($columns, $secondary);
@@ -271,16 +277,19 @@ class Grid {
 
 	/**
 	 * Search the space for the solutions
+	 * If the callback returns a falsy value, the solutions will not be stored locally
 	 *
 	 * @param int $count solutions to return (0 to return all)
+	 * @param callable $callback optional function
 	 * @param int $k
 	 *
 	 * @return bool stop processing
 	 */
-	public function search($count = 0, $k = 0) {
+	public function search($count = 0, $callback = null, $k = 0) {
 		if (($this->h->getRight( ) === $this->h) || $this->onlyEmptySecondaryLeft( )) {
-			$this->addSolution( );
-			if ($count && ($count === count($this->solutions['rows']))) {
+			$this->addSolution($callback);
+
+			if ($count && ($count === $this->solutionCount)) {
 				return true;
 			}
 
@@ -303,7 +312,7 @@ class Grid {
 					$this->addPath('cols', $right->getColumn( )->getCol( ));
 				}
 
-				if ($this->search($count, $k + 1)) {
+				if ($this->search($count, $callback, $k + 1)) {
 					return true;
 				}
 
@@ -502,12 +511,21 @@ class Grid {
 
 	/**
 	 * Add the complete solution path to the list of solutions
+	 * If the callback returns a falsy value, the solutions will not be stored locally
 	 *
-	 * @param void
+	 * @param callable $callback optional function
 	 *
 	 * @return void
 	 */
-	protected function addSolution( ) {
+	protected function addSolution($callback = null) {
+		++$this->solutionCount;
+
+		if (is_callable($callback)) {
+			if ( ! call_user_func($callback, $this->path)) {
+				return;
+			}
+		}
+
 		array_push($this->solutions['rows'], $this->path['rows']);
 		array_push($this->solutions['cols'], $this->path['cols']);
 	}
@@ -524,6 +542,15 @@ class Grid {
 		else {
 			return $this->solutions[$type];
 		}
+	}
+
+	/**
+	 * @param void
+	 *
+	 * @return int
+	 */
+	public function getSolutionCount( ) {
+		return $this->solutionCount;
 	}
 
 	/**
