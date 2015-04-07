@@ -8,15 +8,15 @@ class Trominoes extends Polyominoes
 {
 
 	/**
-	 * array(count, mirror, symmetry, points array)
+	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner
 	 *
 	 * @var array
 	 */
 	public static $PIECES = array(
-		'I' => array(2, false, 2, array(array(1, 1, 1))),
-		'L' => array(2, false, 4, array(array(1, 1), array(1, 0))),
+		'L' => array(2, false, 4, 8, array(array(1, 0), array(1, 1))),
+		'I' => array(2, false, 2, 1, array(array(1, 1, 1))),
 	);
 
 	/**

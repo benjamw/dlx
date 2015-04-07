@@ -8,7 +8,7 @@ class Lonpos extends Polyominoes
 {
 
 	/**
-	 * array(count, mirror, symmetry, points array)
+	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner
 	 *
@@ -16,18 +16,18 @@ class Lonpos extends Polyominoes
 	 */
 	public static $PIECES = array(
 		// L is first because it's the hardest to place
-		'L' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))), // gray X
-		'A' => array(1,  true, 4, array(array(1, 1, 1), array(1, 0, 0))), // orange L
-		'B' => array(1,  true, 4, array(array(1, 1, 1), array(1, 1, 0))), // red P
-		'C' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))), // dk. blue L
-		'D' => array(1,  true, 4, array(array(1, 1, 1, 1), array(0, 1, 0, 0))), // pink Y
-		'E' => array(1,  true, 4, array(array(1, 1, 1, 0), array(0, 0, 1, 1))), // green N
-		'F' => array(1, false, 4, array(array(1, 1), array(1, 0))), // white V
-		'G' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 0), array(1, 0, 0))), // lt. blue V
-		'H' => array(1, false, 4, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))), // magenta W
-		'I' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 1))), // yellow U
-		'J' => array(1, false, 2, array(array(1, 1, 1, 1))), // purple I
-		'K' => array(1, false, 1, array(array(1, 1), array(1, 1))), // lime O
+		'L' => array(1, false, 1,  2, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))), // gray X
+		'A' => array(1,  true, 4, 16, array(array(1, 1, 1), array(1, 0, 0))), // orange L
+		'B' => array(1,  true, 4, 16, array(array(1, 1, 1), array(1, 1, 0))), // red P
+		'C' => array(1,  true, 4, 16, array(array(1, 1, 1, 1), array(1, 0, 0, 0))), // dk. blue L
+		'D' => array(1,  true, 4, 16, array(array(1, 1, 1, 1), array(0, 1, 0, 0))), // pink Y
+		'E' => array(1,  true, 4, 16, array(array(1, 1, 1, 0), array(0, 0, 1, 1))), // green N
+		'F' => array(1, false, 4, 12, array(array(1, 0), array(1, 1))), // white V
+		'G' => array(1, false, 4, 12, array(array(1, 0, 0), array(1, 0, 0), array(1, 1, 1))), // lt. blue V
+		'H' => array(1, false, 4, 12, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))), // magenta W
+		'I' => array(1, false, 4,  8, array(array(1, 1, 1), array(1, 0, 1))), // yellow U
+		'J' => array(1, false, 2,  4, array(array(1, 1, 1, 1))), // purple I
+		'K' => array(1, false, 1,  2, array(array(1, 1), array(1, 1))), // lime O
 	);
 
 	/**
@@ -96,7 +96,7 @@ class Lonpos extends Polyominoes
 			.***.
 			.**.
 			.*.
-			...
+			..
 		";
 
 	 **/

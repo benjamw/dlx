@@ -13,13 +13,14 @@ abstract class Polyominoes
 	 */
 	const PIECE_COUNT = 0;
 	const PIECE_REFLECT = 1;
-	const PIECE_SYMMETRY = 2;
-	const PIECE_POINTS = 3;
+	const PIECE_HORIZ_SYMMETRY = 2;
+	const PIECE_VERT_SYMMETRY = 3;
+	const PIECE_POINTS = 4;
 
 	/**
 	 * To be filled by child classes...
 	 *
-	 * array(count, mirror, symmetry, points array)
+	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner
 	 *
@@ -40,13 +41,6 @@ abstract class Polyominoes
 	public $translate;
 
 	/**
-	 * The total space size of the layout
-	 *
-	 * @var int
-	 */
-	protected $size = 0;
-
-	/**
 	 * @var \DLX\Grid
 	 */
 	public $grid;
@@ -55,6 +49,13 @@ abstract class Polyominoes
 	 * @var array
 	 */
 	public $colNames;
+
+	/**
+	 * The total space size of the layout
+	 *
+	 * @var int
+	 */
+	protected $size = 0;
 
 	/**
 	 * @var int
@@ -254,7 +255,7 @@ abstract class Polyominoes
 		$done = $reflected = false;
 
 		while ( ! $done) {
-			switch ($piece[self::PIECE_SYMMETRY]) {
+			switch ($piece[self::PIECE_HORIZ_SYMMETRY]) {
 				case 4 : // 90 degree symmetry
 					// rotate the piece 180 degrees and place it
 					$points = self::rotatePiece(180, $points);
@@ -609,7 +610,7 @@ abstract class Polyominoes
 			$done = $reflected = false;
 
 			while ( ! $done) {
-				switch ($piece[self::PIECE_SYMMETRY]) {
+				switch ($piece[self::PIECE_HORIZ_SYMMETRY]) {
 					case 4 : // 90 degree symmetry
 						// rotate the piece 180 degrees and place it
 						$points = self::rotatePiece(180, $points);
