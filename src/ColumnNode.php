@@ -14,14 +14,14 @@ class ColumnNode extends Node {
 	/**
 	 * @var int
 	 */
-	protected $col;
+	public $col;
 
 	/**
 	 * The number of rows in the column
 	 *
 	 * @var int
 	 */
-	protected $count;
+	public $count;
 
 
 	/**
@@ -48,15 +48,6 @@ class ColumnNode extends Node {
 	}
 
 	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getCol( ) {
-		return $this->col;
-	}
-
-	/**
 	 * @param int $value
 	 *
 	 * @return void
@@ -67,15 +58,6 @@ class ColumnNode extends Node {
 		if (0 > $this->count) {
 			$this->count = 0;
 		}
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getCount( ) {
-		return $this->count;
 	}
 
 }

@@ -23,14 +23,14 @@ class Grid {
 	 *
 	 * @var int
 	 */
-	protected $columns;
+	public $columns;
 
 	/**
 	 * The row count (not including headers)
 	 *
 	 * @var int
 	 */
-	protected $rows;
+	public $rows;
 
 	/**
 	 * The path to the current state
@@ -55,7 +55,7 @@ class Grid {
 	/**
 	 * @var int
 	 */
-	protected $solutionCount;
+	public $solutionCount;
 
 
 	/**
@@ -135,7 +135,7 @@ class Grid {
 		}
 
 		$columns = array( );
-		for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
+		for ($right = $this->h->right; $right !== $this->h; $right = $right->right) {
 			array_push($columns, $right);
 		}
 
@@ -163,7 +163,7 @@ class Grid {
 		foreach ($nodes as $y => $row) {
 			foreach ($row as $x => $value) {
 				if ($value) {
-					$node = new Node($y + 1, $columns[$x]->getColumn( ));
+					$node = new Node($y + 1, $columns[$x]->column);
 
 					// vertical
 					$this->insertBelow($node, $columns[$x]);
@@ -173,7 +173,7 @@ class Grid {
 						$this->insertRight($node, $rows[$y + 1]);
 					}
 
-					$node->getColumn( )->changeCount(1);
+					$node->column->changeCount(1);
 
 					$columns[$x] = $node;
 					$rows[$y + 1] = $node;
@@ -195,23 +195,23 @@ class Grid {
 			// find the columns this row affects
 			$column = $this->findColumn($selectedRow);
 
-			if (0 === $column->getCount( )) {
+			if (0 === $column->count) {
 				// this path has already failed
 				throw new Exception('Manually selected rows create an unsolvable problem');
 			}
 
 			$this->cover($column);
-			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
-				if ($selectedRow !== $row->getRow( )) {
+			for ($row = $column->down; $row !== $column; $row = $row->down) {
+				if ($selectedRow !== $row->row) {
 					continue;
 				}
 
-				$this->addPath('rows', $row->getRow( ));
-				$this->addPath('cols', $row->getColumn( )->getCol( ));
+				$this->addPath('rows', $row->row);
+				$this->addPath('cols', $row->column->col);
 
-				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
-					$this->cover($right->getColumn( ));
-					$this->addPath('cols', $right->getColumn( )->getCol( ));
+				for ($right = $row->right; $right !== $row; $right = $right->right) {
+					$this->cover($right->column);
+					$this->addPath('cols', $right->column->col);
 				}
 
 				// that's it, don't do anything else
@@ -243,21 +243,21 @@ class Grid {
 			$colRows = array_combine($cols, array_fill(0, count($cols), array( )));
 
 			// find the rows these columns share
-			$right = $this->h->getRight( );
+			$right = $this->h->right;
 			while ($right !== $this->h) {
-				if ( ! in_array($right->getCol( ), $cols)) {
-					$right = $right->getRight( );
+				if ( ! in_array($right->col, $cols)) {
+					$right = $right->right;
 					continue;
 				}
 
-				$col = $right->getCol( );
-				$down = $right->getDown( );
+				$col = $right->col;
+				$down = $right->down;
 				while ($down !== $right) {
-					$colRows[$col][] = $down->getRow( );
-					$down = $down->getDown( );
+					$colRows[$col][] = $down->row;
+					$down = $down->down;
 				}
 
-				$right = $right->getRight( );
+				$right = $right->right;
 			}
 
 			$intersect = call_user_func_array('array_intersect', $colRows);
@@ -286,7 +286,7 @@ class Grid {
 	 * @return bool stop processing
 	 */
 	public function search($count = 0, $callback = null, $k = 0) {
-		if (($this->h->getRight( ) === $this->h) || $this->onlyEmptySecondaryLeft( )) {
+		if (($this->h->right === $this->h) || $this->onlyEmptySecondaryLeft( )) {
 			$this->addSolution($callback);
 
 			if ($count && ($count === $this->solutionCount)) {
@@ -297,19 +297,19 @@ class Grid {
 		}
 		else {
 			$column = $this->chooseNextColumn( );
-			if (0 === $column->getCount( )) {
+			if (0 === $column->count) {
 				// this path has already failed
 				return false;
 			}
 
 			$this->cover($column);
-			for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
-				$this->addPath('rows', $row->getRow( ));
-				$this->addPath('cols', $row->getColumn( )->getCol( ));
+			for ($row = $column->down; $row !== $column; $row = $row->down) {
+				$this->addPath('rows', $row->row);
+				$this->addPath('cols', $row->column->col);
 
-				for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
-					$this->cover($right->getColumn( ));
-					$this->addPath('cols', $right->getColumn( )->getCol( ));
+				for ($right = $row->right; $right !== $row; $right = $right->right) {
+					$this->cover($right->column);
+					$this->addPath('cols', $right->column->col);
 				}
 
 				if ($this->search($count, $callback, $k + 1)) {
@@ -318,8 +318,8 @@ class Grid {
 
 				$this->removePath( );
 
-				for ($left = $row->getLeft( ); $left !== $row; $left = $left->getLeft( )) {
-					$this->uncover($left->getColumn( ));
+				for ($left = $row->left; $left !== $row; $left = $left->left) {
+					$this->uncover($left->column);
 				}
 			}
 
@@ -338,17 +338,17 @@ class Grid {
 	 */
 	protected function chooseNextColumn( ) {
 		if ( ! empty($this->simple)) {
-			return $this->h->getRight( );
+			return $this->h->right;
 		}
 
 		$lowest = PHP_INT_MAX; // largest int available
-		$next = $nextColumn = $this->h->getRight( );
+		$next = $nextColumn = $this->h->right;
 
 		while ($next !== $this->h) {
-			if (($count = $next->getCount( )) < $lowest) {
+			if (($count = $next->count) < $lowest) {
 				// don't use secondary columns
 				if ($next->secondary) {
-					$next = $next->getRight( );
+					$next = $next->right;
 					continue;
 				}
 
@@ -356,7 +356,7 @@ class Grid {
 				$lowest = $count;
 			}
 
-			$next = $next->getRight( );
+			$next = $next->right;
 		}
 
 		return $nextColumn;
@@ -371,31 +371,31 @@ class Grid {
 	 */
 	protected function findColumn($rowIndex) {
 		$columns = array( );
-		$col = $this->h->getRight( );
+		$col = $this->h->right;
 
 		while ($col !== $this->h) {
-			$row = $col->getDown( );
+			$row = $col->down;
 
 			while ($row !== $col) {
-				if ($rowIndex === $row->getRow( )) {
-					$columns[] = $row->getColumn( );
-					$innerCol = $row->getRight( );
+				if ($rowIndex === $row->row) {
+					$columns[] = $row->column;
+					$innerCol = $row->right;
 
 					while ($innerCol !== $row) {
-						$columns[] = $innerCol->getColumn( );
-						$innerCol = $innerCol->getRight( );
+						$columns[] = $innerCol->column;
+						$innerCol = $innerCol->right;
 					}
 
 					// find the shortest one
 					$shortest = reset($columns);
-					$lowest = $shortest->getCount( );
+					$lowest = $shortest->count;
 					foreach ($columns as $column) {
 						if ($column->secondary) {
 							continue;
 						}
 
-						if ($lowest > $column->getCount( )) {
-							$lowest = $column->getCount( );
+						if ($lowest > $column->count) {
+							$lowest = $column->count;
 							$shortest = $column;
 						}
 					}
@@ -403,10 +403,10 @@ class Grid {
 					return $shortest;
 				}
 
-				$row = $row->getDown( );
+				$row = $row->down;
 			}
 
-			$col = $col->getRight( );
+			$col = $col->right;
 		}
 
 		return $this->h;
@@ -421,15 +421,15 @@ class Grid {
 	 * @return void
 	 */
 	protected function cover(ColumnNode $column) {
-		$column->getRight( )->setLeft($column->getLeft( ));
-		$column->getLeft( )->setRight($column->getRight( ));
+		$column->right->left = $column->left;
+		$column->left->right = $column->right;
 
 		// down then right is important here because it is the opposite of the uncover order
-		for ($row = $column->getDown( ); $row !== $column; $row = $row->getDown( )) {
-			for ($right = $row->getRight( ); $right !== $row; $right = $right->getRight( )) {
-				$right->getUp( )->setDown($right->getDown( ));
-				$right->getDown( )->setUp($right->getUp( ));
-				$right->getColumn( )->changeCount(-1);
+		for ($row = $column->down; $row !== $column; $row = $row->down) {
+			for ($right = $row->right; $right !== $row; $right = $right->right) {
+				$right->up->down = $right->down;
+				$right->down->up = $right->up;
+				$right->column->changeCount(-1);
 			}
 		}
 	}
@@ -444,16 +444,16 @@ class Grid {
 	 */
 	protected function uncover(ColumnNode $column) {
 		// up then left is important here because it is the opposite of the cover order
-		for ($row = $column->getUp( ); $row !== $column; $row = $row->getUp( )) {
-			for ($left = $row->getLeft( ); $left !== $row; $left = $left->getLeft( )) {
-				$left->getUp( )->setDown($left);
-				$left->getDown( )->setUp($left);
-				$left->getColumn( )->changeCount(1);
+		for ($row = $column->up; $row !== $column; $row = $row->up) {
+			for ($left = $row->left; $left !== $row; $left = $left->left) {
+				$left->up->down = $left;
+				$left->down->up = $left;
+				$left->column->changeCount(1);
 			}
 		}
 
-		$column->getRight( )->setLeft($column);
-		$column->getLeft( )->setRight($column);
+		$column->right->left = $column;
+		$column->left->right = $column;
 	}
 
 	/**
@@ -462,14 +462,14 @@ class Grid {
 	 * @return bool
 	 */
 	protected function onlyEmptySecondaryLeft( ) {
-		$next = $this->h->getRight( );
+		$next = $this->h->right;
 
 		while ($next !== $this->h) {
-			if ( ! $next->secondary || $next->getCount( )) {
+			if ( ! $next->secondary || $next->count) {
 				return false;
 			}
 
-			$next = $next->getRight( );
+			$next = $next->right;
 		}
 
 		return true;
@@ -545,15 +545,6 @@ class Grid {
 	}
 
 	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getSolutionCount( ) {
-		return $this->solutionCount;
-	}
-
-	/**
 	 * Insert a new node above the $down node
 	 *
 	 * @param Node $new
@@ -562,10 +553,10 @@ class Grid {
 	 * @return Node inserted
 	 */
 	public function insertAbove(Node $new, Node $down) {
-		$new->setUp($down->getUp( ));
-		$new->setDown($down);
-		$down->getUp( )->setDown($new);
-		$down->setUp($new);
+		$new->up = $down->up;
+		$new->down = $down;
+		$down->up->down = $new;
+		$down->up = $new;
 
 		 return $new;
 	}
@@ -579,10 +570,10 @@ class Grid {
 	 * @return Node inserted
 	 */
 	public function insertRight(Node $new, Node $left) {
-		$new->setRight($left->getRight( ));
-		$new->setLeft($left);
-		$left->getRight( )->setLeft($new);
-		$left->setRight($new);
+		$new->right = $left->right;
+		$new->left = $left;
+		$left->right->left = $new;
+		$left->right = $new;
 
 		return $new;
 	}
@@ -596,10 +587,10 @@ class Grid {
 	 * @return Node inserted
 	 */
 	public function insertBelow(Node $new, Node $up) {
-		$new->setDown($up->getDown( ));
-		$new->setUp($up);
-		$up->getDown( )->setUp($new);
-		$up->setDown($new);
+		$new->down = $up->down;
+		$new->up = $up;
+		$up->down->up = $new;
+		$up->down = $new;
 
 		return $new;
 	}
@@ -613,30 +604,12 @@ class Grid {
 	 * @return Node inserted
 	 */
 	public function insertLeft(Node $new, Node $right) {
-		$new->setLeft($right->getLeft( ));
-		$new->setRight($right);
-		$right->getLeft( )->setRight($new);
-		$right->setLeft($new);
+		$new->left = $right->left;
+		$new->right = $right;
+		$right->left->right = $new;
+		$right->left = $new;
 
 		return $new;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getColumnCount( ) {
-		return $this->columns;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getRowCount( ) {
-		return $this->rows;
 	}
 
 	/**
@@ -651,8 +624,8 @@ class Grid {
 
 		// parse through the headers
 		$cols = array( );
-		for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
-			$cols[] = $right->getCol( );
+		for ($right = $this->h->right; $right !== $this->h; $right = $right->right) {
+			$cols[] = $right->col;
 		}
 
 		// translation array, because $cols may not be contiguous
@@ -665,23 +638,23 @@ class Grid {
 		// proceeding to the next column. if it does find a node in the $next row, then it fills that
 		// row, and then starts the search loop over from the first column again.
 		while ($this->rows >= $next) {
-			for ($right = $this->h->getRight( ); $right !== $this->h; $right = $right->getRight( )) {
-				$down = $right->getDown( );
+			for ($right = $this->h->right; $right !== $this->h; $right = $right->right) {
+				$down = $right->down;
 
 				// keep going down until the $next row
 				// but stop if it loops back to zero
-				while ((0 < $down->getRow( )) && ($down->getRow( ) < $next)) {
-					$down = $down->getDown( );
+				while ((0 < $down->row) && ($down->row < $next)) {
+					$down = $down->down;
 				}
 
 				// fill the next row if a match is found
-				if ($down->getRow( ) === $next) {
+				if ($down->row === $next) {
 					$row = array_fill(0, count($cols), 0);
 
-					$row[$trans[$down->getColumn( )->getCol( )]] = 1;
+					$row[$trans[$down->column->col]] = 1;
 
-					for ($sub_right = $down->getRight( ); $sub_right !== $down; $sub_right = $sub_right->getRight( )) {
-						$row[$trans[$sub_right->getColumn( )->getCol( )]] = 1;
+					for ($sub_right = $down->right; $sub_right !== $down; $sub_right = $sub_right->right) {
+						$row[$trans[$sub_right->column->col]] = 1;
 					}
 
 					$grid[] = $row;
