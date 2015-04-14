@@ -122,12 +122,20 @@ class Queens {
 	/**
 	 * Manually place queens
 	 *
-	 * @param array $pieces array of board locations (A2, B4, etc.)
+	 * @param array|string $pieces array of board locations (A2, B4, etc.)
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
 	public function place($pieces) {
+		if (1 !== func_num_args( )) {
+			$pieces = func_get_args( );
+		}
+
+		if ( ! is_array($pieces)) {
+			$pieces = array($pieces);
+		}
+
 		// convert pieces to rows
 		$rows = array( );
 		foreach ($pieces as $piece) {

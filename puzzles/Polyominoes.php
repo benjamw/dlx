@@ -187,7 +187,11 @@ abstract class Polyominoes
 	 * @return void
 	 */
 	public function place($pieces) {
-		if ( ! is_array($pieces[0])) {
+		if (1 !== func_num_args( )) {
+			$pieces = func_get_args( );
+		}
+
+		if ( ! is_array($pieces) || ! is_array(reset($pieces))) {
 			$pieces = array($pieces);
 		}
 
@@ -554,11 +558,13 @@ abstract class Polyominoes
 	public function placePiece($pieceName, $points, & $nodes) {
 		// do some quick validity tests
 		if (count($this->layout) < count($points)) {
+			// the piece is too tall to fit
 			// don't fail, just don't place this piece
 			return;
 		}
 
 		if (count($this->layout[0]) < count($points[0])) {
+			// the piece is too long to fit
 			// don't fail just don't place this piece
 			return;
 		}
