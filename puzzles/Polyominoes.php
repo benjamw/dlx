@@ -51,6 +51,13 @@ abstract class Polyominoes
 	public $colNames;
 
 	/**
+	 * Set to true to disregard rotated and reflected solutions
+	 *
+	 * @var bool
+	 */
+	public $symmetry;
+
+	/**
 	 * The total space size of the layout
 	 *
 	 * @var int
@@ -68,11 +75,26 @@ abstract class Polyominoes
 	 *
 	 * @param string|array|int $cols optional
 	 * @param int $rows optional
+	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
 	 * @return Polyominoes
 	 */
-	public function __construct($cols = 0, $rows = 0) {
+	public function __construct($cols = 0, $rows = 0, $symmetry = false) {
+		if (is_bool($cols)) {
+			$temp = $cols;
+			$cols = $rows;
+			$rows = $symmetry;
+			$symmetry = $temp;
+		}
+		elseif (is_bool($rows)) {
+			// $cols was a full layout
+			$symmetry = $rows;
+			$rows = 6;
+		}
+
+		$this->symmetry = $symmetry;
+
 		try {
 			$this->createLayout($cols, $rows);
 			$this->createGrid( );
@@ -228,13 +250,19 @@ abstract class Polyominoes
 	protected function createNodes( ) {
 		$nodes = array( );
 
+		$beenFixed = ! $this->symmetry;
+
 		foreach (static::$PIECES as $pieceName => $piece) {
 			if (1 === $piece[self::PIECE_COUNT]) {
-				$this->createPieceNodes($pieceName, $piece, $nodes);
+				$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+				$beenFixed = $beenFixed || $fixed;
+				$this->createPieceNodes($pieceName, $piece, $nodes, $fixed);
 			}
 			else {
 				for ($i = 1; $i <= $piece[self::PIECE_COUNT]; ++$i) {
-					$this->createPieceNodes($pieceName.'('.$i.')', $piece, $nodes);
+					$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+					$beenFixed = $beenFixed || $fixed;
+					$this->createPieceNodes($pieceName.'('.$i.')', $piece, $nodes, $fixed);
 				}
 			}
 		}
@@ -243,16 +271,26 @@ abstract class Polyominoes
 	}
 
 	/**
+	 * Rotate the piece and create the node rows
+	 * If $fixed is true, this will only create 2 node rows for the piece
+	 * thereby eliminating rotation and reflection symmetry in the solution set
+	 *
 	 * @param string $pieceName
 	 * @param array $piece
 	 * @param array $nodes reference
+	 * @param bool $fixed fix this piece in only 2 orientations
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function createPieceNodes($pieceName, $piece, & $nodes) {
+	protected function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
 		$points = $piece[self::PIECE_POINTS];
 		$done = $reflected = false;
+
+		// only pieces with no rotational or reflectional symmetry should be fixed
+		if ($fixed && (4 !== $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT])) {
+			$fixed = false;
+		}
 
 		while ( ! $done) {
 			switch ($piece[self::PIECE_HORIZ_SYMMETRY]) {
@@ -267,7 +305,11 @@ abstract class Polyominoes
 
 					// and rotate it another 90 to get back to start for the fall through
 					$points = self::rotatePiece(90, $points);
-				// no break
+
+					if ($fixed) {
+						break;
+					}
+					// no break
 
 				case 2 : // 180 degree symmetry
 					// rotate the piece 90 degrees and place it
@@ -276,19 +318,20 @@ abstract class Polyominoes
 
 					// and rotate it back to start for the fall through
 					$points = self::rotatePiece(-90, $points);
-				// no break
+					// no break
 
 				case 1 : // rotationally symmetric
 					// no break
 				default :
 					// no rotation, just put the piece on the board
 					$this->placePiece($pieceName, $points, $nodes);
+					break;
 			}
 
 			$done = true;
 
 			// if the piece does not have reflection symmetry, reflect the piece and do it all again
-			if ( ! $reflected && $piece[self::PIECE_REFLECT]) {
+			if ( ! $fixed && ! $reflected && $piece[self::PIECE_REFLECT]) {
 				$points = self::reflectPiece($piece[self::PIECE_POINTS]);
 				$reflected = true;
 				$done = false;

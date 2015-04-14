@@ -107,13 +107,33 @@ class Lonpos extends Polyominoes
 	 *
 	 * @param string|array|int $cols optional
 	 * @param int $rows optional
+	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
 	 * @return Lonpos
 	 */
-	public function __construct($cols = 11, $rows = 5) {
+	public function __construct($cols = 11, $rows = 5, $symmetry = false) {
+		if (is_bool($cols)) {
+			$temp = $cols;
+
+			if (5 !== $rows) {
+				$cols = $rows;
+				$rows = $symmetry;
+			}
+			else {
+				$cols = 11;
+			}
+
+			$symmetry = $temp;
+		}
+		elseif (is_bool($rows)) {
+			// $cols was a full layout
+			$symmetry = $rows;
+			$rows = 5;
+		}
+
 		try {
-			parent::__construct($cols, $rows);
+			parent::__construct($cols, $rows, $symmetry);
 		}
 		catch (Exception $e) {
 			throw $e;
