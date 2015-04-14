@@ -296,6 +296,8 @@ class Grid {
 			return false;
 		}
 		else {
+			$stop = false;
+
 			$column = $this->chooseNextColumn( );
 			if (0 === $column->count) {
 				// this path has already failed
@@ -303,7 +305,7 @@ class Grid {
 			}
 
 			$this->cover($column);
-			for ($row = $column->down; $row !== $column; $row = $row->down) {
+			for ($row = $column->down; ! $stop && ($row !== $column); $row = $row->down) {
 				$this->addPath('rows', $row->row);
 				$this->addPath('cols', $row->column->col);
 
@@ -312,8 +314,8 @@ class Grid {
 					$this->addPath('cols', $right->column->col);
 				}
 
-				if ($this->search($count, $callback, $k + 1)) {
-					return true;
+				if ($stop || $this->search($count, $callback, $k + 1)) {
+					$stop = true;
 				}
 
 				$this->removePath( );
@@ -326,7 +328,7 @@ class Grid {
 			$this->uncover($column);
 		}
 
-		return false;
+		return $stop;
 	}
 
 	/**
