@@ -5,7 +5,7 @@ namespace DLX\Puzzles;
 use \DLX\Grid;
 use \Exception;
 
-abstract class Polyominoes
+abstract class Polyominoes3D extends Polyominoes
 {
 
 	/**
@@ -13,13 +13,14 @@ abstract class Polyominoes
 	 */
 	const PIECE_COUNT = 0;
 	const PIECE_REFLECT = 1;
-	const PIECE_SYMMETRY = 2;
-	const PIECE_POINTS = 3;
+	const PIECE_HORIZ_SYMMETRY = 2;
+	const PIECE_VERT_SYMMETRY = 3;
+	const PIECE_POINTS = 4;
 
 	/**
 	 * To be filled by child classes...
 	 *
-	 * array(count, mirror, symmetry, points array)
+	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner
 	 *
@@ -27,75 +28,37 @@ abstract class Polyominoes
 	 */
 	public static $PIECES = array( );
 
-	/**
-	 * @var array
-	 */
-	public $layout;
-
-	/**
-	 * The layout index to column index translation array
-	 *
-	 * @var array
-	 */
-	public $translate;
-
-	/**
-	 * @var \DLX\Grid
-	 */
-	public $grid;
-
-	/**
-	 * @var array
-	 */
-	public $colNames;
-
-	/**
-	 * Set to true to disregard rotated and reflected solutions
-	 *
-	 * @var bool
-	 */
-	public $symmetry;
-
-	/**
-	 * The total space size of the layout
-	 *
-	 * @var int
-	 */
-	protected $size = 0;
-
-	/**
-	 * @var int
-	 */
-	protected $pieceCount = 0;
-
 
 	/**
 	 * A custom layout can be passed as a 2D array into the first argument
 	 *
 	 * @param string|array|int $cols optional
 	 * @param int $rows optional
+	 * @param int $layers optional
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Polyominoes
+	 * @return Polyominoes3D
 	 */
-	public function __construct($cols = 0, $rows = 0, $symmetry = false) {
+	public function __construct($cols = 0, $rows = 0, $layers = 0, $symmetry = false) {
 		if (is_bool($cols)) {
 			$temp = $cols;
 			$cols = $rows;
-			$rows = $symmetry;
+			$rows = $layers;
+			$layers = $symmetry;
 			$symmetry = $temp;
 		}
 		elseif (is_bool($rows)) {
 			// $cols was a full layout
 			$symmetry = $rows;
-			$rows = 6;
+			$rows = 0;
+			$layers = 0;
 		}
 
 		$this->symmetry = $symmetry;
 
 		try {
-			$this->createLayout($cols, $rows);
+			$this->createLayout($cols, $rows, $layers);
 			$this->createGrid( );
 		}
 		catch (Exception $e) {
@@ -104,34 +67,37 @@ abstract class Polyominoes
 	}
 
 	/**
-	 * The layout can be passed as a string or a 2D array into $cols
-	 * or as row and column dimensions
+	 * The layout can be passed as a 3D array into $cols
+	 * or as row and column and layer dimensions
 	 *
 	 * If a layout is passed as an array, the indexes for the array
-	 * should be valid x,y coordinates for the board. '0' is allowed to
+	 * should be valid x,y,z coordinates for the board. '0' is allowed to
 	 * block out certain positions without having to break the array.
 	 *
-	 *     $cols[$y][$x] => (x, y)
+	 *     $cols[$z][$y][$x] => (x, y, z)
 	 *
-	 * @param string|array|int $cols
+	 * Because creating 3D strings would be... strange, strings
+	 * are not allowed as input, yet.
+	 *
+	 * @param array|int $cols
 	 * @param int $rows
+	 * @param int $layers
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function createLayout($cols, $rows) {
-		if (is_string($cols)) {
-			$this->layout = self::layoutToArray($cols);
-		}
-		elseif (is_array($cols)) {
+	public function createLayout($cols, $rows, $layers) {
+		if (is_array($cols)) {
 			$count = 0;
 
 			// this is a simple dimensions test
 			// this does not take into account the checkerboard validity of the layout
-			foreach ($cols as $col) {
-				foreach ($col as $node) {
-					if (1 === $node) {
-						++$count;
+			foreach ($cols as $layer) {
+				foreach ($layer as $col) {
+					foreach ($col as $node) {
+						if (1 === $node) {
+							++$count;
+						}
 					}
 				}
 			}
@@ -145,12 +111,16 @@ abstract class Polyominoes
 		else {
 			$this->layout = array( );
 
-			if ($this->size !== ($cols * $rows)) {
+			if ($this->size !== ($cols * $rows * $layers)) {
 				throw new Exception('Invalid layout size');
 			}
 
-			for ($i = 0; $i < $rows; ++$i) {
-				$this->layout[] = array_fill(0, $cols, 1);
+			for ($j = 0; $j < $layers; ++$j) {
+				$this->layout[$j] = array( );
+
+				for ($i = 0; $i < $rows; ++$i) {
+					$this->layout[$j][] = array_fill(0, $cols, 1);
+				}
 			}
 		}
 
@@ -161,60 +131,13 @@ abstract class Polyominoes
 	}
 
 	/**
-	 * @param void
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	protected function createGrid( ) {
-		$this->createColNames( );
-		$nodes = $this->createNodes( );
-
-		try {
-			$this->grid = new Grid($nodes, count($this->colNames) - 1);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
-	 * Manually place pieces
-	 *
-	 * @param array $pieces (not sure of the best syntax to use here...)
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	public function place($pieces) {
-		if ( ! is_array($pieces[0])) {
-			$pieces = array($pieces);
-		}
-
-		// convert pieces to cols
-		$cols = array( );
-		foreach ($pieces as $idx => $piece) {
-			foreach ($piece as $col) {
-				$cols[$idx][] = array_search($col, $this->colNames);
-			}
-		}
-
-		try {
-			$this->grid->selectCols($cols);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
 	 * Create the col names used to translate the solutions
 	 *
 	 * @param void
 	 *
 	 * @return void
 	 */
-	protected function createColNames( ) {
+	public function createColNames( ) {
 		$colNames = array(''); // cols are 1-index
 
 		foreach (static::$PIECES as $pieceName => $pieceData) {
@@ -228,13 +151,15 @@ abstract class Polyominoes
 			}
 		}
 
-		foreach ($this->layout as $row => $cols) {
-			foreach ($cols as $col => $value) {
-				if ( ! $value) {
-					continue;
-				}
+		foreach ($this->layout as $layer => $layers) {
+			foreach ($layers as $row => $cols) {
+				foreach ($cols as $col => $value) {
+					if ( ! $value) {
+						continue;
+					}
 
-				$colNames[] = "[". ($col + 1) .",". ($row + 1) ."]";
+					$colNames[] = "[" . ($col + 1) . "," . ($row + 1) . "," . ($layer + 1) ."]";
+				}
 			}
 		}
 
@@ -246,7 +171,7 @@ abstract class Polyominoes
 	 *
 	 * @return array
 	 */
-	protected function createNodes( ) {
+	public function createNodes( ) {
 		$nodes = array( );
 
 		$beenFixed = ! $this->symmetry;
@@ -282,7 +207,7 @@ abstract class Polyominoes
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
+	public function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
 		$points = $piece[self::PIECE_POINTS];
 		$done = $reflected = false;
 
@@ -339,125 +264,6 @@ abstract class Polyominoes
 	}
 
 	/**
-	 * If the callback returns false, the solutions will not be stored in Grid
-	 *
-	 * @param int $count optional solutions to return (0 to return all)
-	 * @param callable $callback optional function
-	 *
-	 * @return array
-	 */
-	public function solve($count = 0, $callback = null) {
-		$this->grid->search($count, $callback);
-		return $this->getSolutions('cols');
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return array
-	 */
-	public function getSolutions( ) {
-		$solutions = $this->grid->getSolutions('cols');
-
-		foreach ($solutions as & $solution) { // mind the reference
-			sort($solution);
-
-			foreach ($solution as & $path) { // mind the reference
-				sort($path);
-
-				foreach ($path as & $col) { // mind the reference
-					$col = $this->colNames[$col];
-				}
-				unset($col); // kill the reference
-			}
-			unset($path); // kill the reference
-		}
-		unset($solution); // kill the reference
-
-		return $solutions;
-	}
-
-	/**
-	 * Convert a layout given in string format
-	 * to an array that the class can use
-	 *
-	 * @param $string
-	 *
-	 * @throws Exception
-	 * @return array
-	 */
-	public static function layoutToArray($string) {
-		$layout = array( );
-
-		$string = preg_replace('%\r\n?%', "\n", $string);
-		$lines = explode("\n", trim($string));
-
-		// make sure every line begins and ends with a dot ( . )
-		// and find the longest line
-		$len = 0;
-		$dots = true;
-		foreach ($lines as & $line) { // mind the reference
-			$line = trim($line);
-
-			if ('.' !== $line{0}) {
-				$dots = false;
-				break;
-			}
-
-			if ('.' !== $line{strlen($line) - 1}) {
-				$dots = false;
-				break;
-			}
-
-			if (strlen($line) > $len) {
-				$len = strlen($line);
-			}
-		}
-		unset($line); // kill the reference
-
-		$len -= 2; // subtract two because dots
-
-		// make sure the top and bottom lines are all dots
-		if (false !== strpos($lines[0], '*')) {
-			$dots = false;
-		}
-
-		if (false !== strpos($lines[count($lines) - 1], '*')) {
-			$dots = false;
-		}
-
-		if ( ! $dots) {
-			throw new Exception('Layout must be surrounded by dots');
-		}
-
-		foreach ($lines as $idx => $line) {
-			if ((0 === $idx) || ($idx === (count($lines) - 1))) {
-				continue;
-			}
-
-			$row = array_fill(0, $len, 0);
-
-			$n = 0;
-			$chars = str_split($line);
-			foreach ($chars as $jdx => $char) {
-				if ((0 === $jdx) || ($jdx === (count($lines) - 1))) {
-					continue;
-				}
-
-				if ('*' === $char) {
-					$row[$n] = 1;
-				}
-
-				++$n;
-			}
-
-			$layout[] = $row;
-		}
-
-		return $layout;
-	}
-
-	/**
 	 * @param $layout
 	 *
 	 * @return array
@@ -465,13 +271,17 @@ abstract class Polyominoes
 	public static function createTranslationArray($layout) {
 		$n = 0;
 		$translate = array( );
-		foreach ($layout as $y => $row) {
-			$len = count($row);
+		foreach ($layout as $z => $layer) {
+			$width = count($layer);
 
-			foreach ($row as $x => $space) {
-				if (1 === $space) {
-					$translate[($y * $len) + $x] = $n;
-					++$n;
+			foreach ($layer as $y => $row) {
+				$len = count($row);
+
+				foreach ($row as $x => $space) {
+					if (1 === $space) {
+						$translate[$x + ($y * $len) + ($z * ($len * $width))] = $n;
+						++$n;
+					}
 				}
 			}
 		}
@@ -552,87 +362,57 @@ abstract class Polyominoes
 	 * @return void
 	 */
 	public function placePiece($pieceName, $points, & $nodes) {
-		// do some quick validity tests
-		if (count($this->layout) < count($points)) {
+		$boardWidth = count($this->layout[0][0]);
+		$boardHeight = count($this->layout[0]);
+		$boardDepth = count($this->layout);
+
+		$pieceWidth = count($points[0][0]);
+		$pieceHeight = count($points[0]);
+		$pieceDepth = count($points);
+
+		// do some quick fit validity tests
+		if (
+			($boardWidth < $pieceWidth) ||
+			($boardHeight < $pieceHeight) ||
+			($boardDepth < $pieceDepth)
+		) {
+			// the piece is too big to fit
 			// don't fail, just don't place this piece
 			return;
 		}
 
-		if (count($this->layout[0]) < count($points[0])) {
-			// don't fail just don't place this piece
-			return;
-		}
-
-		$boardWidth = count($this->layout[0]);
-		$boardHeight = count($this->layout);
-
-		$pieceWidth = count($points[0]);
-		$pieceHeight = count($points);
-
 		$width = ($boardWidth - $pieceWidth) + 1; // +1 for fence posts
 		$height = ($boardHeight - $pieceHeight) + 1; // +1 for fence posts
+		$depth = ($boardDepth - $pieceDepth) + 1; // +1 for fence posts
 
-		// this is like O(log(n)^inf)... sorry about that :(
+		// this is like O(log(n)^inf*2)... sorry about that :(
 		// but check out those indents...
 		// it's turtles all the way down
-		for ($y = 0; $y < $height; ++$y) {
-			for ($x = 0; $x < $width; ++$x) {
-				$boardNodes = array( );
+		for ($z = 0; $z < $depth; ++$z) {
+			for ($y = 0; $y < $height; ++$y) {
+				for ($x = 0; $x < $width; ++$x) {
+					$boardNodes = array();
 
-				for ($py = 0; $py < $pieceHeight; ++$py) {
-					for ($px = 0; $px < $pieceWidth; ++$px) {
-						if (1 === $points[$py][$px]) {
-							if (0 === $this->layout[$y + $py][$x + $px]) {
-								// the piece doesn't fit here, move along...
-								continue 3;
+					for ($pz = 0; $pz < $pieceDepth; ++$pz) {
+						for ($py = 0; $py < $pieceHeight; ++$py) {
+							for ($px = 0; $px < $pieceWidth; ++$px) {
+								if (1 === $points[$pz][$py][$px]) {
+									if (0 === $this->layout[$z + $pz][$y + $py][$x + $px]) {
+										// the piece doesn't fit here, move along...
+										continue 4;
+									}
+
+									$index = ($x + $px) + (($y + $py) * $boardWidth) + (($z + $pz) * ($boardWidth * $boardHeight));
+									$boardNodes[] = $this->translate[$index];
+								}
 							}
-
-							$boardNodes[] = $this->translate[($x + $px) + (($y + $py) * $boardWidth)];
 						}
 					}
+
+					$nodes[] = $this->createNodeRow($pieceName, $boardNodes);
 				}
-
-				$nodes[] = $this->createNodeRow($pieceName, $boardNodes);
 			}
 		}
-	}
-
-	/**
-	 * @param string $pieceName
-	 * @param array $boardNodes
-	 *
-	 * @return array
-	 */
-	protected function createNodeRow($pieceName, $boardNodes) {
-		$pieceCount = $this->getPieceCount( );
-
-		$index = array_search($pieceName, $this->colNames) - 1;
-
-		$row = array_fill(0, count($this->colNames) - 1, 0);
-		$row[$index] = 1;
-
-		// fill the board nodes
-		foreach ($boardNodes as $node) {
-			$row[$node + $pieceCount] = 1;
-		}
-
-		return $row;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getPieceCount( ) {
-		if (empty($this->pieceCount)) {
-			$this->pieceCount = 0;
-			foreach (static::$PIECES as $piece) {
-				$this->pieceCount += $piece[self::PIECE_COUNT];
-			}
-		}
-
-		return $this->pieceCount;
 	}
 
 	/**
