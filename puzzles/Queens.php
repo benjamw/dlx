@@ -5,6 +5,16 @@ namespace DLX\Puzzles;
 use \DLX\Grid;
 use \Exception;
 
+/**
+ * Class Queens
+ * The n-queens problem is one where you try to fit n queens onto
+ * an n x n chessboard with no queen threatening any other queen
+ *
+ * This class will solve n-queens puzzles
+ *
+ * @see http://en.wikipedia.org/wiki/Eight_queens_puzzle
+ * @package DLX\Puzzles
+ */
 class Queens {
 
 	/**

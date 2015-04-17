@@ -5,6 +5,14 @@ namespace DLX\Puzzles;
 use \DLX\Grid;
 use \Exception;
 
+/**
+ * Class Sudoku
+ *
+ * This class will solve a square sudoku puzzle
+ *
+ * @see http://en.wikipedia.org/wiki/Sudoku
+ * @package DLX\Puzzles
+ */
 class Sudoku {
 
 	/**

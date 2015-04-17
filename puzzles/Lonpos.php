@@ -4,6 +4,15 @@ namespace DLX\Puzzles;
 
 use \Exception;
 
+/**
+ * Class Lonpos
+ * Lonpos puzzles are a distinct set of polyomino puzzles that come in several form factors
+ *
+ * This class solves the flat 2D puzzles of various shapes
+ *
+ * @see http://en.wikipedia.org/wiki/Lonpos
+ * @package DLX\Puzzles
+ */
 class Lonpos extends Polyominoes
 {
 

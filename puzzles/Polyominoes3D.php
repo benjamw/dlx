@@ -5,6 +5,13 @@ namespace DLX\Puzzles;
 use \DLX\Grid;
 use \Exception;
 
+/**
+ * Class Polyominoes3D
+ * An abstract class that can be extended to solve
+ * 3D polyomino puzzles with various shaped pieces and boards
+ *
+ * @package DLX\Puzzles
+ */
 abstract class Polyominoes3D extends Polyominoes
 {
 
@@ -22,7 +29,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 *
 	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
-	 *     points were oriented to put a 1 value in the NW corner
+	 *     points should be oriented to put a 1 value in the BNW corner
 	 *
 	 * @var array
 	 */

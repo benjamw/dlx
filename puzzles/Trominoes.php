@@ -4,6 +4,15 @@ namespace DLX\Puzzles;
 
 use \Exception;
 
+/**
+ * Class Trominoes
+ * Trominoes are an form of polyominoes puzzles with 3 squares
+ *
+ * This class solves the flat 2D trominoes puzzles
+ *
+ * @see http://en.wikipedia.org/wiki/Tromino
+ * @package DLX\Puzzles
+ */
 class Trominoes extends Polyominoes
 {
 
