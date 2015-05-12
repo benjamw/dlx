@@ -221,7 +221,6 @@ abstract class Polyominoes
 	}
 
 	/**
-	/**
 	 * Prevent the solution from containing certain pieces in certain locations
 	 *
 	 * @param $pieces
@@ -254,6 +253,7 @@ abstract class Polyominoes
 		}
 	}
 
+	/**
 	 * Create the col names used to translate the solutions
 	 *
 	 * @param void

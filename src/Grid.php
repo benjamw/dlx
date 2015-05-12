@@ -247,7 +247,6 @@ class Grid {
 	}
 
 	/**
-	/**
 	 * Manually exclude starting rows
 	 *
 	 * @param array $excludedRows array of row indexes (1-index)
@@ -261,6 +260,7 @@ class Grid {
 		}
 	}
 
+	/**
 	 * Find the rows associated with the given $colGroups
 	 *   $colGroups = array(
 	 *       array( [columns in a single row] ),
