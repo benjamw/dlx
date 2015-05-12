@@ -6,7 +6,7 @@ use \Exception;
 
 /**
  * Class Pentominoes
- * Pentominoes are an form of polyominoes puzzles with 5 squares
+ * Pentominoes are a form of polyominoes puzzles with 5 squares
  *
  * This class solves the flat 2D pentominoes puzzles
  *
