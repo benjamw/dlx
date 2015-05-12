@@ -404,6 +404,22 @@ abstract class Polyominoes
 	 */
 	public function getSolutions( ) {
 		$solutions = $this->grid->getSolutions('cols');
+		$solutions = $this->convertSolutions($solutions);
+
+		return $solutions;
+	}
+
+	/**
+	 * Convert the solutions to a human readable format
+	 *
+	 * @param array $solutions
+	 *
+	 * @return array
+	 */
+	public function convertSolutions($solutions) {
+		if (array_key_exists('cols', $solutions)) {
+			$solutions = $solutions['cols'];
+		}
 
 		foreach ($solutions as & $solution) { // mind the reference
 			sort($solution);

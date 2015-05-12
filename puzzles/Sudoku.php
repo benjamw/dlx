@@ -265,6 +265,27 @@ class Sudoku {
 	 */
 	public function getSolutions($format = false) {
 		$solutions = $this->grid->getSolutions('rows');
+		$solutions = $this->convertSolutions($solutions, $format);
+
+		if (1 === count($solutions)) {
+			$solutions = reset($solutions);
+		}
+
+		return $solutions;
+	}
+
+	/**
+	 * Convert the solutions to a human readable format
+	 *
+	 * @param array $solutions
+	 * @param bool $format optionally format the solutions into a grid string
+	 *
+	 * @return array
+	 */
+	public function convertSolutions($solutions, $format = false) {
+		if (array_key_exists('rows', $solutions)) {
+			$solutions = $solutions['rows'];
+		}
 
 		foreach ($solutions as & $solution) { // mind the reference
 			sort($solution);
@@ -285,10 +306,6 @@ class Sudoku {
 			}
 		}
 		unset($solution); // kill the reference
-
-		if (1 === count($solutions)) {
-			$solutions = reset($solutions);
-		}
 
 		return $solutions;
 	}

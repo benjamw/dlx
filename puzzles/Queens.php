@@ -211,14 +211,31 @@ class Queens {
 	 */
 	public function getSolutions( ) {
 		$solutions = $this->grid->getSolutions('rows');
+		$solutions = $this->convertSolutions($solutions);
 
-		foreach ($solutions as & $solution) {
+		return $solutions;
+	}
+
+	/**
+	 * Convert the solutions to a human readable format
+	 *
+	 * @param array $solutions
+	 *
+	 * @return array
+	 */
+	public function convertSolutions($solutions) {
+		if (array_key_exists('rows', $solutions)) {
+			$solutions = $solutions['rows'];
+		}
+
+		foreach ($solutions as & $solution) { // mind the reference
 			sort($solution);
 
 			foreach ($solution as & $path) {
 				$path = $this->rowNames[$path];
 			}
 		}
+		unset($solution); // kill the reference
 
 		return $solutions;
 	}
