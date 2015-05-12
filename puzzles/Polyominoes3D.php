@@ -16,24 +16,9 @@ abstract class Polyominoes3D extends Polyominoes
 {
 
 	/**
-	 * $PIECES array indexes
-	 */
-	const PIECE_COUNT = 0;
-	const PIECE_REFLECT = 1;
-	const PIECE_HORIZ_SYMMETRY = 2;
-	const PIECE_VERT_SYMMETRY = 3;
-	const PIECE_POINTS = 4;
-
-	/**
-	 * To be filled by child classes...
-	 *
-	 * array(count, mirror, horiz. symmetry, vert. symmetry, points array)
-	 *     points are a 2D array of values, 1 = on, 0 = off
-	 *     points should be oriented to put a 1 value in the BNW corner
-	 *
 	 * @var array
 	 */
-	public static $PIECES = array( );
+	protected $usedNodes;
 
 
 	/**
@@ -88,12 +73,12 @@ abstract class Polyominoes3D extends Polyominoes
 	 *
 	 * @param array|int $cols
 	 * @param int $rows
-	 * @param int $layers
+	 * @param int $layers [NOT optional]
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
-	public function createLayout($cols, $rows, $layers) {
+	public function createLayout($cols, $rows, $layers = null) {
 		if (is_array($cols)) {
 			$count = 0;
 
@@ -209,64 +194,33 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @param string $pieceName
 	 * @param array $piece
 	 * @param array $nodes reference
-	 * @param bool $fixed fix this piece in only 2 orientations
+	 * @param bool $fixed fix this piece in only 6 orientations
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
 	public function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
 		$points = $piece[self::PIECE_POINTS];
-		$done = $reflected = false;
 
 		// only pieces with no rotational or reflectional symmetry should be fixed
 		if ($fixed && (4 !== $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT])) {
 			$fixed = false;
 		}
 
-		while ( ! $done) {
-			switch ($piece[self::PIECE_SYMMETRY]) {
-				case 4 : // 90 degree symmetry
-					// rotate the piece 180 degrees and place it
-					$points = self::rotatePiece(180, $points);
+		$this->usedNodes = array( );
+
+		// placePiece will ignore any duplicates that may be generated here
+		for ($i = 0; $i < 2; ++$i) { // it only needs to rotate about Z once, the rest are all duplicates
+			for ($j = 0; $j < 4; ++$j) {
+				for ($k = 0; $k < 4; ++$k) {
 					$this->placePiece($pieceName, $points, $nodes);
+					$points = self::rotateX($points);
+				}
 
-					// and once more, 90 this time
-					$points = self::rotatePiece(90, $points);
-					$this->placePiece($pieceName, $points, $nodes);
-
-					// and rotate it another 90 to get back to start for the fall through
-					$points = self::rotatePiece(90, $points);
-
-					if ($fixed) {
-						break;
-					}
-					// no break
-
-				case 2 : // 180 degree symmetry
-					// rotate the piece 90 degrees and place it
-					$points = self::rotatePiece(90, $points);
-					$this->placePiece($pieceName, $points, $nodes);
-
-					// and rotate it back to start for the fall through
-					$points = self::rotatePiece(-90, $points);
-					// no break
-
-				case 1 : // rotationally symmetric
-					// no break
-				default :
-					// no rotation, just put the piece on the board
-					$this->placePiece($pieceName, $points, $nodes);
-					break;
+				$points = self::rotateY($points);
 			}
 
-			$done = true;
-
-			// if the piece does not have reflection symmetry, reflect the piece and do it all again
-			if ( ! $fixed && ! $reflected && $piece[self::PIECE_REFLECT]) {
-				$points = self::reflectPiece($piece[self::PIECE_POINTS]);
-				$reflected = true;
-				$done = false;
-			}
+			$points = self::rotateZ($points);
 		}
 	}
 
@@ -297,65 +251,81 @@ abstract class Polyominoes3D extends Polyominoes
 	}
 
 	/**
-	 * Rotate the given piece points about the origin
-	 * the given number of degrees (90 = CW)
+	 * Rotate the given points 90 degrees about the X axis
 	 *
-	 * @param int $degrees
 	 * @param array $points
 	 *
-	 * @throws Exception
-	 * @return array points
+	 * @return array
 	 */
-	public static function rotatePiece($degrees, $points) {
-		$points = array_values($points); // keys need to be clean
-		$points = array_map('array_values', $points);
+	public static function rotateX($points) {
+		$pointsX = array( );
+		$cntZ = count($points);
+		$cntY = count($points[0]);
 
-		switch ((int) $degrees) {
-			case -90 :
-				// watch out for magic...
-				$points = call_user_func_array('array_map', array(-1 => null) + array_map('array_reverse', $points));
-				break;
+		// this method is about 25% faster than the following:
+		// $pointsX = call_user_func_array('array_map', array(-1 => null) + array_reverse($points));
 
-			case 0 :
-				// do nothing
-				break;
-
-			case 90 :
-				// watch out for magic...
-				$points = call_user_func_array('array_map', array(-1 => null) + array_reverse($points));
-				break;
-
-			case 180 :
-				$points = array_map('array_reverse', $points);
-				$points = array_reverse($points);
-				break;
-
-			default :
-				throw new Exception('Rotation value ('.$degrees.') not supported.');
-		}
-
-		// make sure it's a 2D array
-		// this really only applies to the horizontal I piece after rotation
-		if ( ! is_array($points[0])) {
-			// this wants so bad to be magical, but a loop will have to do...
-			foreach ($points as & $point) { // mind the reference
-				$point = (array) $point;
+		for ($y = 0; $y < $cntY; ++$y) {
+			for ($z = $cntZ - 1; $z >= 0; --$z) {
+				$pointsX[$y][$cntZ - $z - 1] = $points[$z][$y];
 			}
-			unset($point); // kill the reference
 		}
 
-		return $points;
+		return $pointsX;
 	}
 
 	/**
-	 * Reflect the given piece points
+	 * Rotate the given points 90 degrees about the Y axis
 	 *
 	 * @param array $points
 	 *
-	 * @return array points
+	 * @return array
 	 */
-	public static function reflectPiece($points) {
-		return array_reverse($points);
+	public static function rotateY($points) {
+		$pointsY = array( );
+		$cntZ = count($points);
+		$cntY = count($points[0]);
+		$cntX = count($points[0][0]);
+
+		// because rotateX was significantly faster than the 'array_map' version
+		// one was not even searched for for this method
+
+		for ($x = 0; $x < $cntX; ++$x) {
+			for ($y = 0; $y < $cntY; ++$y) {
+				for ($z = $cntZ - 1; $z >= 0; --$z) {
+					$pointsY[$x][$y][$cntZ - $z - 1] = $points[$z][$y][$x];
+				}
+			}
+		}
+
+		return $pointsY;
+	}
+
+	/**
+	 * Rotate the given points 90 degrees about the Z axis
+	 *
+	 * @param array $points
+	 *
+	 * @return array
+	 */
+	public static function rotateZ($points) {
+		$pointsZ = array( );
+		$cntZ = count($points);
+		$cntY = count($points[0]);
+		$cntX = count($points[0][0]);
+
+		// because rotateX was significantly faster than the 'array_map' version
+		// one was not even searched for for this method
+
+		for ($z = 0; $z < $cntZ; ++$z) {
+			for ($x = 0; $x < $cntX; ++$x) {
+				for ($y = $cntY - 1; $y >= 0; --$y) {
+					$pointsZ[$z][$x][$cntY - $y - 1] = $points[$z][$y][$x];
+				}
+			}
+		}
+
+		return $pointsZ;
 	}
 
 	/**
@@ -369,6 +339,11 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return void
 	 */
 	public function placePiece($pieceName, $points, & $nodes) {
+		// if a 2D piece was submitted, convert to flat 3D
+		if ( ! is_array($points[0][0])) {
+			$points = array($points);
+		}
+
 		$boardWidth = count($this->layout[0][0]);
 		$boardHeight = count($this->layout[0]);
 		$boardDepth = count($this->layout);
@@ -416,10 +391,30 @@ abstract class Polyominoes3D extends Polyominoes
 						}
 					}
 
+					// check for duplicates
+					sort($boardNodes);
+					if (in_array($boardNodes, $this->usedNodes)) {
+						continue;
+					}
+
+					$this->usedNodes[] = $boardNodes;
+
 					$nodes[] = $this->createNodeRow($pieceName, $boardNodes);
 				}
 			}
 		}
+	}
+
+	/**
+	 * Adjust a 3D piece for 2D processing
+	 *
+	 * @param array $piece
+	 *
+	 * @return array
+	 */
+	public function adjustPieceFor2D($piece) {
+		$piece[self::PIECE_POINTS] = $piece[self::PIECE_POINTS][0];
+		return $piece;
 	}
 
 	/**

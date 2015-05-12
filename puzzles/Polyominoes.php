@@ -123,11 +123,12 @@ abstract class Polyominoes
 	 *
 	 * @param string|array|int $cols
 	 * @param int $rows
+	 * @param null $layers [not used]
 	 *
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function createLayout($cols, $rows) {
+	protected function createLayout($cols, $rows, $layers = null) {
 		if (is_string($cols)) {
 			$this->layout = self::layoutToArray($cols);
 		}
@@ -520,6 +521,7 @@ abstract class Polyominoes
 				$points = call_user_func_array('array_map', array(-1 => null) + array_reverse($points));
 				break;
 
+			case -180 : // no break
 			case 180 :
 				$points = array_map('array_reverse', $points);
 				$points = array_reverse($points);
@@ -532,7 +534,6 @@ abstract class Polyominoes
 		// make sure it's a 2D array
 		// this really only applies to the horizontal I piece after rotation
 		if ( ! is_array($points[0])) {
-			// this wants so bad to be magical, but a loop will have to do...
 			foreach ($points as & $point) { // mind the reference
 				$point = (array) $point;
 			}
