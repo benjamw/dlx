@@ -237,9 +237,46 @@ class Grid {
 			$selectedCols = array($selectedCols);
 		}
 
+		try {
+			$rows = $this->findRows($selectedCols);
+			$this->selectRows($rows);
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
+	}
+
+	/**
+	/**
+	 * Manually exclude starting rows
+	 *
+	 * @param array $excludedRows array of row indexes (1-index)
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function excludeRows($excludedRows) {
+		foreach ($excludedRows as $excludedRow) {
+			$this->coverRow($excludedRow);
+		}
+	}
+
+	 * Find the rows associated with the given $colGroups
+	 *   $colGroups = array(
+	 *       array( [columns in a single row] ),
+	 *       array( [other columns in a single row] ),
+	 *       ...
+	 *   );
+	 *
+	 * @param array $colGroups
+	 *
+	 * @throws Exception
+	 * @return array row indexes
+	 */
+	public function findRows($colGroups) {
 		$rows = array( );
 
-		foreach ($selectedCols as $cols) {
+		foreach ($colGroups as $cols) {
 			$colRows = array_combine($cols, array_fill(0, count($cols), array( )));
 
 			// find the rows these columns share
@@ -272,7 +309,7 @@ class Grid {
 			$rows[] = reset($intersect);
 		}
 
-		$this->selectRows($rows);
+		return $rows;
 	}
 
 	/**

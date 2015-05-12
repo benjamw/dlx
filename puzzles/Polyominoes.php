@@ -221,6 +221,39 @@ abstract class Polyominoes
 	}
 
 	/**
+	/**
+	 * Prevent the solution from containing certain pieces in certain locations
+	 *
+	 * @param $pieces
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function exclude($pieces) {
+		if (1 !== func_num_args( )) {
+			$pieces = func_get_args( );
+		}
+
+		if ( ! array_key_exists(0, $pieces)) {
+			$pieces = array($pieces);
+		}
+
+		// convert pieces to cols
+		$cols = array( );
+		foreach ($pieces as $idx => $piece) {
+			foreach ($piece as $col) {
+				$cols[$idx][] = array_search($col, $this->colNames);
+			}
+		}
+
+		try {
+			$this->grid->excludeCols($cols);
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
+	}
+
 	 * Create the col names used to translate the solutions
 	 *
 	 * @param void

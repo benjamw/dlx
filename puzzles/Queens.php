@@ -161,6 +161,37 @@ class Queens {
 	}
 
 	/**
+	 * Manually exclude queens
+	 *
+	 * @param array|string $pieces array of board locations (A2, B4, etc.)
+	 *
+	 * @throws Exception
+	 * @return void
+	 */
+	public function exclude($pieces) {
+		if (1 !== func_num_args( )) {
+			$pieces = func_get_args( );
+		}
+
+		if ( ! is_array($pieces)) {
+			$pieces = array($pieces);
+		}
+
+		// convert pieces to rows
+		$rows = array( );
+		foreach ($pieces as $piece) {
+			$rows[] = array_search($piece, $this->rowNames);
+		}
+
+		try {
+			$this->grid->excludeRows($rows);
+		}
+		catch (Exception $e) {
+			throw $e;
+		}
+	}
+
+	/**
 	 * If the callback returns false, the solutions will not be stored in Grid
 	 *
 	 * @param int $count optional solutions to return (0 to return all)
