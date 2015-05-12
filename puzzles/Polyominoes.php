@@ -376,7 +376,7 @@ abstract class Polyominoes
 			$done = true;
 
 			// if the piece does not have reflection symmetry, reflect the piece and do it all again
-			if ( ! $fixed && ! $reflected && $piece[self::PIECE_REFLECT]) {
+			if ( ! $reflected && ! $fixed && $piece[self::PIECE_REFLECT]) {
 				$points = self::reflectPiece($piece[self::PIECE_POINTS]);
 				$reflected = true;
 				$done = false;
