@@ -394,7 +394,7 @@ abstract class Polyominoes
 	 */
 	public function solve($count = 0, $callback = null) {
 		$this->grid->search($count, $callback);
-		return $this->getSolutions('cols');
+		return $this->getSolutions( );
 	}
 
 	/**
