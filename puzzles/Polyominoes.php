@@ -728,7 +728,7 @@ abstract class Polyominoes
 
 						// and rotate it another 90 to get back to start for the fall through
 						$points = self::rotatePiece(90, $points);
-					// no break
+						// no break
 
 					case 2 : // 180 degree symmetry
 						// rotate the piece 90 degrees and place it
@@ -737,7 +737,7 @@ abstract class Polyominoes
 
 						// and rotate it back to start for the fall through
 						$points = self::rotatePiece(-90, $points);
-					// no break
+						// no break
 
 					case 1 : // rotationally symmetric
 						// no break

@@ -9,7 +9,7 @@ use \Exception;
  * Lonpos puzzles are a distinct set of polyomino puzzles that come in several form factors
  *
  * This class solves the 5x5 3D pyramid puzzle on the back of most containers with the orthogonally linked smooth balls
- * This is NOT the pyramid created with the linked cubes, or the isometrically linked dodecahedrons
+ * This is NOT the pyramid created with the linked cubes, or the isometrically linked icosahedrons
  *
  * @see http://en.wikipedia.org/wiki/Lonpos
  * @package DLX\Puzzles
@@ -19,8 +19,8 @@ class LonposPyramid extends Polyominoes3D
 
 	/**
 	 * array(count, mirror, symmetry, points array)
-	 *     points are a 2D array of values, 1 = on, 0 = off
-	 *     points were oriented to put a 1 value in the NW corner
+	 *     points are a 3D array of values, 1 = on, 0 = off
+	 *     points were oriented to put a 1 value in the BNW corner
 	 *
 	 * @var array
 	 */

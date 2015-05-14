@@ -1,12 +1,12 @@
 <?php
 
 // call these by using
-// $> vendor\bin\phpunit --coverage-html .\report tests\PentominoStaticTest.php
+// $> vendor/bin/phpunit --coverage-html .\report tests\PentominoStaticTest.php
 // or
-// $> vendor\bin\phpunit UnitTest tests\PentominoStaticTest.php
+// $> vendor/bin/phpunit UnitTest tests\PentominoStaticTest.php
 // from the DLX directory
 
-use DLX\Puzzles\Pentominoes;
+use \DLX\Puzzles\Pentominoes;
 
 class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 

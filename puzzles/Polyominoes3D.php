@@ -22,7 +22,7 @@ abstract class Polyominoes3D extends Polyominoes
 
 
 	/**
-	 * A custom layout can be passed as a 2D array into the first argument
+	 * A custom layout can be passed as a 3D array into the first argument
 	 *
 	 * @param string|array|int $cols optional
 	 * @param int $rows optional
@@ -406,7 +406,9 @@ abstract class Polyominoes3D extends Polyominoes
 	}
 
 	/**
-	 * Adjust a 3D piece for 2D processing
+	 * Adjust a flat 3D piece for 2D processing
+	 * NOTE: the piece must be flat and in the 0 index plane
+	 * or this function will remove part of the piece
 	 *
 	 * @param array $piece
 	 *
@@ -446,7 +448,7 @@ abstract class Polyominoes3D extends Polyominoes
 
 						// and rotate it another 90 to get back to start for the fall through
 						$points = self::rotatePiece(90, $points);
-					// no break
+						// no break
 
 					case 2 : // 180 degree symmetry
 						// rotate the piece 90 degrees and place it
@@ -455,7 +457,7 @@ abstract class Polyominoes3D extends Polyominoes
 
 						// and rotate it back to start for the fall through
 						$points = self::rotatePiece(-90, $points);
-					// no break
+						// no break
 
 					case 1 : // rotationally symmetric
 						// no break
