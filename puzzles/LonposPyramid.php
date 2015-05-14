@@ -855,13 +855,26 @@ class LonposPyramid extends Polyominoes3D
 		// but $fixed gets set by the calling function, so override with $this->symmetry
 
 		// the flat rotations
-		for ($i = 0; $i < 4; ++$i) {
-			$points = self::rotateZ($points);
-			$this->placePiece($pieceName, $points, $nodes);
+		$done = $reflected = false;
+		while ( ! $done) {
+			for ($i = 0; $i < 4; ++$i) {
+				$points = self::rotateZ($points);
+				$this->placePiece($pieceName, $points, $nodes);
 
-			// only use one rotation for the E piece to fix the solution set
-			if ($this->symmetry && ('E' === $pieceName)) {
-				break;
+				// only use one rotation and no reflection for the E piece to fix the solution set
+				if ($this->symmetry && ('E' === $pieceName)) {
+					break 2;
+				}
+			}
+
+			$done = true;
+
+			// if the piece does not have reflection symmetry, reflect the piece and do it all again
+			if ( ! $reflected && $piece[self::PIECE_REFLECT]) {
+				$points = self::reflectPiece($piece[self::PIECE_POINTS][0]);
+				$points = array($points);
+				$reflected = true;
+				$done = false;
 			}
 		}
 
