@@ -48,6 +48,26 @@ class LonposPyramid extends Polyominoes3D
 	public static $ROTATIONS = array(
 		'A' => array(
 			array(
+				array(array(1, 0), array(0, 0)),
+				array(array(1, 0), array(0, 1)),
+				array(array(1, 0), array(0, 0)),
+			),
+			array(
+				array(array(0, 0, 1), array(0, 0, 0)),
+				array(array(0, 1, 0), array(1, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
+				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 0), array(1, 0)),
+				array(array(0, 1), array(1, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0), array(0, 0)),
+			),
+			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0)),
@@ -72,11 +92,6 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0), array(0, 0), array(0, 0)),
 			),
 			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0)),
-			),
-			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
@@ -90,6 +105,11 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 1), array(1, 0)),
+				array(array(0, 1), array(0, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
@@ -114,30 +134,30 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0), array(0, 1), array(0, 0)),
 				array(array(0, 1), array(0, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 1), array(0, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
 			),
 		),
 		'B' => array(
 			array(
+				array(array(1, 0), array(0, 1)),
+				array(array(1, 0), array(0, 1)),
+				array(array(1, 0), array(0, 0)),
+			),
+			array(
+				array(array(0, 0, 1), array(0, 1, 0)),
+				array(array(0, 1, 0), array(1, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
+				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 1), array(1, 0)),
+				array(array(0, 1), array(1, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0), array(0, 0)),
+			),
+			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 1)),
 				array(array(1, 0), array(0, 0)),
@@ -150,8 +170,8 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0, 0), array(0, 0, 0)),
 			),
 			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
+				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
@@ -160,11 +180,6 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0), array(0, 1), array(1, 0)),
 				array(array(0, 0), array(1, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
@@ -180,6 +195,11 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
 				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 1), array(1, 0)),
+				array(array(0, 1), array(1, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
@@ -205,28 +225,32 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 1), array(1, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0), array(0, 0)),
 			),
+		),
+		'C' => array(
 			array(
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(1, 0), array(0, 1)),
+				array(array(1, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0)),
 				array(array(1, 0), array(0, 1)),
 				array(array(1, 0), array(0, 0)),
 			),
-		),
-		'C' => array(
+			array(
+				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
+				array(array(0, 0, 1, 0), array(0, 0, 0, 0)),
+				array(array(0, 1, 0, 0), array(1, 0, 0, 0)),
+				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
+				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
+				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
+				array(array(0, 0), array(0, 0), array(1, 0), array(0, 0)),
+				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
+			),
 			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 0)),
@@ -256,12 +280,6 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
 			),
 			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
@@ -280,7 +298,12 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
 			),
 			array(
-				array(array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 0), array(0, 1), array(1, 0)),
+				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
+				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
+			),
+			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
@@ -307,30 +330,6 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
 				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(1, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(1, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
 			),
 		),
 		'D' => array(
@@ -359,28 +358,28 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
 			),
 			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
+				array(array(1, 0), array(0, 0)),
 				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
+				array(array(1, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0)),
 			),
 			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
+				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
 				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
+				array(array(0, 1, 0, 0), array(0, 0, 0, 0)),
+				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
 			),
 			array(
 				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
 				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
+				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
 				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+			),
+			array(
+				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
+				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
+				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
+				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
@@ -407,28 +406,28 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
 			),
 			array(
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+				array(array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 1)),
+				array(array(1, 0), array(0, 1)),
+				array(array(0, 0), array(0, 1)),
 			),
 			array(
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
+				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
+				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
+				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
 			),
 			array(
 				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
+				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
 				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
 				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
 			),
 			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(1, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(1, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
+				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
+				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
+				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
+				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
 			),
 		),
 		'E' => array(
@@ -559,7 +558,7 @@ class LonposPyramid extends Polyominoes3D
 			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(1, 0)),
+				array(array(1, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
@@ -606,8 +605,8 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 1, 0)),
-				array(array(0, 0, 0), array(0, 0, 0), array(1, 0, 0)),
+				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
 			array(
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
@@ -619,6 +618,14 @@ class LonposPyramid extends Polyominoes3D
 		),
 		'H' => array(
 			array(
+				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 1)),
+				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
+				array(array(0, 1, 0), array(1, 0, 0), array(0, 0, 0)),
+			),
+			array(
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
 				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 1)),
 			),
@@ -627,32 +634,10 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
 			),
 			array(
-				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-			),
-			array(
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 1), array(0, 0, 0)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(0, 1, 0), array(0, 0, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
 			array(
@@ -660,6 +645,20 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 1, 0)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
 				array(array(0, 0, 0), array(1, 0, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
+				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
+			),
+			array(
+				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
+				array(array(0, 0, 0), array(0, 0, 1), array(0, 0, 0)),
+				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
+				array(array(0, 1, 0), array(0, 0, 0), array(0, 0, 0)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
 		),
@@ -743,12 +742,12 @@ class LonposPyramid extends Polyominoes3D
 			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0))
+				array(array(1, 0), array(0, 0)),
 			),
 			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(0, 1), array(1, 0)),
-				array(array(1, 0), array(0, 0))
+				array(array(1, 0), array(0, 0)),
 			),
 		),
 		'L' => array(
