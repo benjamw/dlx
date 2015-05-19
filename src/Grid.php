@@ -303,7 +303,44 @@ class Grid {
 				throw new Exception('Given columns do not share a common row');
 			}
 			elseif (1 < count($intersect)) {
-				throw new Exception('Given columns share more than one common row');
+				// find the row that contains exactly the columns given and no more
+
+				// start looking in the columns
+				sort($cols);
+				$first = reset($cols);
+				$right = $this->h->right;
+				while ($right !== $this->h) {
+					if ($first === $right->col) {
+						// find the first row
+						$down = $right->down;
+						while ($down !== $right) {
+							if (in_array($down->row, $intersect)) {
+								// start searching this row
+								$thisCols = array($down->column->col);
+								$rowRight = $down->right;
+								while ($rowRight !== $down) {
+									$thisCols[] = $rowRight->column->col;
+									$rowRight = $rowRight->right;
+								}
+
+								if (array_diff($thisCols, $cols)) {
+									unset($intersect[array_search($down->row, $intersect)]);
+								}
+							}
+
+							$down = $down->down;
+						}
+					}
+
+					$right = $right->right;
+				}
+
+				if (0 > count($intersect)) {
+					throw new Exception('Given columns do not share a distinct common row');
+				}
+				elseif (1 < count($intersect)) {
+					throw new Exception('Given columns share more that one common row');
+				}
 			}
 
 			$rows[] = reset($intersect);
