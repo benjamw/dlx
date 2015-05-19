@@ -47,6 +47,10 @@ abstract class Polyominoes3D extends Polyominoes
 			$layers = 0;
 		}
 
+		if (is_bool($layers)) {
+			$symmetry = $layers;
+		}
+
 		$this->symmetry = $symmetry;
 
 		try {
