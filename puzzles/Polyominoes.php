@@ -404,7 +404,10 @@ abstract class Polyominoes
 	 */
 	public function getSolutions( ) {
 		$solutions = $this->grid->getSolutions('cols');
-		$solutions = $this->convertSolutions($solutions);
+
+		if ($solutions) {
+			$solutions = $this->convertSolutions($solutions);
+		}
 
 		return $solutions;
 	}
@@ -419,6 +422,10 @@ abstract class Polyominoes
 	public function convertSolutions($solutions) {
 		if (array_key_exists('cols', $solutions)) {
 			$solutions = $solutions['cols'];
+		}
+
+		if ( ! is_array($solutions[0][0])) {
+			$solutions = array($solutions);
 		}
 
 		foreach ($solutions as & $solution) { // mind the reference
