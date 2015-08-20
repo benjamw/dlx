@@ -451,6 +451,8 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
 				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
 			),
+			// there are no solutions with these orientations (upward, 5 high, with smaller section on top)
+			/*
 			array(
 				array(array(0, 0), array(0, 1)),
 				array(array(0, 0), array(0, 1)),
@@ -479,6 +481,7 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
 				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
 			),
+			//*/
 			array(
 				array(array(1, 0), array(0, 1)),
 				array(array(1, 0), array(0, 1)),
@@ -587,6 +590,8 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 1), array(0, 1, 0)),
 				array(array(0, 0, 1), array(0, 0, 0), array(1, 0, 0)),
 			),
+			// there are no solutions with this piece pointing upwards
+			/*
 			array(
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
@@ -615,6 +620,7 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 1, 0), array(0, 0, 0), array(0, 0, 0)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
+			//*/
 		),
 		'H' => array(
 			array(
@@ -633,6 +639,8 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 0, 0), array(0, 0, 1), array(0, 1, 0)),
 				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
 			),
+			// there are no solutions with this piece pointing upwards
+			/*
 			array(
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
 				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
@@ -661,6 +669,7 @@ class LonposPyramid extends Polyominoes3D
 				array(array(0, 1, 0), array(0, 0, 0), array(0, 0, 0)),
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
+			//*/
 		),
 		'I' => array(
 			array(
