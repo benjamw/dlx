@@ -19,7 +19,7 @@ class Lonpos extends Polyominoes
 	/**
 	 * array(count, mirror, symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
-	 *     points were oriented to put a 1 value in the NW corner
+	 *     points were oriented to put a 1 value in the NW corner (where possible)
 	 *
 	 * @var array
 	 */

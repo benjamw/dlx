@@ -20,6 +20,11 @@ abstract class Polyominoes3D extends Polyominoes
 	 */
 	protected $usedNodes;
 
+	/**
+	 * @var bool
+	 */
+	protected $isCube = false;
+
 
 	/**
 	 * A custom layout can be passed as a 3D array into the first argument
@@ -85,14 +90,23 @@ abstract class Polyominoes3D extends Polyominoes
 	public function createLayout($cols, $rows, $layers = null) {
 		if (is_array($cols)) {
 			$count = 0;
+			$hasHoles = false;
 
 			// this is a simple dimensions test
 			// this does not take into account the checkerboard validity of the layout
+			$one = count($cols);
 			foreach ($cols as $layer) {
+				$two = count($layer);
+
 				foreach ($layer as $col) {
+					$three = count($col);
+
 					foreach ($col as $node) {
 						if (1 === $node) {
 							++$count;
+						}
+						else {
+							$hasHoles = true;
 						}
 					}
 				}
@@ -103,6 +117,7 @@ abstract class Polyominoes3D extends Polyominoes
 			}
 
 			$this->layout = $cols;
+			$this->isCube = ! $hasHoles && ($one === $two) && ($one === $three);
 		}
 		else {
 			$this->layout = array( );
@@ -118,6 +133,8 @@ abstract class Polyominoes3D extends Polyominoes
 					$this->layout[$j][] = array_fill(0, $cols, 1);
 				}
 			}
+
+			$this->isCube = ($cols === $rows) && ($cols === $layers);
 		}
 
 		// because the layout may have holes in it, or other odd shapes,
@@ -172,15 +189,17 @@ abstract class Polyominoes3D extends Polyominoes
 
 		$beenFixed = ! $this->symmetry;
 
+// TODO: find a way to abstract out the "fixed" method so it can be overridden by child classes
+// and create that inside the foreach loop here
 		foreach (static::$PIECES as $pieceName => $piece) {
 			if (1 === $piece[self::PIECE_COUNT]) {
-				$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+				$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (true === $piece[self::PIECE_REFLECT]));
 				$beenFixed = $beenFixed || $fixed;
 				$this->createPieceNodes($pieceName, $piece, $nodes, $fixed);
 			}
 			else {
 				for ($i = 1; $i <= $piece[self::PIECE_COUNT]; ++$i) {
-					$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+					$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (true === $piece[self::PIECE_REFLECT]));
 					$beenFixed = $beenFixed || $fixed;
 					$this->createPieceNodes($pieceName.'('.$i.')', $piece, $nodes, $fixed);
 				}
@@ -214,17 +233,39 @@ abstract class Polyominoes3D extends Polyominoes
 		$this->usedNodes = array( );
 
 		// placePiece will ignore any duplicates that may be generated here
+		$placed = false; // prevent duplicates via symmetry and rotation
 		for ($i = 0; $i < 2; ++$i) { // it only needs to rotate about Z once, the rest are all duplicates
 			for ($j = 0; $j < 4; ++$j) {
 				for ($k = 0; $k < 4; ++$k) {
+					if ($placed) {
+						break;
+					}
+
 					$this->placePiece($pieceName, $points, $nodes);
 					$points = self::rotateX($points);
+
+					if ($fixed) {
+					    if ($this->isCube) {
+						    break 3; // stop everything, we only need to place this piece once
+						}
+
+						$placed = true;
+						break; // stop this round to place this piece 3 times, once for each axis
+					}
 				}
 
 				$points = self::rotateY($points);
+
+				if ($fixed) {
+				    break; // stop this round to place this piece 3 times, once for each axis
+				}
 			}
 
 			$points = self::rotateZ($points);
+
+			if ($fixed) {
+			    break; // stop this round to place this piece 3 times, once for each axis
+			}
 		}
 	}
 

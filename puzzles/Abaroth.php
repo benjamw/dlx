@@ -23,10 +23,10 @@ class Abaroth extends Polyominoes3D
 	 */
 	public static $PIECES = array(
 		'O' => array(1, false, 1, array(array(array(1, 1), array(1, 1)))), // yellow
-		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0), array(0, 1, 0)))), // red
-		'W' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1)))), // orange
 		'Q' => array(1,  true, 4, array(array(array(1, 1), array(1, 0)), array(array(0, 1), array(0, 0)))), // // pink/purple
 		'Y' => array(1, false, 4, array(array(array(1, 1), array(1, 0)), array(array(1, 0), array(0, 0)))), // blue
+		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0), array(0, 1, 0)))), // red
+		'W' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1)))), // orange
 		'Z' => array(1,  true, 4, array(array(array(1, 1, 1), array(0, 0, 1)), array(array(1, 0, 0), array(0, 0, 0)))), // green
 	);
 

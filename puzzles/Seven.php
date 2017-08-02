@@ -38,15 +38,15 @@ class Seven extends Polyominoes3D
 
 
 	/**
-	 * @param void
+	 * @param bool $symmetry exclude symmetrical solutions
 	 *
 	 * @throws Exception
-	 * @return Abaroth
+	 * @return Seven
 	 */
-	public function __construct( ) {
+	public function __construct($symmetry = true) {
 		// this puzzle is always a 3x3x3 cube
 		try {
-			parent::__construct(3, 3, 3, true);
+			parent::__construct(3, 3, 3, $symmetry);
 		}
 		catch (Exception $e) {
 			throw $e;

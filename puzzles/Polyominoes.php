@@ -30,6 +30,12 @@ abstract class Polyominoes
 	 * array(count, mirror, symmetry, points array)
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points should be oriented to put a 1 value in the NW corner
+	 *     (
+	 *       count -> the count of pieces in this puzzle of this shape
+	 *       mirror -> should a mirror reflection be performed, this is false if the piece is it's own reflection
+	 *       symmetry -> how many rotations before coming back to self
+	 *       points -> points array
+	 *     )
 	 *
 	 * @var array
 	 */
@@ -299,13 +305,13 @@ abstract class Polyominoes
 
 		foreach (static::$PIECES as $pieceName => $piece) {
 			if (1 === $piece[self::PIECE_COUNT]) {
-				$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+				$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (true === $piece[self::PIECE_REFLECT]));
 				$beenFixed = $beenFixed || $fixed;
 				$this->createPieceNodes($pieceName, $piece, $nodes, $fixed);
 			}
 			else {
 				for ($i = 1; $i <= $piece[self::PIECE_COUNT]; ++$i) {
-					$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (false === $piece[self::PIECE_REFLECT]));
+					$fixed = ( ! $beenFixed && (4 === $piece[self::PIECE_SYMMETRY]) && (true === $piece[self::PIECE_REFLECT]));
 					$beenFixed = $beenFixed || $fixed;
 					$this->createPieceNodes($pieceName.'('.$i.')', $piece, $nodes, $fixed);
 				}
@@ -565,6 +571,8 @@ abstract class Polyominoes
 		switch ((int) $degrees) {
 			case -90 :
 				// watch out for magic...
+// TODO: the magic here is unnecessary, as the for loop method is faster
+// but do a test and make sure
 				$points = call_user_func_array('array_map', array(-1 => null) + array_map('array_reverse', $points));
 				break;
 
@@ -579,6 +587,7 @@ abstract class Polyominoes
 
 			case -180 : // no break
 			case 180 :
+// TODO: check and see if a for loop is faster for this particular rotation
 				$points = array_map('array_reverse', $points);
 				$points = array_reverse($points);
 				break;

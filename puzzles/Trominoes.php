@@ -6,7 +6,7 @@ use \Exception;
 
 /**
  * Class Trominoes
- * Trominoes are an form of polyominoes puzzles with 3 squares
+ * Trominoes are a form of polyominoes puzzles with 3 squares
  *
  * This class solves the flat 2D trominoes puzzles
  *
