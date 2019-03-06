@@ -560,4 +560,222 @@ abstract class Polyominoes3D extends Polyominoes
 		echo '</tbody></table>';
 	}
 
+	/**
+	 * Convert a batch of machine readable solutions
+	 * into a more human readable format
+	 *
+	 * @param array $solutions
+	 *
+	 * @return array converted
+	 */
+	public static function convert_solutions($solutions) {
+		$return = array( );
+
+		if (empty($solutions)) {
+			return $return;
+		}
+
+		$solution_dims = self::solution_dims($solutions[0]);
+
+		foreach ($solutions as $solution) {
+			$return[] = self::convert_solution($solution);
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Convert a single machine readable solution
+	 * into a more human readable format
+	 *
+	 * @param array $solution
+	 *
+	 * @return array converted
+	 */
+	public static function convert_solution($solution) {
+		$return = array( );
+
+		foreach ($solution as $piece) {
+			$char = array_shift($piece);
+
+			foreach ($piece as $point) {
+				$p = explode(',', trim($point, "[] \t\n\r\0\x0B"));
+				$p = array_map(function($v) { return $v - 1; }, $p);
+
+				if (empty($return[$p[0]])) {
+					$return[$p[0]] = array( );
+					ksort($return);
+				}
+
+				if (empty($return[$p[0]][$p[1]])) {
+					$return[$p[0]][$p[1]] = array( );
+					ksort($return[$p[0]]);
+				}
+
+				$return[$p[0]][$p[1]][$p[2]] = $char;
+				ksort($return[$p[0]][$p[1]]);
+			}
+		}
+
+		return $return;
+	}
+
+	/**
+	 * Calculate the dimensions of the given solution
+	 *
+	 * @param array $solution
+	 *
+	 * @return array dimensions array (x, y, z)
+	 */
+	public static function solution_dims($solution) {
+		$solution_dims = array(0, 0, 0);
+
+		foreach ($solution as $piece) {
+			$char = array_shift($piece);
+
+			foreach ($piece as $point) {
+				$p = explode(',', trim($point, "[] \t\n\r\0\x0B"));
+				$p = array_map(function($v) { return $v - 1; }, $p);
+
+				for ($n = 0; $n < 3; $n += 1) {
+					if ($p[$n] - 1 > $solution_dims[$n]) {
+						$solution_dims[$n] = $p[$n] - 1;
+					}
+				}
+			}
+		}
+
+		arsort($solution_dims);
+		$solution_dims = array_keys($solution_dims);
+
+		return $solution_dims;
+	}
+
+	/**
+	 * Calculate the dimensions of the given converted solution
+	 *
+	 * @param array $convert
+	 *
+	 * @return array dimensions array (x, y, z)
+	 */
+	public static function converted_dims($convert) {
+		// $cols[$z][$y][$x] => (x, y, z)
+		$x = count($convert[0][0]);
+		$y = count($convert[0]);
+		$z = count($convert);
+
+		return [$x, $y, $z];
+	}
+
+	/**
+	 * Return all solutions in an easy to read format
+	 *
+	 * @param array $solutions
+	 *
+	 * @return string output
+	 */
+	public static function print_solutions($solutions) {
+		$converted = self::convert_solutions($solutions);
+		$out = '';
+
+		if (empty($out)) {
+			return '';
+		}
+
+		$dims = self::converted_dims($converted[0]);
+		// a space for every piece in the row, sans fence post, for every layer, with 3 spaces between each layer, sans fence post
+		$bar_length = (((($dims[0] * 2) - 1) * $dims[2]) + (3 * ($dims[2] - 1)));
+		$bar = str_repeat('-', $bar_length);
+
+		foreach ($converted as $convert) {
+			$out .= self::print_solution($convert) . "{$bar}\n";
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Return a single converted solution in an easy to read format
+	 *
+	 * @param array $convert
+	 *
+	 * @return string output
+	 */
+	public static function print_solution($convert) {
+		$out = '';
+
+		// TODO: rotate the array so that the long side is along x and the short side is along z
+		// (long, med, short)
+		// see rotateX, rotateY, and rotateZ functions above
+
+		foreach ($convert as $level2) {
+			foreach ($level2 as $level3) {
+				$out .= implode(' ', $level3) . '   ';
+			}
+
+			$out = trim($out) . "\n";
+		}
+
+		return $out;
+	}
+
+	/**
+	 * Find similar solutions?
+	 *
+	 * @param array $solutions
+	 *
+	 * @return array same solutions indexes in the $solutions array
+	 */
+	public static function find_similar($solutions) {
+		$same = array( );
+
+		// start comparing and find out which ones are similar
+		$solutions = self::convert_solutions($solutions);
+
+		for ($idx = 0, $len = count($solutions); $idx < $len; ++$idx) {
+			$test = $solutions[$idx];
+
+			for ($i = 0; $i < 2; ++$i) { // it only needs to rotate about Z once, the rest are all duplicates
+				for ($j = 0; $j < 4; ++$j) {
+					for ($k = 0; $k < 4; ++$k) {
+						$test_string = self::implode3d($test);
+
+						for ($idx2 = $idx + 1; $idx2 < $len; ++$idx2) {
+							$compare = self::implode3d($solutions[$idx2]);
+						}
+
+						if ($test_string === $compare) {
+							$same[] = array($idx, $idx2);
+						}
+
+						$test = self::rotateX($test);
+					}
+
+					$test = self::rotateY($test);
+				}
+
+				$test = self::rotateZ($test);
+			}
+		}
+
+		return $same;
+	}
+
+	/**
+	 * Implode a 3D array to a single string
+	 *
+	 * @param array
+	 *
+	 * @return string
+	 */
+	function implode3d($array) {
+		foreach ($array as $key => $val) {
+			if (is_array($val)) {
+				$array[$key] = implode3d($val);
+			}
+		}
+
+		return implode('', $array);
+	}
+
 }
