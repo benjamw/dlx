@@ -25,10 +25,8 @@ class ColumnNode extends Node {
 
 
 	/**
-	 * @param int $col
+	 * @param int  $col
 	 * @param bool $secondary
-	 *
-	 * @return ColumnNode
 	 */
 	public function __construct($col, $secondary = false) {
 		parent::__construct(0, $this);

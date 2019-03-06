@@ -64,11 +64,10 @@ class Grid {
 	 * secondary columns should always be last
 	 *
 	 * @param array|string $nodes
-	 * @param int $columns the grid column count
-	 * @param int $secondary the secondary column count
+	 * @param int          $columns   the grid column count
+	 * @param int          $secondary the secondary column count
 	 *
 	 * @throws Exception
-	 * @return Grid
 	 */
 	public function __construct($nodes, $columns, $secondary = 0) {
 		$this->h = new ColumnNode(0);
@@ -256,6 +255,7 @@ class Grid {
 	 */
 	public function excludeRows($excludedRows) {
 		foreach ($excludedRows as $excludedRow) {
+			// TODO: build this
 			$this->coverRow($excludedRow);
 		}
 	}

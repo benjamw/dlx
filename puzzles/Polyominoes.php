@@ -33,7 +33,7 @@ abstract class Polyominoes
 	 *     (
 	 *       count -> the count of pieces in this puzzle of this shape
 	 *       mirror -> should a mirror reflection be performed, this is false if the piece is it's own reflection
-	 *       symmetry -> how many rotations before coming back to self
+	 *       symmetry -> how many rotations before coming back to self (4, 2, or 1)
 	 *       points -> points array
 	 *     )
 	 *
@@ -296,6 +296,7 @@ abstract class Polyominoes
 	/**
 	 * @param void
 	 *
+	 * @throws Exception
 	 * @return array
 	 */
 	protected function createNodes( ) {
@@ -345,7 +346,7 @@ abstract class Polyominoes
 
 		while ( ! $done) {
 			switch ($piece[self::PIECE_SYMMETRY]) {
-				case 4 : // 90 degree symmetry
+				case 4 : // no symmetry (360 degree symmetry)
 					// rotate the piece 180 degrees and place it
 					$points = self::rotatePiece(180, $points);
 					$this->placePiece($pieceName, $points, $nodes);
@@ -371,8 +372,9 @@ abstract class Polyominoes
 					$points = self::rotatePiece(-90, $points);
 					// no break
 
-				case 1 : // rotationally symmetric
+				case 1 : // 90 degree symmetry (rotationally symmetric)
 					// no break
+
 				default :
 					// no rotation, just put the piece on the board
 					$this->placePiece($pieceName, $points, $nodes);
@@ -733,7 +735,7 @@ abstract class Polyominoes
 
 			while ( ! $done) {
 				switch ($piece[self::PIECE_SYMMETRY]) {
-					case 4 : // 90 degree symmetry
+					case 4 : // no symmetry (360 degree symmetry)
 						// rotate the piece 180 degrees and place it
 						$points = self::rotatePiece(180, $points);
 						self::printPiece($points);
@@ -755,11 +757,13 @@ abstract class Polyominoes
 						$points = self::rotatePiece(-90, $points);
 						// no break
 
-					case 1 : // rotationally symmetric
+					case 1 : // 90 degree symmetry (rotationally symmetric)
 						// no break
+
 					default :
 						// no rotation, just put the piece on the board
 						self::printPiece($points);
+						break;
 				}
 
 				$done = true;

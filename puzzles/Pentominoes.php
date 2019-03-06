@@ -26,6 +26,7 @@ class Pentominoes extends Polyominoes
 	 * @var array
 	 */
 	public static $PIECES = array(
+		// X is first because it's the hardest to place
 		'X' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))),
 		'F' => array(1,  true, 4, array(array(1, 0, 0), array(1, 1, 1), array(0, 1, 0))),
 		'L' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))),

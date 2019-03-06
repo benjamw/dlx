@@ -36,10 +36,8 @@ class Node {
 
 
 	/**
-	 * @param int $row
+	 * @param int        $row
 	 * @param ColumnNode $column optional
-	 *
-	 * @return Node
 	 */
 	public function __construct($row, ColumnNode $column = null) {
 		$this->row = (int) $row;

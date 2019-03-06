@@ -8,7 +8,15 @@ use \Exception;
 /**
  * Class Polyominoes3D
  * An abstract class that can be extended to solve
- * 3D polyomino puzzles with various shaped pieces and boards
+ * 3D polyomino puzzles with various shaped pieces and containers
+ *
+ * Orientation:
+ *   +--------> x
+ *   |
+ *   |    with z coming out of the screen
+ *   |
+ *   v
+ *   y
  *
  * @package DLX\Puzzles
  */
@@ -29,9 +37,9 @@ abstract class Polyominoes3D extends Polyominoes
 	/**
 	 * A custom layout can be passed as a 3D array into the first argument
 	 *
-	 * @param string|array|int $cols optional
-	 * @param int $rows optional
-	 * @param int $layers optional
+	 * @param string|array|int $cols optional (x)
+	 * @param int $rows optional (y)
+	 * @param int $layers optional (z)
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
@@ -80,9 +88,9 @@ abstract class Polyominoes3D extends Polyominoes
 	 * Because creating 3D strings would be... strange, strings
 	 * are not allowed as input, yet.
 	 *
-	 * @param array|int $cols
-	 * @param int $rows
-	 * @param int $layers [NOT optional]
+	 * @param array|int $cols (x)
+	 * @param int $rows (y)
+	 * @param int $layers [NOT optional] (z)
 	 *
 	 * @throws Exception
 	 * @return void
@@ -245,8 +253,8 @@ abstract class Polyominoes3D extends Polyominoes
 					$points = self::rotateX($points);
 
 					if ($fixed) {
-					    if ($this->isCube) {
-						    break 3; // stop everything, we only need to place this piece once
+						if ($this->isCube) {
+							break 3; // stop everything, we only need to place this piece once
 						}
 
 						$placed = true;
@@ -257,14 +265,14 @@ abstract class Polyominoes3D extends Polyominoes
 				$points = self::rotateY($points);
 
 				if ($fixed) {
-				    break; // stop this round to place this piece 3 times, once for each axis
+					break; // stop this round to place this piece 3 times, once for each axis
 				}
 			}
 
 			$points = self::rotateZ($points);
 
 			if ($fixed) {
-			    break; // stop this round to place this piece 3 times, once for each axis
+				break; // stop this round to place this piece 3 times, once for each axis
 			}
 		}
 	}
@@ -528,13 +536,15 @@ abstract class Polyominoes3D extends Polyominoes
 	/**
 	 * Debugging function to print a given piece
 	 *
-	 * @param $piece
+	 * @param array $piece
 	 *
 	 * @return void
 	 */
 	public static function printPiece($piece) {
 		echo '<table style="float:left;width:auto;height:auto;margin:10px;border-spacing:0;border-collapse:collapse;"><tbody>';
 
+		// TODO: fix this for 3D pieces, because it doesn't seem to work well for those.
+		// nor for pieces that are coming out of the screen.
 		foreach ($piece as $row) {
 			echo '<tr>';
 
