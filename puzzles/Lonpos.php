@@ -23,26 +23,26 @@ class Lonpos extends Polyominoes
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
+	public static array $PIECES = [
 		// L is first because it's the hardest to place
-		'L' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))), // gray X
-		'A' => array(1,  true, 4, array(array(1, 1, 1), array(1, 0, 0))), // orange L
-		'B' => array(1,  true, 4, array(array(1, 1, 1), array(1, 1, 0))), // red P
-		'C' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))), // dk. blue L
-		'D' => array(1,  true, 4, array(array(1, 1, 1, 1), array(0, 1, 0, 0))), // pink Y
-		'E' => array(1,  true, 4, array(array(1, 1, 1, 0), array(0, 0, 1, 1))), // green N
-		'F' => array(1, false, 4, array(array(1, 0), array(1, 1))), // white V
-		'G' => array(1, false, 4, array(array(1, 0, 0), array(1, 0, 0), array(1, 1, 1))), // lt. blue V
-		'H' => array(1, false, 4, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))), // magenta W
-		'I' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 1))), // yellow U
-		'J' => array(1, false, 2, array(array(1, 1, 1, 1))), // purple I
-		'K' => array(1, false, 1, array(array(1, 1), array(1, 1))), // lime O
-	);
+		'L' => [1, false, 1, [[0, 1, 0], [1, 1, 1], [0, 1, 0]]], // gray X
+		'A' => [1,  true, 4, [[1, 1, 1], [1, 0, 0]]], // orange L
+		'B' => [1,  true, 4, [[1, 1, 1], [1, 1, 0]]], // red P
+		'C' => [1,  true, 4, [[1, 1, 1, 1], [1, 0, 0, 0]]], // dk. blue L
+		'D' => [1,  true, 4, [[1, 1, 1, 1], [0, 1, 0, 0]]], // pink Y
+		'E' => [1,  true, 4, [[1, 1, 1, 0], [0, 0, 1, 1]]], // green N
+		'F' => [1, false, 4, [[1, 0], [1, 1]]], // white V
+		'G' => [1, false, 4, [[1, 0, 0], [1, 0, 0], [1, 1, 1]]], // lt. blue V
+		'H' => [1, false, 4, [[1, 0, 0], [1, 1, 0], [0, 1, 1]]], // magenta W
+		'I' => [1, false, 4, [[1, 1, 1], [1, 0, 1]]], // yellow U
+		'J' => [1, false, 2, [[1, 1, 1, 1]]], // purple I
+		'K' => [1, false, 1, [[1, 1], [1, 1]]], // lime O
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 55;
+	protected int $size = 55;
 
 	/**
 		The layout to pass in for the colorful cabin would be the following:
@@ -152,7 +152,6 @@ class Lonpos extends Polyominoes
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Lonpos
 	 */
 	public function __construct($cols = 11, $rows = 5, $symmetry = false) {
 		if (is_bool($cols)) {

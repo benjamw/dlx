@@ -21,26 +21,23 @@ class Abaroth extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'O' => array(1, false, 1, array(array(array(1, 1), array(1, 1)))), // yellow
-		'Q' => array(1,  true, 4, array(array(array(1, 1), array(1, 0)), array(array(0, 1), array(0, 0)))), // // pink/purple -- black
-		'Y' => array(1, false, 4, array(array(array(1, 1), array(1, 0)), array(array(1, 0), array(0, 0)))), // blue
-		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0), array(0, 1, 0)))), // red
-		'W' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1)))), // orange -- white
-		'Z' => array(1,  true, 4, array(array(array(1, 1, 1), array(0, 0, 1)), array(array(1, 0, 0), array(0, 0, 0)))), // green -- brown
-	);
+	public static array $PIECES = [
+		'O' => [1, false, 1, [[[1, 1], [1, 1]]]], // yellow
+		'Q' => [1,  true, 4, [[[1, 1], [1, 0]], [[0, 1], [0, 0]]]], // pink/purple -- black
+		'Y' => [1, false, 4, [[[1, 1], [1, 0]], [[1, 0], [0, 0]]]], // blue
+		'T' => [1, false, 4, [[[1, 1, 1], [0, 1, 0], [0, 1, 0]]]], // red
+		'W' => [1, false, 4, [[[1, 0, 0], [1, 1, 0], [0, 1, 1]]]], // orange -- white
+		'Z' => [1,  true, 4, [[[1, 1, 1], [0, 0, 1]], [[1, 0, 0], [0, 0, 0]]]], // green -- brown
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 27;
+	protected int $size = 27;
 
 
 	/**
-	 * @param void
-	 *
 	 * @throws Exception
-	 * @return Abaroth
 	 */
 	public function __construct( ) {
 		// this puzzle is always a 3x3x3 cube

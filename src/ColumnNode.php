@@ -9,30 +9,30 @@ class ColumnNode extends Node {
 	 *
 	 * @var bool
 	 */
-	public $secondary;
+	public bool $secondary;
 
 	/**
 	 * @var int
 	 */
-	public $col;
+	public int $col;
 
 	/**
 	 * The number of rows in the column
 	 *
 	 * @var int
 	 */
-	public $count;
+	public int $count;
 
 
 	/**
 	 * @param int  $col
 	 * @param bool $secondary
 	 */
-	public function __construct($col, $secondary = false) {
+	public function __construct(int $col, bool $secondary = false) {
 		parent::__construct(0, $this);
 
-		$this->col = (int) $col;
-		$this->secondary = (bool) $secondary;
+		$this->col = $col;
+		$this->secondary = $secondary;
 		$this->count = 0;
 	}
 
@@ -42,7 +42,7 @@ class ColumnNode extends Node {
 	 * @return string
 	 */
 	public function __toString( ) {
-		return $this->col;
+		return (string) $this->col;
 	}
 
 	/**
@@ -50,7 +50,7 @@ class ColumnNode extends Node {
 	 *
 	 * @return void
 	 */
-	public function changeCount($value) {
+	public function changeCount(int $value) {
 		$this->count += $value;
 
 		if (0 > $this->count) {

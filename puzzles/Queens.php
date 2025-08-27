@@ -20,34 +20,28 @@ class Queens {
 	/**
 	 * @var int
 	 */
-	public $size;
+	public int $size;
 
 	/**
-	 * @var \DLX\Grid
+	 * @var Grid
 	 */
-	public $grid;
+	public Grid $grid;
 
 	/**
 	 * @var array
 	 */
-	public $rowNames;
+	public array $rowNames;
 
 
 	/**
 	 * @param int $size
 	 *
 	 * @throws Exception
-	 * @return Queens
 	 */
-	public function __construct($size = 8) {
-		$this->size = (int) $size;
+	public function __construct(int $size = 8) {
+		$this->size = $size;
 
-		try {
-			$this->createGrid( );
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->createGrid( );
 	}
 
 	/**
@@ -60,13 +54,8 @@ class Queens {
 		$this->createRowNames( );
 		$nodes = $this->createNodes( );
 
-		try {
-			// 6N - 6; because 1N for each row and col, then 2N - 3 for each diagonal with single ends removed
-			$this->grid = new Grid($nodes, (6 * $this->size) - 6, (4 * $this->size) - 6);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		// 6N - 6; because 1N for each row and col, then 2N - 3 for each diagonal with single ends removed
+		$this->grid = new Grid($nodes, (6 * $this->size) - 6, (4 * $this->size) - 6);
 	}
 
 	/**
@@ -77,7 +66,7 @@ class Queens {
 	 * @return void
 	 */
 	protected function createRowNames( ) {
-		$rowNames = array(''); // rows are 1-index
+		$rowNames = ['']; // rows are 1-index
 		$len = strlen((string) $this->size);
 
 		if (26 > $this->size) {
@@ -99,18 +88,18 @@ class Queens {
 	 *
 	 * @return array
 	 */
-	protected function createNodes( ) {
-		$nodes = array( );
+	protected function createNodes( ): array {
+		$nodes = [];
 
 		for ($i = 0; $i < $this->size; ++$i) {
 			for ($j = 0; $j < $this->size; ++$j) {
 				// fill an empty row
-				$row = array(
+				$row = [
 					array_fill(0, $this->size, 0),
 					array_fill(0, $this->size, 0),
 					array_fill(0, (2 * $this->size) - 1, 0),
 					array_fill(0, (2 * $this->size) - 1, 0),
-				);
+				];
 
 				$row[0][$i] = 1; // rank
 				$row[1][$j] = 1; // file
@@ -143,21 +132,16 @@ class Queens {
 		}
 
 		if ( ! is_array($pieces)) {
-			$pieces = array($pieces);
+			$pieces = [$pieces];
 		}
 
 		// convert pieces to rows
-		$rows = array( );
+		$rows = [];
 		foreach ($pieces as $piece) {
 			$rows[] = array_search($piece, $this->rowNames);
 		}
 
-		try {
-			$this->grid->selectRows($rows);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->grid->selectRows($rows);
 	}
 
 	/**
@@ -174,32 +158,27 @@ class Queens {
 		}
 
 		if ( ! is_array($pieces)) {
-			$pieces = array($pieces);
+			$pieces = [$pieces];
 		}
 
 		// convert pieces to rows
-		$rows = array( );
+		$rows = [];
 		foreach ($pieces as $piece) {
 			$rows[] = array_search($piece, $this->rowNames);
 		}
 
-		try {
-			$this->grid->excludeRows($rows);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->grid->excludeRows($rows);
 	}
 
 	/**
 	 * If the callback returns false, the solutions will not be stored in Grid
 	 *
 	 * @param int $count optional solutions to return (0 to return all)
-	 * @param callable $callback optional function
+	 * @param ?callable $callback optional function
 	 *
 	 * @return array
 	 */
-	public function solve($count = 0, $callback = null) {
+	public function solve(int $count = 0, callable $callback = null): array {
 		$this->grid->search($count, $callback);
 		return $this->getSolutions( );
 	}
@@ -209,7 +188,7 @@ class Queens {
 	 *
 	 * @return array
 	 */
-	public function getSolutions( ) {
+	public function getSolutions( ): array {
 		$solutions = $this->grid->getSolutions('rows');
 		$solutions = $this->convertSolutions($solutions);
 
@@ -217,13 +196,13 @@ class Queens {
 	}
 
 	/**
-	 * Convert the solutions to a human readable format
+	 * Convert the solutions to a human-readable format
 	 *
 	 * @param array $solutions
 	 *
 	 * @return array
 	 */
-	public function convertSolutions($solutions) {
+	public function convertSolutions(array $solutions): array {
 		if (array_key_exists('rows', $solutions)) {
 			$solutions = $solutions['rows'];
 		}
@@ -241,11 +220,11 @@ class Queens {
 	}
 
 	/**
-	 * @param $array
+	 * @param array $array
 	 *
 	 * @return void
 	 */
-	public function printArray($array) {
+	public function printArray(array $array) {
 		$array = array_chunk($array, $this->size);
 		foreach ($array as & $row) {
 			$row = implode(' ', $row);

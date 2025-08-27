@@ -21,23 +21,23 @@ class IQFit extends Polyominoes
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'A (lt. green)' => array(1, false, 4, array(array(array(1, 1, 1), array(1, 0, 0)), array(array(1, 0, 1), array(0, 0, 0)))), // light olive green
-		'B (dk. blue)'  => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0)), array(array(1, 0, 1), array(0, 0, 0)))), // dark blue
-		'C (dk. green)' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0)), array(array(0, 1, 1), array(0, 0, 0)))), // dark green
-		'D (purple)'    => array(1, false, 4, array(array(array(1, 1, 1), array(0, 0, 1)), array(array(1, 1, 0), array(0, 0, 0)))), // purple
-		'E (blue)'      => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0)), array(array(1, 0, 1, 0), array(0, 0, 0, 0)))), // blue (med.)
-		'F (red)'       => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0)), array(array(1, 0, 0, 1), array(0, 0, 0, 0)))), // red
-		'G (lt. blue)'  => array(1, false, 4, array(array(array(1, 1, 1, 1), array(0, 1, 0, 0)), array(array(0, 1, 1, 0), array(0, 0, 0, 0)))), // light blue
-		'H (orange)'    => array(1, false, 4, array(array(array(1, 1, 1, 1), array(0, 1, 0, 0)), array(array(0, 1, 0, 1), array(0, 0, 0, 0)))), // orange
-		'I (pink)'      => array(1, false, 4, array(array(array(1, 1, 1, 1), array(0, 0, 1, 0)), array(array(0, 0, 1, 1), array(0, 0, 0, 0)))), // pink
-		'J (yellow)'    => array(1, false, 4, array(array(array(1, 1, 1, 1), array(0, 0, 0, 1)), array(array(1, 1, 0, 0), array(0, 0, 0, 0)))), // yellow
-	);
+	public static array $PIECES = [
+		'A (lt. green)' => [1, false, 4, [[[1, 1, 1], [1, 0, 0]], [[1, 0, 1], [0, 0, 0]]]], // light olive green
+		'B (dk. blue)'  => [1, false, 4, [[[1, 1, 1], [0, 1, 0]], [[1, 0, 1], [0, 0, 0]]]], // dark blue
+		'C (dk. green)' => [1, false, 4, [[[1, 1, 1], [0, 1, 0]], [[0, 1, 1], [0, 0, 0]]]], // dark green
+		'D (purple)'    => [1, false, 4, [[[1, 1, 1], [0, 0, 1]], [[1, 1, 0], [0, 0, 0]]]], // purple
+		'E (blue)'      => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 0]], [[1, 0, 1, 0], [0, 0, 0, 0]]]], // blue (med.)
+		'F (red)'       => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 0]], [[1, 0, 0, 1], [0, 0, 0, 0]]]], // red
+		'G (lt. blue)'  => [1, false, 4, [[[1, 1, 1, 1], [0, 1, 0, 0]], [[0, 1, 1, 0], [0, 0, 0, 0]]]], // light blue
+		'H (orange)'    => [1, false, 4, [[[1, 1, 1, 1], [0, 1, 0, 0]], [[0, 1, 0, 1], [0, 0, 0, 0]]]], // orange
+		'I (pink)'      => [1, false, 4, [[[1, 1, 1, 1], [0, 0, 1, 0]], [[0, 0, 1, 1], [0, 0, 0, 0]]]], // pink
+		'J (yellow)'    => [1, false, 4, [[[1, 1, 1, 1], [0, 0, 0, 1]], [[1, 1, 0, 0], [0, 0, 0, 0]]]], // yellow
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 50;
+	protected int $size = 50;
 
 
 	/**
@@ -48,7 +48,6 @@ class IQFit extends Polyominoes
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return IQFit
 	 */
 	public function __construct($cols = 10, $rows = 5, $symmetry = false) {
 		if (is_bool($cols)) {
@@ -77,7 +76,7 @@ class IQFit extends Polyominoes
 	 * @throws Exception
 	 * @return void
 	 */
-	protected function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
+	protected function createPieceNodes(string $pieceName, array $piece, array & $nodes, bool $fixed = false) {
 		$points = $piece[self::PIECE_POINTS][0]; // use only the first layer
 		$done = $rotated = false;
 
@@ -138,8 +137,8 @@ class IQFit extends Polyominoes
 	 *
 	 * @return array
 	 */
-	public static function rotateX($points) {
-		$pointsX = array( );
+	public static function rotateX(array $points) {
+		$pointsX = [];
 		$cntZ = count($points);
 		$cntY = count($points[0]);
 

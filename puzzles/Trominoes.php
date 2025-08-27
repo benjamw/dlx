@@ -23,15 +23,15 @@ class Trominoes extends Polyominoes
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'L' => array(2, false, 4, array(array(1, 0), array(1, 1))),
-		'I' => array(2, false, 2, array(array(1, 1, 1))),
-	);
+	public static array $PIECES = [
+		'L' => [2, false, 4, [[1, 0], [1, 1]]],
+		'I' => [2, false, 2, [[1, 1, 1]]],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 12;
+	protected int $size = 12;
 
 
 	/**
@@ -41,7 +41,6 @@ class Trominoes extends Polyominoes
 	 * @param int $rows optional
 	 *
 	 * @throws Exception
-	 * @return Trominoes
 	 */
 	public function __construct($cols = 4, $rows = 3) {
 		try {

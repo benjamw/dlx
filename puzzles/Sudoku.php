@@ -20,31 +20,30 @@ class Sudoku {
 	 *
 	 * @var string
 	 */
-	const DIGITS = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+	public const DIGITS = '1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ';
 
 	/**
 	 * @var int
 	 */
-	public $size;
+	public int $size;
 
 	/**
-	 * @var \DLX\Grid
+	 * @var Grid
 	 */
-	public $grid;
+	public Grid $grid;
 
 	/**
 	 * @var array
 	 */
-	public $rowNames;
+	public array $rowNames;
 
 
 	/**
 	 * @param int $size
 	 *
 	 * @throws Exception
-	 * @return Sudoku
 	 */
-	public function __construct($size = 9) {
+	public function __construct(int $size = 9) {
 		$this->size = (int) $size;
 
 		if ($this->size > 36) {
@@ -92,7 +91,7 @@ class Sudoku {
 	protected function createRowNames( ) {
 		$length = strlen((string) $this->size);
 
-		$rowNames = array(''); // rows are 1-index
+		$rowNames = ['']; // rows are 1-index
 		for ($r = 1; $r <= $this->size; ++$r) {
 			$row = str_pad($r, $length, '0', STR_PAD_LEFT);
 
@@ -115,7 +114,7 @@ class Sudoku {
 	 * @return array
 	 */
 	protected function createNodes( ) {
-		$nodes = array( );
+		$nodes = [];
 
 		$root = floor(sqrt($this->size));
 
@@ -136,7 +135,7 @@ class Sudoku {
 		$numRows = $square * $this->size;
 
 		$digit = $spaceIdx = $rowIdx = $rowIdxSize = $colIdx = $colIdxSize = 0;
-		$blockColIdx = $blockRowIdx = $blockIdx = $blockIdxSize = 0;
+		$blockRowIdx = $blockIdx = $blockIdxSize = 0;
 		for ($n = 0; $n < $numRows; ++$n) {
 			$row = array_fill(0, $numCols, '');
 
@@ -210,7 +209,7 @@ class Sudoku {
 	 * @throws Exception
 	 * @return void
 	 */
-	public function fill($puzzle) {
+	public function fill(string $puzzle) {
 		$puzzle = preg_replace('%[^a-z0-9.]+%i', '', $puzzle);
 		$puzzle = str_split(strtoupper($puzzle));
 
@@ -221,7 +220,7 @@ class Sudoku {
 		$length = strlen((string) $this->size);
 
 		// convert puzzle to rows
-		$rows = array( );
+		$rows = [];
 		foreach ($puzzle as $idx => $digit) {
 			if ('.' === $digit) {
 				continue;
@@ -249,11 +248,11 @@ class Sudoku {
 	 * If the callback returns false, the solutions will not be stored in Grid
 	 *
 	 * @param int $count optional solutions to return (0 to return all)
-	 * @param callable $callback optional function
+	 * @param ?callable $callback optional function
 	 *
 	 * @return array
 	 */
-	public function solve($count = 0, $callback = null) {
+	public function solve(int $count = 0, callable $callback = null) {
 		$this->grid->search($count, $callback);
 		return $this->getSolutions( );
 	}
@@ -263,7 +262,7 @@ class Sudoku {
 	 *
 	 * @return array
 	 */
-	public function getSolutions($format = false) {
+	public function getSolutions(bool $format = false) {
 		$solutions = $this->grid->getSolutions('rows');
 		$solutions = $this->convertSolutions($solutions, $format);
 
@@ -282,7 +281,7 @@ class Sudoku {
 	 *
 	 * @return array
 	 */
-	public function convertSolutions($solutions, $format = false) {
+	public function convertSolutions(array $solutions, bool $format = false) {
 		if (array_key_exists('rows', $solutions)) {
 			$solutions = $solutions['rows'];
 		}
@@ -311,11 +310,11 @@ class Sudoku {
 	}
 
 	/**
-	 * @param $array
+	 * @param array $array
 	 *
 	 * @return void
 	 */
-	public function printArray($array) {
+	public function printArray(array $array) {
 		$array = array_chunk($array, $this->size);
 		foreach ($array as & $row) {
 			$row = implode(' ', $row);

@@ -21,29 +21,28 @@ class Seven extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'I' => array(1, false, 2, array(array(array(1, 1, 1)))),
-		'L' => array(1,  true, 4, array(array(array(1, 1, 1), array(1, 0, 0)))),
-		'O' => array(1, false, 1, array(array(array(1, 1), array(1, 1)))),
-		'S' => array(1,  true, 4, array(array(array(1, 1, 0), array(0, 1, 1)))),
-		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0)))),
-		'U' => array(1, false, 4, array(array(array(1, 1, 1), array(1, 0, 1)))),
-		'V' => array(1, false, 4, array(array(array(1, 0), array(1, 1)))),
-	);
+	public static array $PIECES = [
+		'I' => [1, false, 2, [[[1, 1, 1]]]],
+		'L' => [1,  true, 4, [[[1, 1, 1], [1, 0, 0]]]],
+		'O' => [1, false, 1, [[[1, 1], [1, 1]]]],
+		'S' => [1,  true, 4, [[[1, 1, 0], [0, 1, 1]]]],
+		'T' => [1, false, 4, [[[1, 1, 1], [0, 1, 0]]]],
+		'U' => [1, false, 4, [[[1, 1, 1], [1, 0, 1]]]],
+		'V' => [1, false, 4, [[[1, 0], [1, 1]]]],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 27;
+	protected int $size = 27;
 
 
 	/**
 	 * @param bool $symmetry exclude symmetrical solutions
 	 *
 	 * @throws Exception
-	 * @return Seven
 	 */
-	public function __construct($symmetry = true) {
+	public function __construct(bool $symmetry = true) {
 		// this puzzle is always a 3x3x3 cube
 		try {
 			parent::__construct(3, 3, 3, $symmetry);

@@ -7,39 +7,39 @@ class Node {
 	/**
 	 * @var int
 	 */
-	public $row;
+	public int $row;
 
 	/**
 	 * @var ColumnNode
 	 */
-	public $column;
+	public ColumnNode $column;
 
 	/**
 	 * @var Node
 	 */
-	public $up;
+	public Node $up;
 
 	/**
 	 * @var Node
 	 */
-	public $right;
+	public Node $right;
 
 	/**
 	 * @var Node
 	 */
-	public $down;
+	public Node $down;
 
 	/**
 	 * @var Node
 	 */
-	public $left;
+	public Node $left;
 
 
 	/**
 	 * @param int        $row
-	 * @param ColumnNode $column optional
+	 * @param ?ColumnNode $column optional
 	 */
-	public function __construct($row, ColumnNode $column = null) {
+	public function __construct(int $row, ColumnNode $column = null) {
 		$this->row = (int) $row;
 
 		if ($column) {

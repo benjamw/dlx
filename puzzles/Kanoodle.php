@@ -28,21 +28,21 @@ class Kanoodle extends Polyhexes
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'A' => array(1, false, 6, []), // light green
-		'B' => array(1, false, 6, []), // yellow
-		'C' => array(1,  true, 6, []), // dark blue
-		'D' => array(1, false, 6, []), // light blue
-		'E' => array(1,  true, 6, []), // red
-		'F' => array(1,  true, 6, []), // magenta
-		'G' => array(1, false, 6, []), // dark green
+	public static array $PIECES = [
+		'A' => [1, false, 6, [[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 1]]], // light green
+		'B' => [1, false, 6, [[1, 1, 1, 0], [0, 0, 1, 1]]], // yellow
+		'C' => [1,  true, 6, [[1, 1, 1], [1, 0, 0], [1, 0, 0]]], // dark blue
+		'D' => [1, false, 6, [[1, 1, 1, 1], [0, 1, 0, 0]]], // light blue
+		'E' => [1,  true, 6, [[1, 1, 1], [0, 1, 1]]], // red
+		'F' => [1,  true, 6, [[1, 1, 1, 1], [0, 0, 1, 0]]], // magenta
+		'G' => [1, false, 6, [[1, 1, 1], [1, 0, 1]]], // dark green
 
-		'H' => array(1,  true, 6, []), // white
-		'I' => array(1, false, 6, []), // orange
-		'J' => array(1, false, 3, []), // pink
-		'K' => array(1,  true, 3, []), // gray
-		'L' => array(1, false, 6, []), // purple
-	);
+		'H' => [1,  true, 6, [[1, 1, 1], [0, 1, 0], [0, 0, 1]]], // white
+		'I' => [1, false, 6, [[1, 1, 1], [1, 0, 0]]], // orange
+		'J' => [1, false, 3, [[1, 1, 0, 0], [0, 0, 1, 1]]], // pink
+		'K' => [1,  true, 3, [[1, 1], [1, 1]]], // gray
+		'L' => [1, false, 6, [[1, 1, 1], [0, 1, 0]]], // purple
+	];
 
 	/**
 	 * Kanoodle Genius is 35
@@ -50,16 +50,16 @@ class Kanoodle extends Polyhexes
 	 *
 	 * @var int
 	 */
-	protected $size = 56;
+	protected int $size = 56;
 
 	/**
 		The layout to pass in for the Kanoodle Extreme would be the following:
 
 		$cols = array(
-			array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
-			array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
-			array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
-			array(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+			        array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
+			      array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
+			    array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
+			  array(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
 			array(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 		);
 
@@ -114,7 +114,6 @@ class Kanoodle extends Polyhexes
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Lonpos
 	 */
 	public function __construct($cols = 11, $rows = 5, $symmetry = false) {
 		if (is_bool($cols)) {

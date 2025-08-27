@@ -25,43 +25,43 @@ class FullPolyominoes extends Polyominoes
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-	// monomino
-		'1' => array(1, false, 4, array(array(1))),
+	public static array $PIECES = [
+		// monomino
+		'1' => [1, false, 4, [[1]]],
 
-	// domino
-		'2' => array(1, false, 2, array(array(1, 1))),
+		// domino
+		'2' => [1, false, 2, [[1, 1]]],
 
-	// trominoes
-		'<' => array(2, false, 4, array(array(1, 0), array(1, 1))),
-		'|' => array(2, false, 2, array(array(1, 1, 1))),
+		// trominoes
+		'<' => [2, false, 4, [[1, 0], [1, 1]]],
+		'|' => [2, false, 2, [[1, 1, 1]]],
 
-	// tetrominoes
-		'i' => array(1, false, 2, array(array(1, 1, 1, 1))),
-		'o' => array(1, false, 1, array(array(1, 1), array(1, 1))),
-		't' => array(1, false, 4, array(array(1, 1, 1), array(0, 1, 0))),
-		'l' => array(1, false, 2, array(array(1, 1, 1), array(1, 0, 0))),
-		'z' => array(1, false, 2, array(array(1, 1, 0), array(0, 1, 1))),
+		// tetrominoes
+		'i' => [1, false, 2, [[1, 1, 1, 1]]],
+		'o' => [1, false, 1, [[1, 1], [1, 1]]],
+		't' => [1, false, 4, [[1, 1, 1], [0, 1, 0]]],
+		'l' => [1, false, 2, [[1, 1, 1], [1, 0, 0]]],
+		'z' => [1, false, 2, [[1, 1, 0], [0, 1, 1]]],
 
-	// pentominoes (5)
-		'X' => array(1, false, 1, array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0))),
-		'F' => array(1,  true, 4, array(array(1, 0, 0), array(1, 1, 1), array(0, 1, 0))),
-		'L' => array(1,  true, 4, array(array(1, 1, 1, 1), array(1, 0, 0, 0))),
-		'N' => array(1,  true, 4, array(array(1, 1, 1, 0), array(0, 0, 1, 1))),
-		'P' => array(1,  true, 4, array(array(1, 1, 1), array(1, 1, 0))),
-		'Y' => array(1,  true, 4, array(array(1, 1, 1, 1), array(0, 1, 0, 0))),
-		'Z' => array(1,  true, 2, array(array(1, 1, 0), array(0, 1, 0), array(0, 1, 1))),
-		'T' => array(1, false, 4, array(array(1, 1, 1), array(0, 1, 0), array(0, 1, 0))),
-		'U' => array(1, false, 4, array(array(1, 1, 1), array(1, 0, 1))),
-		'V' => array(1, false, 4, array(array(1, 0, 0), array(1, 0, 0), array(1, 1, 1))),
-		'W' => array(1, false, 4, array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1))),
-		'I' => array(1, false, 2, array(array(1, 1, 1, 1, 1))),
-	);
+		// pentominoes (5)
+		'X' => [1, false, 1, [[0, 1, 0], [1, 1, 1], [0, 1, 0]]],
+		'F' => [1,  true, 4, [[1, 0, 0], [1, 1, 1], [0, 1, 0]]],
+		'L' => [1,  true, 4, [[1, 1, 1, 1], [1, 0, 0, 0]]],
+		'N' => [1,  true, 4, [[1, 1, 1, 0], [0, 0, 1, 1]]],
+		'P' => [1,  true, 4, [[1, 1, 1], [1, 1, 0]]],
+		'Y' => [1,  true, 4, [[1, 1, 1, 1], [0, 1, 0, 0]]],
+		'Z' => [1,  true, 2, [[1, 1, 0], [0, 1, 0], [0, 1, 1]]],
+		'T' => [1, false, 4, [[1, 1, 1], [0, 1, 0], [0, 1, 0]]],
+		'U' => [1, false, 4, [[1, 1, 1], [1, 0, 1]]],
+		'V' => [1, false, 4, [[1, 0, 0], [1, 0, 0], [1, 1, 1]]],
+		'W' => [1, false, 4, [[1, 0, 0], [1, 1, 0], [0, 1, 1]]],
+		'I' => [1, false, 2, [[1, 1, 1, 1, 1]]],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 89;
+	protected int $size = 89;
 
 
 	/**
@@ -72,7 +72,6 @@ class FullPolyominoes extends Polyominoes
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Pentominoes
 	 */
 	public function __construct($cols = 11, $rows = 8, $symmetry = false) {
 		if (is_bool($cols)) {

@@ -43,7 +43,6 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Polyominoes3D
 	 */
 	public function __construct($cols = 0, $rows = 0, $layers = 0, $symmetry = false) {
 		if (is_bool($cols)) {
@@ -128,14 +127,14 @@ abstract class Polyominoes3D extends Polyominoes
 			$this->isCube = ! $hasHoles && ($one === $two) && ($one === $three);
 		}
 		else {
-			$this->layout = array( );
+			$this->layout = [];
 
 			if ($this->size !== ($cols * $rows * $layers)) {
 				throw new Exception('Invalid layout size');
 			}
 
 			for ($j = 0; $j < $layers; ++$j) {
-				$this->layout[$j] = array( );
+				$this->layout[$j] = [];
 
 				for ($i = 0; $i < $rows; ++$i) {
 					$this->layout[$j][] = array_fill(0, $cols, 1);
@@ -159,7 +158,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return void
 	 */
 	public function createColNames( ) {
-		$colNames = array(''); // cols are 1-index
+		$colNames = ['']; // cols are 1-index
 
 		foreach (static::$PIECES as $pieceName => $pieceData) {
 			if (1 === $pieceData[self::PIECE_COUNT]) {
@@ -193,7 +192,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array
 	 */
 	public function createNodes( ) {
-		$nodes = array( );
+		$nodes = [];
 
 		$beenFixed = ! $this->symmetry;
 
@@ -230,7 +229,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @throws Exception
 	 * @return void
 	 */
-	public function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
+	protected function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
 		$points = $piece[self::PIECE_POINTS];
 
 		// only pieces with no rotational or reflectional symmetry should be fixed
@@ -238,7 +237,7 @@ abstract class Polyominoes3D extends Polyominoes
 			$fixed = false;
 		}
 
-		$this->usedNodes = array( );
+		$this->usedNodes = [];
 
 		// placePiece will ignore any duplicates that may be generated here
 		$placed = false; // prevent duplicates via symmetry and rotation
@@ -284,7 +283,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 */
 	public static function createTranslationArray($layout) {
 		$n = 0;
-		$translate = array( );
+		$translate = [];
 		foreach ($layout as $z => $layer) {
 			$width = count($layer);
 
@@ -311,7 +310,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array
 	 */
 	public static function rotateX($points) {
-		$pointsX = array( );
+		$pointsX = [];
 		$cntZ = count($points);
 		$cntY = count($points[0]);
 
@@ -335,7 +334,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array
 	 */
 	public static function rotateY($points) {
-		$pointsY = array( );
+		$pointsY = [];
 		$cntZ = count($points);
 		$cntY = count($points[0]);
 		$cntX = count($points[0][0]);
@@ -362,7 +361,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array
 	 */
 	public static function rotateZ($points) {
-		$pointsZ = array( );
+		$pointsZ = [];
 		$cntZ = count($points);
 		$cntY = count($points[0]);
 		$cntX = count($points[0][0]);
@@ -394,7 +393,7 @@ abstract class Polyominoes3D extends Polyominoes
 	public function placePiece($pieceName, $points, & $nodes) {
 		// if a 2D piece was submitted, convert to flat 3D
 		if ( ! is_array($points[0][0])) {
-			$points = array($points);
+			$points = [$points];
 		}
 
 		$boardWidth = count($this->layout[0][0]);
@@ -426,7 +425,7 @@ abstract class Polyominoes3D extends Polyominoes
 		for ($z = 0; $z < $depth; ++$z) {
 			for ($y = 0; $y < $height; ++$y) {
 				for ($x = 0; $x < $width; ++$x) {
-					$boardNodes = array();
+					$boardNodes = [];
 
 					for ($pz = 0; $pz < $pieceDepth; ++$pz) {
 						for ($py = 0; $py < $pieceHeight; ++$py) {
@@ -568,14 +567,12 @@ abstract class Polyominoes3D extends Polyominoes
 	 *
 	 * @return array converted
 	 */
-	public static function convert_solutions($solutions) {
-		$return = array( );
+	public static function convert_solutions(array $solutions) {
+		$return = [];
 
 		if (empty($solutions)) {
 			return $return;
 		}
-
-		$solution_dims = self::solution_dims($solutions[0]);
 
 		foreach ($solutions as $solution) {
 			$return[] = self::convert_solution($solution);
@@ -593,7 +590,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array converted
 	 */
 	public static function convert_solution($solution) {
-		$return = array( );
+		$return = [];
 
 		foreach ($solution as $piece) {
 			$char = array_shift($piece);
@@ -603,12 +600,12 @@ abstract class Polyominoes3D extends Polyominoes
 				$p = array_map(function($v) { return $v - 1; }, $p);
 
 				if (empty($return[$p[0]])) {
-					$return[$p[0]] = array( );
+					$return[$p[0]] = [];
 					ksort($return);
 				}
 
 				if (empty($return[$p[0]][$p[1]])) {
-					$return[$p[0]][$p[1]] = array( );
+					$return[$p[0]][$p[1]] = [];
 					ksort($return[$p[0]]);
 				}
 
@@ -628,10 +625,10 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array dimensions array (x, y, z)
 	 */
 	public static function solution_dims($solution) {
-		$solution_dims = array(0, 0, 0);
+		$solution_dims = [0, 0, 0];
 
 		foreach ($solution as $piece) {
-			$char = array_shift($piece);
+			array_shift($piece); // remove the piece name
 
 			foreach ($piece as $point) {
 				$p = explode(',', trim($point, "[] \t\n\r\0\x0B"));
@@ -654,11 +651,11 @@ abstract class Polyominoes3D extends Polyominoes
 	/**
 	 * Calculate the dimensions of the given converted solution
 	 *
-	 * @param array $convert
+	 * @param array[] $convert
 	 *
 	 * @return array dimensions array (x, y, z)
 	 */
-	public static function converted_dims($convert) {
+	public static function converted_dims(array $convert) {
 		// $cols[$z][$y][$x] => (x, y, z)
 		$x = count($convert[0][0]);
 		$y = count($convert[0]);
@@ -670,15 +667,15 @@ abstract class Polyominoes3D extends Polyominoes
 	/**
 	 * Return all solutions in an easy to read format
 	 *
-	 * @param array $solutions
+	 * @param array[] $solutions
 	 *
 	 * @return string output
 	 */
-	public static function print_solutions($solutions) {
+	public static function print_solutions(array $solutions) {
 		$converted = self::convert_solutions($solutions);
 		$out = '';
 
-		if (empty($out)) {
+		if (empty($converted)) {
 			return '';
 		}
 
@@ -686,6 +683,7 @@ abstract class Polyominoes3D extends Polyominoes
 		// a space for every piece in the row, sans fence post, for every layer, with 3 spaces between each layer, sans fence post
 		$bar_length = (((($dims[0] * 2) - 1) * $dims[2]) + (3 * ($dims[2] - 1)));
 		$bar = str_repeat('-', $bar_length);
+		$out .= "\n";
 
 		foreach ($converted as $convert) {
 			$out .= self::print_solution($convert) . "{$bar}\n";
@@ -697,11 +695,11 @@ abstract class Polyominoes3D extends Polyominoes
 	/**
 	 * Return a single converted solution in an easy to read format
 	 *
-	 * @param array $convert
+	 * @param array[] $convert
 	 *
 	 * @return string output
 	 */
-	public static function print_solution($convert) {
+	public static function print_solution(array $convert) {
 		$out = '';
 
 		// TODO: rotate the array so that the long side is along x and the short side is along z
@@ -713,7 +711,7 @@ abstract class Polyominoes3D extends Polyominoes
 				$out .= implode(' ', $level3) . '   ';
 			}
 
-			$out = trim($out) . "\n";
+			$out .= "\n";
 		}
 
 		return $out;
@@ -727,7 +725,7 @@ abstract class Polyominoes3D extends Polyominoes
 	 * @return array same solutions indexes in the $solutions array
 	 */
 	public static function find_similar($solutions) {
-		$same = array( );
+		$same = [];
 
 		// start comparing and find out which ones are similar
 		$solutions = self::convert_solutions($solutions);
@@ -745,7 +743,7 @@ abstract class Polyominoes3D extends Polyominoes
 						}
 
 						if ($test_string === $compare) {
-							$same[] = array($idx, $idx2);
+							$same[] = [$idx, $idx2];
 						}
 
 						$test = self::rotateX($test);
@@ -768,10 +766,10 @@ abstract class Polyominoes3D extends Polyominoes
 	 *
 	 * @return string
 	 */
-	function implode3d($array) {
+	public static function implode3d($array) {
 		foreach ($array as $key => $val) {
 			if (is_array($val)) {
-				$array[$key] = implode3d($val);
+				$array[$key] = self::implode3d($val);
 			}
 		}
 

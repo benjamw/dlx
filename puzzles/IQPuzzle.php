@@ -21,29 +21,28 @@ class IQPuzzle extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'L' => array(1,  true, 4, array(array(array(1, 1, 1), array(1, 0, 0)))), // blue
-		'B' => array(1,  true, 4, array(array(array(1, 0), array(1, 1)), array(array(1, 0), array(0, 0)))), // white
-		'P' => array(1, false, 4, array(array(array(1, 1), array(1, 0)), array(array(1, 0), array(0, 0)))), // orange
-		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0)))), // yellow
-		'Z' => array(1,  true, 2, array(array(array(1, 1, 0), array(0, 1, 1)))), // brown
-		'V' => array(1, false, 4, array(array(array(1, 1), array(1, 0)))), // red
-		'O' => array(1, false, 4, array(array(array(1, 1), array(1, 1)))), // yellow from abaroth
-	);
+	public static array $PIECES = [
+		'L' => [1,  true, 4, [[[1, 1, 1], [1, 0, 0]]]], // blue
+		'B' => [1,  true, 4, [[[1, 0], [1, 1]], [[1, 0], [0, 0]]]], // white
+		'P' => [1, false, 4, [[[1, 1], [1, 0]], [[1, 0], [0, 0]]]], // orange
+		'T' => [1, false, 4, [[[1, 1, 1], [0, 1, 0]]]], // yellow
+		'Z' => [1,  true, 2, [[[1, 1, 0], [0, 1, 1]]]], // brown
+		'V' => [1, false, 4, [[[1, 1], [1, 0]]]], // red
+		'O' => [1, false, 4, [[[1, 1], [1, 1]]]], // yellow from abaroth
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 27;
+	protected int $size = 27;
 
 
 	/**
 	 * @param bool $symmetry
 	 *
 	 * @throws Exception
-	 * @return IQPuzzle
 	 */
-	public function __construct($symmetry = true) {
+	public function __construct(bool $symmetry = true) {
 		// this puzzle is always a 3x3x3 cube
 		try {
 			parent::__construct(3, 3, 3, $symmetry);

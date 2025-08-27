@@ -2,60 +2,60 @@
 
 namespace DLX;
 
-use \Exception;
+use Exception;
 
 class Grid {
 
 	/**
 	 * @var bool
 	 */
-	public $simple = false;
+	public bool $simple = false;
 
 	/**
 	 * The header node
 	 *
 	 * @var ColumnNode
 	 */
-	protected $h;
+	protected ColumnNode $h;
 
 	/**
 	 * The column count (not including $h)
 	 *
 	 * @var int
 	 */
-	public $columns;
+	public int $columns;
 
 	/**
 	 * The row count (not including headers)
 	 *
 	 * @var int
 	 */
-	public $rows;
+	public int $rows;
 
 	/**
 	 * The path to the current state
 	 *
 	 * @var array
 	 */
-	protected $path = array(
-		'rows' => array( ),
-		'cols' => array( ),
-	);
+	protected array $path = [
+		'rows' => [],
+		'cols' => [],
+	];
 
 	/**
 	 * The solutions array
 	 *
 	 * @var array
 	 */
-	protected $solutions = array(
-		'rows' => array( ),
-		'cols' => array( ),
-	);
+	protected array $solutions = [
+		'rows' => [],
+		'cols' => [],
+	];
 
 	/**
 	 * @var int
 	 */
-	public $solutionCount;
+	public int $solutionCount;
 
 
 	/**
@@ -69,22 +69,17 @@ class Grid {
 	 *
 	 * @throws Exception
 	 */
-	public function __construct($nodes, $columns, $secondary = 0) {
+	public function __construct($nodes, int $columns, int $secondary = 0) {
 		$this->h = new ColumnNode(0);
-		$this->path = array(
-			'rows' => array( ),
-			'cols' => array( ),
-		);
+		$this->path = [
+			'rows' => [],
+			'cols' => [],
+		];
 		$this->solutions = $this->path;
 		$this->solutionCount = 0;
 
-		try {
-			$this->constructHeaders($columns, $secondary);
-			$this->constructNodes($nodes);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->constructHeaders($columns, $secondary);
+		$this->constructNodes($nodes);
 	}
 
 	/**
@@ -104,10 +99,10 @@ class Grid {
 	 *
 	 * @return void
 	 */
-	protected function constructHeaders($columns, $secondary = 0) {
+	protected function constructHeaders(int $columns, int $secondary = 0) {
 		$left = $this->h;
 
-		for ($n = 1; $n <= (int) $columns; ++$n) {
+		for ($n = 1; $n <= $columns; ++$n) {
 			$new = new ColumnNode($n, (($columns - $n) < $secondary));
 			$left = $this->insertRight($new, $left);
 		}
@@ -133,9 +128,9 @@ class Grid {
 			$nodes = str_split($nodes);
 		}
 
-		$columns = array( );
+		$columns = [];
 		for ($right = $this->h->right; $right !== $this->h; $right = $right->right) {
-			array_push($columns, $right);
+			$columns[] = $right;
 		}
 
 		if (empty($columns)) {
@@ -158,7 +153,7 @@ class Grid {
 		// so that new nodes can be placed below and to the right of previous nodes.
 		// the rows start at 1, because the headers are row 0
 
-		$rows = array( );
+		$rows = [];
 		foreach ($nodes as $y => $row) {
 			foreach ($row as $x => $value) {
 				if ($value) {
@@ -189,7 +184,7 @@ class Grid {
 	 * @throws Exception
 	 * @return void
 	 */
-	public function selectRows($selectedRows) {
+	public function selectRows(array $selectedRows) {
 		foreach ($selectedRows as $selectedRow) {
 			// find the columns this row affects
 			$column = $this->findColumn($selectedRow);
@@ -231,18 +226,13 @@ class Grid {
 	 * @throws Exception
 	 * @return void
 	 */
-	public function selectCols($selectedCols) {
+	public function selectCols(array $selectedCols) {
 		if ( ! is_array($selectedCols[0])) {
-			$selectedCols = array($selectedCols);
+			$selectedCols = [$selectedCols];
 		}
 
-		try {
-			$rows = $this->findRows($selectedCols);
-			$this->selectRows($rows);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$rows = $this->findRows($selectedCols);
+		$this->selectRows($rows);
 	}
 
 	/**
@@ -253,7 +243,7 @@ class Grid {
 	 * @throws Exception
 	 * @return void
 	 */
-	public function excludeRows($excludedRows) {
+	public function excludeRows(array $excludedRows) {
 		foreach ($excludedRows as $excludedRow) {
 			// TODO: build this
 			$this->coverRow($excludedRow);
@@ -273,11 +263,11 @@ class Grid {
 	 * @throws Exception
 	 * @return array row indexes
 	 */
-	public function findRows($colGroups) {
-		$rows = array( );
+	public function findRows(array $colGroups): array {
+		$rows = [];
 
 		foreach ($colGroups as $cols) {
-			$colRows = array_combine($cols, array_fill(0, count($cols), array( )));
+			$colRows = array_combine($cols, array_fill(0, count($cols), []));
 
 			// find the rows these columns share
 			$right = $this->h->right;
@@ -316,7 +306,7 @@ class Grid {
 						while ($down !== $right) {
 							if (in_array($down->row, $intersect)) {
 								// start searching this row
-								$thisCols = array($down->column->col);
+								$thisCols = [$down->column->col];
 								$rowRight = $down->right;
 								while ($rowRight !== $down) {
 									$thisCols[] = $rowRight->column->col;
@@ -354,12 +344,12 @@ class Grid {
 	 * If the callback returns a falsy value, the solutions will not be stored locally
 	 *
 	 * @param int $count solutions to return (0 to return all)
-	 * @param callable $callback optional function
+	 * @param ?callable $callback optional function
 	 * @param int $k
 	 *
 	 * @return bool stop processing
 	 */
-	public function search($count = 0, $callback = null, $k = 0) {
+	public function search(int $count = 0, callable $callback = null, int $k = 0): bool {
 		if (($this->h->right === $this->h) || $this->onlyEmptySecondaryLeft( )) {
 			$this->addSolution($callback);
 
@@ -410,9 +400,9 @@ class Grid {
 	 *
 	 * @param void
 	 *
-	 * @return ColumnNode
+	 * @return Node
 	 */
-	protected function chooseNextColumn( ) {
+	protected function chooseNextColumn( ): Node {
 		if ( ! empty($this->simple)) {
 			return $this->h->right;
 		}
@@ -441,12 +431,12 @@ class Grid {
 	/**
 	 * Find the smallest ColumnNode in the given row
 	 *
-	 * @param $rowIndex
+	 * @param int $rowIndex
 	 *
 	 * @return ColumnNode
 	 */
-	protected function findColumn($rowIndex) {
-		$columns = array( );
+	protected function findColumn(int $rowIndex): ColumnNode {
+		$columns = [];
 		$col = $this->h->right;
 
 		while ($col !== $this->h) {
@@ -537,7 +527,7 @@ class Grid {
 	 *
 	 * @return bool
 	 */
-	protected function onlyEmptySecondaryLeft( ) {
+	protected function onlyEmptySecondaryLeft( ): bool {
 		$next = $this->h->right;
 
 		while ($next !== $this->h) {
@@ -559,17 +549,17 @@ class Grid {
 	 *
 	 * @return void
 	 */
-	protected function addPath($type, $path) {
+	protected function addPath(string $type, string $path) {
 		if ('rows' === $type) {
-			array_push($this->path[$type], $path);
+			$this->path[ $type ][] = $path;
 		}
 		elseif ('cols' === $type) {
 			$index = count($this->path['rows']) - 1;
 			if ( ! array_key_exists($index, $this->path[$type])) {
-				$this->path[$type][$index] = array( );
+				$this->path[$type][$index] = [];
 			}
 
-			array_push($this->path[$type][$index], $path);
+			$this->path[ $type ][ $index ][] = $path;
 		}
 	}
 
@@ -589,11 +579,11 @@ class Grid {
 	 * Add the complete solution path to the list of solutions
 	 * If the callback returns false, the solutions will not be stored locally
 	 *
-	 * @param callable $callback optional function
+	 * @param ?callable $callback optional function
 	 *
 	 * @return void
 	 */
-	protected function addSolution($callback = null) {
+	protected function addSolution(callable $callback = null) {
 		++$this->solutionCount;
 
 		if (is_callable($callback)) {
@@ -602,16 +592,16 @@ class Grid {
 			}
 		}
 
-		array_push($this->solutions['rows'], $this->path['rows']);
-		array_push($this->solutions['cols'], $this->path['cols']);
+		$this->solutions['rows'][] = $this->path['rows'];
+		$this->solutions['cols'][] = $this->path['cols'];
 	}
 
 	/**
-	 * @param string $type
+	 * @param ?string $type
 	 *
 	 * @return array
 	 */
-	public function getSolutions($type = null) {
+	public function getSolutions(string $type = null): array {
 		if (empty($type)) {
 			return $this->solutions;
 		}
@@ -628,7 +618,7 @@ class Grid {
 	 *
 	 * @return Node inserted
 	 */
-	public function insertAbove(Node $new, Node $down) {
+	public function insertAbove(Node $new, Node $down): Node {
 		$new->up = $down->up;
 		$new->down = $down;
 		$down->up->down = $new;
@@ -645,7 +635,7 @@ class Grid {
 	 *
 	 * @return Node inserted
 	 */
-	public function insertRight(Node $new, Node $left) {
+	public function insertRight(Node $new, Node $left): Node {
 		$new->right = $left->right;
 		$new->left = $left;
 		$left->right->left = $new;
@@ -662,7 +652,7 @@ class Grid {
 	 *
 	 * @return Node inserted
 	 */
-	public function insertBelow(Node $new, Node $up) {
+	public function insertBelow(Node $new, Node $up): Node {
 		$new->down = $up->down;
 		$new->up = $up;
 		$up->down->up = $new;
@@ -679,7 +669,7 @@ class Grid {
 	 *
 	 * @return Node inserted
 	 */
-	public function insertLeft(Node $new, Node $right) {
+	public function insertLeft(Node $new, Node $right): Node {
 		$new->left = $right->left;
 		$new->right = $right;
 		$right->left->right = $new;
@@ -695,11 +685,11 @@ class Grid {
 	 *
 	 * @return string
 	 */
-	public function printGrid($echo = true) {
-		$grid = array( );
+	public function printGrid(bool $echo = true): string {
+		$grid = [];
 
 		// parse through the headers
-		$cols = array( );
+		$cols = [];
 		for ($right = $this->h->right; $right !== $this->h; $right = $right->right) {
 			$cols[] = $right->col;
 		}

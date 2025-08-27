@@ -25,26 +25,26 @@ class Pentominoes3D extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
+	public static array $PIECES = [
 		// X is first because it's the hardest to place
-		'X' => array(1, false, 1, array(array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0)))),
-		'F' => array(1,  true, 4, array(array(array(1, 0, 0), array(1, 1, 1), array(0, 1, 0)))),
-		'L' => array(1,  true, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0)))),
-		'N' => array(1,  true, 4, array(array(array(1, 1, 1, 0), array(0, 0, 1, 1)))),
-		'P' => array(1,  true, 4, array(array(array(1, 1, 1), array(1, 1, 0)))),
-		'Y' => array(1,  true, 4, array(array(array(1, 1, 1, 1), array(0, 1, 0, 0)))),
-		'Z' => array(1,  true, 2, array(array(array(1, 1, 0), array(0, 1, 0), array(0, 1, 1)))),
-		'T' => array(1, false, 4, array(array(array(1, 1, 1), array(0, 1, 0), array(0, 1, 0)))),
-		'U' => array(1, false, 4, array(array(array(1, 1, 1), array(1, 0, 1)))),
-		'V' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 0, 0), array(1, 1, 1)))),
-		'W' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1)))),
-		'I' => array(1, false, 2, array(array(array(1, 1, 1, 1, 1)))),
-	);
+		'X' => [1, false, 1, [[[0, 1, 0], [1, 1, 1], [0, 1, 0]]]],
+		'F' => [1,  true, 4, [[[1, 0, 0], [1, 1, 1], [0, 1, 0]]]],
+		'L' => [1,  true, 4, [[[1, 1, 1, 1], [1, 0, 0, 0]]]],
+		'N' => [1,  true, 4, [[[1, 1, 1, 0], [0, 0, 1, 1]]]],
+		'P' => [1,  true, 4, [[[1, 1, 1], [1, 1, 0]]]],
+		'Y' => [1,  true, 4, [[[1, 1, 1, 1], [0, 1, 0, 0]]]],
+		'Z' => [1,  true, 2, [[[1, 1, 0], [0, 1, 0], [0, 1, 1]]]],
+		'T' => [1, false, 4, [[[1, 1, 1], [0, 1, 0], [0, 1, 0]]]],
+		'U' => [1, false, 4, [[[1, 1, 1], [1, 0, 1]]]],
+		'V' => [1, false, 4, [[[1, 0, 0], [1, 0, 0], [1, 1, 1]]]],
+		'W' => [1, false, 4, [[[1, 0, 0], [1, 1, 0], [0, 1, 1]]]],
+		'I' => [1, false, 2, [[[1, 1, 1, 1, 1]]]],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 60;
+	protected int $size = 60;
 
 
 	/**
@@ -56,7 +56,6 @@ class Pentominoes3D extends Polyominoes3D
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Pentominoes3D
 	 */
 	public function __construct($cols = 5, $rows = 4, $layers = 3, $symmetry = false) {
 		try {

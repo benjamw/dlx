@@ -24,433 +24,433 @@ class LonposPyramid extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
+	public static array $PIECES = [
 		// L is first because it's the hardest to place
-		'L' => array(1, false, 1, array(array(array(0, 1, 0), array(1, 1, 1), array(0, 1, 0)))), // gray X
-		'A' => array(1,  true, 4, array(array(array(1, 1, 1), array(1, 0, 0)))), // orange L
-		'B' => array(1,  true, 4, array(array(array(1, 1, 1), array(1, 1, 0)))), // red P
-		'C' => array(1,  true, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0)))), // dk. blue L
-		'D' => array(1,  true, 4, array(array(array(1, 1, 1, 1), array(0, 1, 0, 0)))), // pink Y
-		'E' => array(1,  true, 4, array(array(array(1, 1, 1, 0), array(0, 0, 1, 1)))), // green N
-		'F' => array(1, false, 4, array(array(array(1, 0), array(1, 1)))), // white V
-		'G' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 0, 0), array(1, 1, 1)))), // lt. blue V
-		'H' => array(1, false, 4, array(array(array(1, 0, 0), array(1, 1, 0), array(0, 1, 1)))), // magenta W
-		'I' => array(1, false, 4, array(array(array(1, 1, 1), array(1, 0, 1)))), // yellow U
-		'J' => array(1, false, 2, array(array(array(1, 1, 1, 1)))), // purple I
-		'K' => array(1, false, 1, array(array(array(1, 1), array(1, 1)))), // lime O
-	);
+		'L' => [1, false, 1, [[[0, 1, 0], [1, 1, 1], [0, 1, 0]]]], // gray X
+		'A' => [1,  true, 4, [[[1, 1, 1], [1, 0, 0]]]], // orange L
+		'B' => [1,  true, 4, [[[1, 1, 1], [1, 1, 0]]]], // red P
+		'C' => [1,  true, 4, [[[1, 1, 1, 1], [1, 0, 0, 0]]]], // dk. blue L
+		'D' => [1,  true, 4, [[[1, 1, 1, 1], [0, 1, 0, 0]]]], // pink Y
+		'E' => [1,  true, 4, [[[1, 1, 1, 0], [0, 0, 1, 1]]]], // green N
+		'F' => [1, false, 4, [[[1, 0], [1, 1]]]], // white V
+		'G' => [1, false, 4, [[[1, 0, 0], [1, 0, 0], [1, 1, 1]]]], // lt. blue V
+		'H' => [1, false, 4, [[[1, 0, 0], [1, 1, 0], [0, 1, 1]]]], // magenta W
+		'I' => [1, false, 4, [[[1, 1, 1], [1, 0, 1]]]], // yellow U
+		'J' => [1, false, 2, [[[1, 1, 1, 1]]]], // purple I
+		'K' => [1, false, 1, [[[1, 1], [1, 1]]]], // lime O
+	];
 
 	/**
 	 * These are hand-rotated vertical orientations for each of the pieces
 	 *
 	 * @var array
 	 */
-	public static $ROTATIONS = array(
-		'A' => array(
-			array(
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 1), array(0, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 0, 0)),
-				array(array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 0, 0), array(1, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0)),
-				array(array(0, 0, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'B' => array(
-			array(
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'C' => array(
-			array(
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(1, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 0), array(0, 0), array(1, 0), array(0, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 0), array(0, 0), array(1, 0), array(0, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 1), array(0, 0, 1, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'D' => array(
-			array(
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 1, 0)),
-				array(array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 0), array(0, 0), array(1, 0), array(0, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
-				array(array(0, 1, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0)),
-				array(array(0, 1, 0, 0), array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 0), array(0, 1), array(0, 0), array(0, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
-				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'E' => array(
-			array(
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 0, 0)),
-				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
-				array(array(0, 1, 0, 0), array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0), array(0, 0)),
-			),
+	public static array $ROTATIONS = [
+		'A' => [
+			[
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 1], [0, 0, 0]],
+				[[0, 1, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [1, 0]],
+				[[0, 1], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 0, 0]],
+				[[0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [1, 0]],
+				[[0, 0], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 1, 0]],
+				[[0, 0, 0], [1, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [1, 0]],
+				[[0, 1], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0]],
+				[[0, 0, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [0, 0]],
+				[[0, 1], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+		],
+		'B' => [
+			[
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 1], [0, 1, 0]],
+				[[0, 1, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 1], [1, 0]],
+				[[0, 1], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 1, 0]],
+				[[0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [1, 0]],
+				[[0, 0], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 1, 0]],
+				[[0, 1, 0], [1, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [1, 0]],
+				[[0, 1], [1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0]],
+				[[0, 1, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [0, 0]],
+				[[0, 1], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+		],
+		'C' => [
+			[
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 1], [0, 0, 0, 0]],
+				[[0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 1, 0, 0], [1, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [1, 0]],
+				[[0, 0], [0, 0], [1, 0], [0, 0]],
+				[[0, 1], [1, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 1], [0, 0, 0, 0]],
+				[[0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 1, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 0], [1, 0]],
+				[[0, 0], [0, 0], [1, 0], [0, 0]],
+				[[0, 0], [1, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 1], [0, 0, 1, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0]],
+				[[0, 0, 0, 0], [1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 1], [1, 0]],
+				[[0, 0], [0, 1], [0, 0], [0, 0]],
+				[[0, 1], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 1, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0]],
+				[[0, 0, 0, 0], [1, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 1], [0, 0]],
+				[[0, 0], [0, 1], [0, 0], [0, 0]],
+				[[0, 1], [0, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+		],
+		'D' => [
+			[
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 1], [0, 0, 1, 0]],
+				[[0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 1, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1], [1, 0]],
+				[[0, 0], [0, 0], [1, 0], [0, 0]],
+				[[0, 0], [1, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 1], [0, 0, 0, 0]],
+				[[0, 0, 1, 0], [0, 1, 0, 0]],
+				[[0, 1, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [1, 0]],
+				[[0, 0], [0, 1], [1, 0], [0, 0]],
+				[[0, 0], [1, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 1, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0]],
+				[[0, 1, 0, 0], [1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 1], [0, 0]],
+				[[0, 0], [0, 1], [0, 0], [0, 0]],
+				[[0, 1], [1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 1, 0]],
+				[[0, 0, 1, 0], [0, 1, 0, 0]],
+				[[0, 0, 0, 0], [1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 1], [0, 0]],
+				[[0, 0], [0, 1], [1, 0], [0, 0]],
+				[[0, 1], [0, 0], [0, 0], [0, 0]],
+			],
+		],
+		'E' => [
+			[
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0, 1], [0, 0, 0, 0]],
+				[[0, 0, 1, 0], [0, 1, 0, 0]],
+				[[0, 1, 0, 0], [1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [1, 0]],
+				[[0, 0], [0, 1], [1, 0], [0, 0]],
+				[[0, 1], [1, 0], [0, 0], [0, 0]],
+			],
 			// there are no solutions with these orientations (upward, 5 high, with smaller section on top)
 			/*
 			array(
@@ -482,114 +482,114 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
 			),
 			//*/
-			array(
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0, 0, 1), array(0, 0, 1, 0)),
-				array(array(0, 0, 1, 0), array(0, 1, 0, 0)),
-				array(array(0, 0, 0, 0), array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 0), array(0, 1), array(1, 0), array(0, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 1, 0)),
-				array(array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 1, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(0, 1), array(0, 0)),
-				array(array(0, 0), array(0, 0), array(1, 0), array(0, 0)),
-				array(array(0, 0), array(1, 0), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'F' => array(
-			array(
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 1), array(1, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 1), array(1, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(1, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 1), array(0, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-		),
-		'G' => array(
-			array(
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 1), array(0, 0, 0), array(1, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 0, 1), array(0, 0, 0), array(1, 0, 0)),
-			),
+			[
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+			],
+			[
+				[[0, 0, 0, 1], [0, 0, 1, 0]],
+				[[0, 0, 1, 0], [0, 1, 0, 0]],
+				[[0, 0, 0, 0], [1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1], [1, 0]],
+				[[0, 0], [0, 1], [1, 0], [0, 0]],
+				[[0, 1], [0, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 1, 0]],
+				[[0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 1, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [0, 1], [0, 0]],
+				[[0, 0], [0, 0], [1, 0], [0, 0]],
+				[[0, 0], [1, 0], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0], [0, 0]],
+			],
+		],
+		'F' => [
+			[
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 1], [1, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 1], [1, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [1, 0]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 1], [0, 0]],
+				[[1, 0], [0, 0]],
+			],
+		],
+		'G' => [
+			[
+				[[1, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 1], [0, 0, 0], [1, 0, 0]],
+				[[0, 1, 0], [1, 0, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 1]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 0, 1], [0, 1, 0]],
+				[[0, 0, 1], [0, 0, 0], [1, 0, 0]],
+			],
 			// there are no solutions with this piece pointing upwards
 			/*
 			array(
@@ -621,24 +621,24 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
 			//*/
-		),
-		'H' => array(
-			array(
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 0, 1), array(0, 1, 0), array(1, 0, 0)),
-			),
+		],
+		'H' => [
+			[
+				[[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 1], [0, 1, 0], [1, 0, 0]],
+				[[0, 1, 0], [1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 1]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1], [0, 1, 0]],
+				[[0, 0, 1], [0, 1, 0], [1, 0, 0]],
+			],
 			// there are no solutions with this piece pointing upwards
 			/*
 			array(
@@ -670,170 +670,162 @@ class LonposPyramid extends Polyominoes3D
 				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
 			),
 			//*/
-		),
-		'I' => array(
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 0), array(1, 0)),
-				array(array(0, 1), array(1, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 0, 0), array(1, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 0, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 0), array(0, 1)),
-				array(array(0, 0), array(0, 1), array(1, 0)),
-				array(array(0, 1), array(0, 0), array(0, 0)),
-				array(array(1, 0), array(0, 0), array(0, 0)),
-			),
-		),
-		'J' => array(
-			array(
-				array(array(1)),
-				array(array(1)),
-				array(array(1)),
-				array(array(1)),
-			),
-			array(
-				array(array(0, 0, 0, 1)),
-				array(array(0, 0, 1, 0)),
-				array(array(0, 1, 0, 0)),
-				array(array(1, 0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 1)),
-				array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 1, 0), array(0, 0, 0, 0)),
-				array(array(0, 0, 0, 0), array(0, 1, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-				array(array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)),
-			),
-			array(
-				array(array(0), array(0), array(0), array(1)),
-				array(array(0), array(0), array(1), array(0)),
-				array(array(0), array(1), array(0), array(0)),
-				array(array(1), array(0), array(0), array(0)),
-			),
-		),
-		'K' => array(
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(1, 0), array(0, 1)),
-				array(array(1, 0), array(0, 0)),
-			),
-			array(
-				array(array(0, 0), array(0, 1)),
-				array(array(0, 1), array(1, 0)),
-				array(array(1, 0), array(0, 0)),
-			),
-		),
-		'L' => array(
-			array(
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 1)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(1, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-			),
-			array(
-				array(array(0, 0, 0), array(0, 0, 1), array(0, 1, 0)),
-				array(array(0, 0, 0), array(0, 1, 0), array(0, 0, 0)),
-				array(array(0, 1, 0), array(1, 0, 0), array(0, 0, 0)),
-			),
-		),
-	);
+		],
+		'I' => [
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 0, 0]],
+				[[0, 1, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 0], [1, 0]],
+				[[0, 1], [1, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1]],
+				[[0, 0, 1], [0, 1, 0]],
+				[[0, 0, 0], [1, 0, 0]],
+				[[1, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 0, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0], [0, 0], [0, 1]],
+				[[0, 0], [0, 1], [1, 0]],
+				[[0, 1], [0, 0], [0, 0]],
+				[[1, 0], [0, 0], [0, 0]],
+			],
+		],
+		'J' => [
+			[
+				[[1]],
+				[[1]],
+				[[1]],
+				[[1]],
+			],
+			[
+				[[0, 0, 0, 1]],
+				[[0, 0, 1, 0]],
+				[[0, 1, 0, 0]],
+				[[1, 0, 0, 0]],
+			],
+			[
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 1]],
+				[[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+				[[0, 0, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+				[[1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+			],
+			[
+				[[0], [0], [0], [1]],
+				[[0], [0], [1], [0]],
+				[[0], [1], [0], [0]],
+				[[1], [0], [0], [0]],
+			],
+		],
+		'K' => [
+			[
+				[[0, 0], [0, 1]],
+				[[1, 0], [0, 1]],
+				[[1, 0], [0, 0]],
+			],
+			[
+				[[0, 0], [0, 1]],
+				[[0, 1], [1, 0]],
+				[[1, 0], [0, 0]],
+			],
+		],
+		'L' => [
+			[
+				[[0, 0, 0], [0, 1, 0], [0, 0, 1]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[1, 0, 0], [0, 1, 0], [0, 0, 0]],
+			],
+			[
+				[[0, 0, 0], [0, 0, 1], [0, 1, 0]],
+				[[0, 0, 0], [0, 1, 0], [0, 0, 0]],
+				[[0, 1, 0], [1, 0, 0], [0, 0, 0]],
+			],
+		],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 55;
+	protected int $size = 55;
 
 
 	/**
 	 * A custom layout can be passed as a 2D array into the first argument
 	 *
-	 * @param void $cols
-	 * @param void $rows
-	 * @param void $layers
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return LonposPyramid
 	 */
-	public function __construct($cols = null, $rows = null, $layers = null, $symmetry = false) {
-		if (is_bool($cols)) {
-			$symmetry = $cols;
-		}
-
+	public function __construct($symmetry = false) {
 		// because there can only be one pyramid layout, it's hard-coded here
 		// (and it appears upside down so the z index goes "up")
-		$cols = array(
-			array(
-				array(1, 1, 1, 1, 1),
-				array(1, 1, 1, 1, 1),
-				array(1, 1, 1, 1, 1),
-				array(1, 1, 1, 1, 1),
-				array(1, 1, 1, 1, 1),
-			),
-			array(
-				array(1, 1, 1, 1, 0),
-				array(1, 1, 1, 1, 0),
-				array(1, 1, 1, 1, 0),
-				array(1, 1, 1, 1, 0),
-				array(0, 0, 0, 0, 0),
-			),
-			array(
-				array(1, 1, 1, 0, 0),
-				array(1, 1, 1, 0, 0),
-				array(1, 1, 1, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-			),
-			array(
-				array(1, 1, 0, 0, 0),
-				array(1, 1, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-			),
-			array(
-				array(1, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-				array(0, 0, 0, 0, 0),
-			),
-		);
+		$cols = [
+			[
+				[1, 1, 1, 1, 1],
+				[1, 1, 1, 1, 1],
+				[1, 1, 1, 1, 1],
+				[1, 1, 1, 1, 1],
+				[1, 1, 1, 1, 1],
+			],
+			[
+				[1, 1, 1, 1, 0],
+				[1, 1, 1, 1, 0],
+				[1, 1, 1, 1, 0],
+				[1, 1, 1, 1, 0],
+				[0, 0, 0, 0, 0],
+			],
+			[
+				[1, 1, 1, 0, 0],
+				[1, 1, 1, 0, 0],
+				[1, 1, 1, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+			],
+			[
+				[1, 1, 0, 0, 0],
+				[1, 1, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+			],
+			[
+				[1, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+				[0, 0, 0, 0, 0],
+			],
+		];
 
 		try {
 			parent::__construct($cols, 0, 0, $symmetry);
@@ -851,12 +843,12 @@ class LonposPyramid extends Polyominoes3D
 	 * @param array $nodes reference
 	 * @param bool $fixed fix this piece in only 2 orientations
 	 *
-	 * @throws Exception
 	 * @return void
+	 * @throws Exception
 	 */
-	public function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
+	protected function createPieceNodes(string $pieceName, array $piece, array & $nodes, bool $fixed = false) {
 		// placePiece will ignore any duplicates that may be generated here
-		$this->usedNodes = array( );
+		$this->usedNodes = [];
 
 		$points = $piece[self::PIECE_POINTS];
 
@@ -881,7 +873,7 @@ class LonposPyramid extends Polyominoes3D
 			// if the piece does not have reflection symmetry, reflect the piece and do it all again
 			if ( ! $reflected && $piece[self::PIECE_REFLECT]) {
 				$points = self::reflectPiece($piece[self::PIECE_POINTS][0]);
-				$points = array($points);
+				$points = [$points];
 				$reflected = true;
 				$done = false;
 			}

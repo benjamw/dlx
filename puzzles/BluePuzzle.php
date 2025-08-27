@@ -22,19 +22,19 @@ class BluePuzzle extends Polyominoes3D
 	 *
 	 * @var array
 	 */
-	public static $PIECES = array(
-		'A' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 1)), array(array(0, 0, 0, 0), array(0, 0, 0, 1)))),
-		'B' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0)), array(array(1, 0, 0, 1), array(0, 0, 0, 1)))),
-		'C' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 0), array(1, 1, 0, 0), array(1, 0, 0, 0)), array(array(0, 0, 0, 0), array(1, 1, 0, 0), array(0, 0, 0, 0), array(1, 0, 0, 0)))),
-		'D' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 1), array(1, 0, 0, 0), array(1, 1, 1, 0)), array(array(0, 0, 0, 1), array(1, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0)))),
-		'E' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(0, 1, 1, 0), array(0, 1, 0, 0), array(1, 1, 1, 0)), array(array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 0, 0, 0), array(0, 1, 1, 0)))),
-		'F' => array(1, false, 4, array(array(array(1, 1, 1, 1), array(1, 0, 0, 1), array(1, 0, 0, 0), array(1, 1, 1, 0)), array(array(1, 0, 0, 0), array(0, 0, 0, 1), array(0, 0, 0, 0), array(1, 1, 0, 0)))),
-	);
+	public static array $PIECES = [
+		'A' => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 1]], [[0, 0, 0, 0], [0, 0, 0, 1]]]],
+		'B' => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 0]], [[1, 0, 0, 1], [0, 0, 0, 1]]]],
+		'C' => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0], [1, 0, 0, 0]]]],
+		'D' => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 0], [1, 1, 1, 0]], [[0, 0, 0, 1], [1, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]],
+		'E' => [1, false, 4, [[[1, 1, 1, 1], [0, 1, 1, 0], [0, 1, 0, 0], [1, 1, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 1, 1, 0]]]],
+		'F' => [1, false, 4, [[[1, 1, 1, 1], [1, 0, 0, 1], [1, 0, 0, 0], [1, 1, 1, 0]], [[1, 0, 0, 0], [0, 0, 0, 1], [0, 0, 0, 0], [1, 1, 0, 0]]]],
+	];
 
 	/**
 	 * @var int
 	 */
-	protected $size = 64;
+	protected int $size = 64;
 
 
 	/**
@@ -46,7 +46,6 @@ class BluePuzzle extends Polyominoes3D
 	 * @param bool $symmetry optional
 	 *
 	 * @throws Exception
-	 * @return Pentominoes3D
 	 */
 	public function __construct($cols = 4, $rows = 4, $layers = 4, $symmetry = false) {
 		try {
