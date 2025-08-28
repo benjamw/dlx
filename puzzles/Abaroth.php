@@ -41,12 +41,7 @@ class Abaroth extends Polyominoes3D
 	 */
 	public function __construct( ) {
 		// this puzzle is always a 3x3x3 cube
-		try {
-			parent::__construct(3, 3, 3, true);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		parent::__construct(3, 3, 3, true);
 	}
 
 }

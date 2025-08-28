@@ -27,12 +27,12 @@ abstract class Polyominoes
 	/**
 	 * To be filled by child classes...
 	 *
-	 * array(count, mirror, symmetry, points array)
+	 * [count, mirror, symmetry, points array]
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points should be oriented to put a 1 value in the NW corner
 	 *     (
 	 *       count -> the count of pieces in this puzzle of this shape
-	 *       mirror -> should a mirror reflection be performed, this is false if the piece is it's own reflection
+	 *       mirror -> should a mirror reflection be performed, this is false if the piece is its own reflection
 	 *       symmetry -> how many 90 degree rotations before coming back to self (4, 2, or 1)
 	 *       points -> points array
 	 *     )
@@ -107,13 +107,8 @@ abstract class Polyominoes
 
 		$this->symmetry = $symmetry;
 
-		try {
-			$this->createLayout($cols, $rows);
-			$this->createGrid( );
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->createLayout($cols, $rows);
+		$this->createGrid( );
 	}
 
 	/**
@@ -217,12 +212,7 @@ abstract class Polyominoes
 			}
 		}
 
-		try {
-			$this->grid->selectCols($cols);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->grid->selectCols($cols);
 	}
 
 	/**
@@ -250,12 +240,7 @@ abstract class Polyominoes
 			}
 		}
 
-		try {
-			$this->grid->excludeCols($cols);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		$this->grid->excludeCols($cols);
 	}
 
 	/**
