@@ -6,7 +6,7 @@ use \Exception;
 
 /**
  * Class Kanoodle
- * Kanoodle Extreme puzzles are a distinct set of polyhex puzzles that come in several form factors
+ * Kanoodle puzzles are a distinct set of polyhex puzzles that come in several form factors
  * These puzzles are related to Lonpos puzzles, but are isometric instead of orthogonal
  *
  * This class solves the flat 2D puzzles of various shapes
@@ -29,19 +29,62 @@ class Kanoodle extends Polyhexes
 	 * @var array
 	 */
 	public static array $PIECES = [
-		'A' => [1, true, 6, [[1, 0, 0], [1, 0, 0], [1, 1, 1]]], // dark blue
-		'B' => [1, false, 6, [[1, 0, 0], [1, 1, 1], [0, 1, 0]]], // light green
-		'C' => [1, false, 6, [[1, 0], [1, 1], [1, 1]]], // yellow
-		'D' => [1, false, 6, [[1, 1, 1, 1], [1, 0, 0, 0]]], // light blue
-		'E' => [1,  true, 6, [[1, 1], [1, 1], [1, 0]]], // red
-		'F' => [1,  true, 6, [[1, 1, 1, 1], [0, 1, 0, 0]]], // magenta
-		'G' => [1, false, 6, [[1, 1, 1], [1, 0, 1]]], // dark green
+		'A' => [1, false, 6, [ // dark blue
+			[1, 0, 0],
+			  [1, 0, 0],
+			    [1, 1, 1],
+			]],
+		'B' => [1,  true, 6, [ // light green
+			[1, 0, 0],
+			  [1, 1, 1],
+			    [0, 1, 0],
+			]],
+		'C' => [1,  true, 6, [ // yellow
+			[1, 0],
+			  [1, 1],
+			    [1, 1],
+			]],
+		'D' => [1,  true, 6, [ // light blue
+			[1, 1, 1, 1],
+			  [1, 0, 0, 0],
+			]],
+		'E' => [1, false, 6, [ // red
+			[1, 1],
+			  [1, 1],
+			    [1, 0],
+			]],
+		'F' => [1, false, 6, [ // magenta
+			[1, 1, 1, 1],
+			  [0, 1, 0, 0],
+			]],
+		'G' => [1,  true, 6, [ // dark green
+			[1, 1, 1],
+			  [1, 0, 1],
+			]],
 
-		'H' => [1,  true, 6, [[1, 1, 1], [1, 0, 0], [1, 0, 0]]], // white
-		'I' => [1, false, 6, [[1, 0], [1, 0], [1, 1]]], // orange
-		'J' => [1, false, 3, [[1, 1, 0], [0, 1, 1]]], // pink
-		'K' => [1,  true, 3, [[1, 1], [1, 1]]], // gray
-		'L' => [1, false, 6, [[1, 1, 1], [1, 0, 0]]], // purple
+
+		'H' => [1, false, 6, [ // white
+			[1, 0, 1],
+			  [1, 1, 0],
+			    [1, 0, 0],
+			]],
+		'I' => [1,  true, 6, [ // orange
+			[1, 0],
+			  [1, 0],
+			    [1, 1],
+			]],
+		'J' => [1,  true, 3, [ // pink
+			[1, 1, 0],
+			  [0, 1, 1],
+			]],
+		'K' => [1, false, 3, [ // gray
+			[1, 1],
+			  [1, 1],
+			]],
+		'L' => [1,  true, 6, [ // purple
+			[1, 1, 1],
+			  [1, 0, 0],
+			]],
 	];
 
 	/**

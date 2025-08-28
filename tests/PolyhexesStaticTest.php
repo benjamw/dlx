@@ -554,45 +554,34 @@ class PolyhexesStaticTest extends \PHPUnit\Framework\TestCase {
 
 	public function testReflectPiece() {
 		$piece = [
-			[1, 1, 0],
 			[1, 0, 0],
-			[1, 1, 1],
+			  [1, 1, 1],
+			    [0, 1, 0],
 		];
 
 		$expected = [
-			[1, 1, 1],
-			[1, 0, 0],
-			[1, 1, 0],
+			[0, 0, 1],
+			  [0, 0, 1],
+			    [0, 1, 0],
+			      [1, 1, 0],
 		];
 
 		$returned = Polyhexes::reflectPiece($piece);
 
 		$this->assertEquals($expected, $returned);
-	}
 
-	public function testReflectPieceSymmetric() {
+		// ---------------------------------------------------------
+
 		$piece = [
-			[1, 1],
-			[1, 1],
+			[1, 1, 1],
+			  [1, 0, 1],
 		];
 
 		$expected = [
-			[1, 1],
-			[1, 1],
-		];
-
-		$returned = Polyhexes::reflectPiece($piece);
-
-		$this->assertEquals($expected, $returned);
-	}
-
-	public function testReflectPieceSingleRow() {
-		$piece = [
-			[1, 0, 1],
-		];
-
-		$expected = [
-			[1, 0, 1],
+			[0, 0, 1],
+			  [0, 1, 1],
+			    [1, 0, 0],
+			      [1, 0, 0],
 		];
 
 		$returned = Polyhexes::reflectPiece($piece);

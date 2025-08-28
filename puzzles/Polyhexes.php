@@ -18,17 +18,9 @@ abstract class Polyhexes extends Polyominoes
 {
 
 	/**
-	 * $PIECES array indexes
-	 */
-	public const PIECE_COUNT = 0;
-	public const PIECE_REFLECT = 1;
-	public const PIECE_SYMMETRY = 2;
-	public const PIECE_POINTS = 3;
-
-	/**
 	 * To be filled by child classes...
 	 *
-	 * array(count, mirror, symmetry, points array)
+	 * [count, mirror, symmetry, points array]
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points should be oriented to put a 1 value in the NW corner
 	 *     (
@@ -52,261 +44,9 @@ abstract class Polyhexes extends Polyominoes
 	public static array $PIECES = [];
 
 	/**
-	 * @var array
-	 */
-	public array $layout;
-
-	/**
-	 * The layout index to column index translation array
-	 *
-	 * @var array
-	 */
-	public array $translate;
-
-	/**
-	 * @var Grid
-	 */
-	public Grid $grid;
-
-	/**
-	 * @var array
-	 */
-	public array $colNames;
-
-	/**
-	 * Set to true to disregard rotated and reflected solutions
-	 *
-	 * @var bool
-	 */
-	public bool $symmetry;
-
-	/**
-	 * The total space size of the layout
-	 *
-	 * @var int
-	 */
-	protected int $size = 0;
-
-	/**
-	 * @var int
-	 */
-	protected int $pieceCount = 0;
-
-
-	/**
-	 * A custom layout can be passed as a 2D array into the first argument
-	 *
-	 * @param string|array|int $cols optional
-	 * @param int $rows optional
-	 * @param bool $symmetry optional
-	 *
-	 * @throws Exception
-	 */
-	public function __construct($cols = 0, $rows = 0, $symmetry = false) {
-		if (is_bool($cols)) {
-			$temp = $cols;
-			$cols = $rows;
-			$rows = $symmetry;
-			$symmetry = $temp;
-		}
-		elseif (is_bool($rows)) {
-			// $cols was a full layout
-			$symmetry = $rows;
-			$rows = 6;
-		}
-
-		$this->symmetry = $symmetry;
-
-		try {
-			$this->createLayout($cols, $rows);
-			$this->createGrid( );
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
-	 * The layout can be passed as a string or a 2D array into $cols
-	 * or as row and column dimensions
-	 *
-	 * If a layout is passed as an array, the indexes for the array
-	 * should be valid x,y coordinates for the board. '0' is allowed to
-	 * block out certain positions without having to break the array.
-	 *
-	 *     $cols[$y][$x] => (x, y)
-	 *
-	 * @param string|array|int $cols
-	 * @param int $rows
-	 * @param null $layers [not used]
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	protected function createLayout($cols, $rows, $layers = null) {
-		if (is_string($cols)) {
-			$this->layout = self::layoutToArray($cols);
-		}
-		elseif (is_array($cols)) {
-			$count = 0;
-
-			// this is a simple dimensions test
-			// this does not take into account the checkerboard validity of the layout
-			foreach ($cols as $col) {
-				foreach ($col as $node) {
-					if (1 === $node) {
-						++$count;
-					}
-				}
-			}
-
-			if ($this->size !== $count) {
-				throw new Exception('Invalid layout size');
-			}
-
-			$this->layout = $cols;
-		}
-		else {
-			$this->layout = [];
-
-			if ($this->size !== ($cols * $rows)) {
-				throw new Exception('Invalid layout size');
-			}
-
-			for ($i = 0; $i < $rows; ++$i) {
-				$this->layout[] = array_fill(0, $cols, 1);
-			}
-		}
-
-		// because the layout may have holes in it, or other odd shapes,
-		// the grid indexes may not line up with the actual layout indexes
-		// so a translation array is needed
-		$this->translate = self::createTranslationArray($this->layout);
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	protected function createGrid( ) {
-		$this->createColNames( );
-		$nodes = $this->createNodes( );
-
-		try {
-			$this->grid = new Grid($nodes, count($this->colNames) - 1);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
-	 * Manually place pieces
-	 *
-	 * @param array $pieces (not sure of the best syntax to use here...)
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	public function place($pieces) {
-		if (1 !== func_num_args( )) {
-			$pieces = func_get_args( );
-		}
-
-		if ( ! is_array($pieces) || ! is_array(reset($pieces))) {
-			$pieces = [$pieces];
-		}
-
-		// convert pieces to cols
-		$cols = [];
-		foreach ($pieces as $idx => $piece) {
-			foreach ($piece as $col) {
-				$cols[$idx][] = array_search($col, $this->colNames);
-			}
-		}
-
-		try {
-			$this->grid->selectCols($cols);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
-	 * Prevent the solution from containing certain pieces in certain locations
-	 *
-	 * @param $pieces
-	 *
-	 * @throws Exception
-	 * @return void
-	 */
-	public function exclude($pieces) {
-		if (1 !== func_num_args( )) {
-			$pieces = func_get_args( );
-		}
-
-		if ( ! array_key_exists(0, $pieces)) {
-			$pieces = [$pieces];
-		}
-
-		// convert pieces to cols
-		$cols = [];
-		foreach ($pieces as $idx => $piece) {
-			foreach ($piece as $col) {
-				$cols[$idx][] = array_search($col, $this->colNames);
-			}
-		}
-
-		try {
-			$this->grid->excludeCols($cols);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
-	}
-
-	/**
-	 * Create the col names used to translate the solutions
-	 *
-	 * @param void
-	 *
-	 * @return void
-	 */
-	protected function createColNames( ) {
-		$colNames = ['']; // cols are 1-index
-
-		foreach (static::$PIECES as $pieceName => $pieceData) {
-			if (1 === $pieceData[self::PIECE_COUNT]) {
-				$colNames[] = $pieceName;
-			}
-			else {
-				for ($i = 1; $i <= $pieceData[self::PIECE_COUNT]; ++$i) {
-					$colNames[] = $pieceName.'('.$i.')';
-				}
-			}
-		}
-
-		foreach ($this->layout as $row => $cols) {
-			foreach ($cols as $col => $value) {
-				if ( ! $value) {
-					continue;
-				}
-
-				$colNames[] = "[". ($col + 1) .",". ($row + 1) ."]";
-			}
-		}
-
-		$this->colNames = $colNames;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @throws Exception
 	 * @return array
+	 *
+	 * @throws Exception
 	 */
 	protected function createNodes( ) {
 		$nodes = [];
@@ -342,7 +82,6 @@ abstract class Polyhexes extends Polyominoes
 	 * @param bool $fixed fix this piece in only 3 orientations
 	 *
 	 * @throws Exception
-	 * @return void
 	 */
 	protected function createPieceNodes($pieceName, $piece, & $nodes, $fixed = false) {
 		$points = $piece[self::PIECE_POINTS];
@@ -408,92 +147,6 @@ abstract class Polyhexes extends Polyominoes
 				$done = false;
 			}
 		}
-	}
-
-	/**
-	 * If the callback returns false, the solutions will not be stored in Grid
-	 *
-	 * @param int $count optional solutions to return (0 to return all)
-	 * @param ?callable $callback optional function
-	 *
-	 * @return array
-	 */
-	public function solve(int $count = 0, callable $callback = null) {
-		$this->grid->search($count, $callback);
-		return $this->getSolutions( );
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return array
-	 */
-	public function getSolutions( ) {
-		$solutions = $this->grid->getSolutions('cols');
-
-		if ($solutions) {
-			$solutions = $this->convertSolutions($solutions);
-		}
-
-		return $solutions;
-	}
-
-	/**
-	 * Convert the solutions to a human readable format
-	 *
-	 * @param array $solutions
-	 *
-	 * @return array
-	 */
-	public function convertSolutions(array $solutions) {
-		if (array_key_exists('cols', $solutions)) {
-			$solutions = $solutions['cols'];
-		}
-
-		if ( ! is_array($solutions[0][0])) {
-			$solutions = [$solutions];
-		}
-
-		foreach ($solutions as & $solution) { // mind the reference
-			sort($solution);
-
-			foreach ($solution as & $path) { // mind the reference
-				sort($path);
-
-				foreach ($path as & $col) { // mind the reference
-					$col = $this->colNames[$col];
-				}
-				unset($col); // kill the reference
-			}
-			unset($path); // kill the reference
-		}
-		unset($solution); // kill the reference
-
-		return $solutions;
-	}
-
-
-
-	/**
-	 * @param array $layout
-	 *
-	 * @return array
-	 */
-	public static function createTranslationArray(array $layout) {
-		$n = 0;
-		$translate = [];
-		foreach ($layout as $y => $row) {
-			$len = count($row);
-
-			foreach ($row as $x => $space) {
-				if (1 === $space) {
-					$translate[($y * $len) + $x] = $n;
-					++$n;
-				}
-			}
-		}
-
-		return $translate;
 	}
 
 	/**
@@ -736,110 +389,31 @@ abstract class Polyhexes extends Polyominoes
 	}
 
 	/**
-	 * Reflect the given piece points
+	 * Reflect the given piece points about the q-axis
 	 *
-	 * @param array $points
+	 * This method converts the piece to cubic coordinates, reflects it about the q-axis,
+	 * then converts back to axial coordinates and trims the result.
 	 *
-	 * @return array points
+	 * @param array $points The piece points array to reflect
+	 *
+	 * @return array The reflected piece points array
 	 */
 	public static function reflectPiece(array $points) {
-		return array_reverse($points);
-	}
-
-	/**
-	 * Places the given piece into the nodes
-	 * trying every possible position within the layout
-	 *
-	 * @param string $pieceName
-	 * @param array $points
-	 * @param array $nodes reference
-	 *
-	 * @return void
-	 */
-	public function placePiece(string $pieceName, array $points, array & $nodes) {
-		// do some quick validity tests
-		if (count($this->layout) < count($points)) {
-			// the piece is too tall to fit
-			// don't fail, just don't place this piece
-			return;
+		$cubicPoints = self::arrayToCubicCoordinates($points);
+		
+		$reflectedCubicPoints = [];
+		foreach ($cubicPoints as $point) {
+			$q = $point[0];
+			$r = $point[1];
+			$s = $point[2];
+			
+			// reflect about the q-axis: q' = -q, r' = -s, s' = -r
+			$reflectedCubicPoints[] = [-$q, -$s, -$r];
 		}
-
-		if (count($this->layout[0]) < count($points[0])) {
-			// the piece is too long to fit
-			// don't fail just don't place this piece
-			return;
-		}
-
-		$boardWidth = count($this->layout[0]);
-		$boardHeight = count($this->layout);
-
-		$pieceWidth = count($points[0]);
-		$pieceHeight = count($points);
-
-		$width = ($boardWidth - $pieceWidth) + 1; // +1 for fence posts
-		$height = ($boardHeight - $pieceHeight) + 1; // +1 for fence posts
-
-		// this is like O(log(n)^inf)... sorry about that :(
-		// but check out those indents...
-		// it's turtles all the way down
-		for ($y = 0; $y < $height; ++$y) {
-			for ($x = 0; $x < $width; ++$x) {
-				$boardNodes = [];
-
-				for ($py = 0; $py < $pieceHeight; ++$py) {
-					for ($px = 0; $px < $pieceWidth; ++$px) {
-						if (1 === $points[$py][$px]) {
-							if (0 === $this->layout[$y + $py][$x + $px]) {
-								// the piece doesn't fit here, move along...
-								continue 3;
-							}
-
-							$boardNodes[] = $this->translate[($x + $px) + (($y + $py) * $boardWidth)];
-						}
-					}
-				}
-
-				$nodes[] = $this->createNodeRow($pieceName, $boardNodes);
-			}
-		}
-	}
-
-	/**
-	 * @param string $pieceName
-	 * @param array $boardNodes
-	 *
-	 * @return array
-	 */
-	protected function createNodeRow(string $pieceName, array $boardNodes) {
-		$pieceCount = $this->getPieceCount( );
-
-		$index = array_search($pieceName, $this->colNames) - 1;
-
-		$row = array_fill(0, count($this->colNames) - 1, 0);
-		$row[$index] = 1;
-
-		// fill the board nodes
-		foreach ($boardNodes as $node) {
-			$row[$node + $pieceCount] = 1;
-		}
-
-		return $row;
-	}
-
-	/**
-	 * @param void
-	 *
-	 * @return int
-	 */
-	public function getPieceCount( ) {
-		if (empty($this->pieceCount)) {
-			$this->pieceCount = 0;
-			foreach (static::$PIECES as $piece) {
-				$this->pieceCount += $piece[self::PIECE_COUNT];
-			}
-		}
-
-		return $this->pieceCount;
+		
+		$reflectedArray = self::cubicCoordinatesToArray($reflectedCubicPoints);
+		
+		return self::trimArray($reflectedArray);
 	}
 
 	/**
@@ -852,8 +426,11 @@ abstract class Polyhexes extends Polyominoes
 	 * @return void
 	 */
 	public static function printPieces( ) {
+		self::printCSS();
+
 		foreach (static::$PIECES as $pieceName => $piece) {
-			echo '<div style="clear:both;">'. $pieceName .':</div>';
+			echo '<div class="piece-wrapper">';
+			echo '<div class="name">'. $pieceName .':</div>';
 
 			$points = $piece[self::PIECE_POINTS];
 			$done = $reflected = false;
@@ -861,43 +438,28 @@ abstract class Polyhexes extends Polyominoes
 			while ( ! $done) {
 				switch ($piece[self::PIECE_SYMMETRY]) {
 					case 6 : // no symmetry (360 degree symmetry)
-						// rotate the piece 180 degrees and place it
-						$points = self::rotatePiece(180, $points);
-						self::printPiece($points);
-
-						// rotate the piece 60 degrees and place it
-						$points = self::rotatePiece(60, $points);
-						self::printPiece($points);
-
-						// and again...
-						$points = self::rotatePiece(60, $points);
-						self::printPiece($points);
-
-						// and once more to return it to start for the fall through
-						$points = self::rotatePiece(60, $points);
-						// no break
+						for ($i = 0; $i < 6; ++$i) {
+							self::printPiece($points);
+							$points = self::rotatePiece(60, $points);
+						}
+						break;
 
 					case 3 : // 120 degree symmetry
-						// rotate the piece 120 degrees and place it
-						$points = self::rotatePiece(120, $points);
-						self::printPiece($points);
-
-						// and rotate it back to start for the fall through
-						$points = self::rotatePiece(-120, $points);
-						// no break
+						for ($i = 0; $i < 3; ++$i) {
+							self::printPiece($points);
+							$points = self::rotatePiece(60, $points);
+						}
+						break;
 
 					case 2 : // 180 degree symmetry
-						// rotate the piece 60 degrees and place it
-						$points = self::rotatePiece(60, $points);
-						self::printPiece($points);
-
-						// and rotate it back to start for the fall through
-						$points = self::rotatePiece(-60, $points);
-						// no break
+						for ($i = 0; $i < 2; ++$i) {
+							self::printPiece($points);
+							$points = self::rotatePiece(60, $points);
+						}
+						break;
 
 					case 1 : // 60 degree symmetry (rotationally symmetric)
 						// no break
-
 					default :
 						// no rotation, just put the piece on the board
 						self::printPiece($points);
@@ -911,8 +473,11 @@ abstract class Polyhexes extends Polyominoes
 					$points = self::reflectPiece($piece[self::PIECE_POINTS]);
 					$reflected = true;
 					$done = false;
+					echo '<hr style="clear:both;">';
 				}
 			}
+
+			echo '</div>'; // piece-wrapper
 		}
 
 		echo '<hr style="clear:both;">';
@@ -926,21 +491,77 @@ abstract class Polyhexes extends Polyominoes
 	 * @return void
 	 */
 	public static function printPiece($piece) {
-		echo '<table style="float:left;width:auto;height:auto;margin:10px;border-spacing:0;border-collapse:collapse;"><tbody>';
+		self::printCSS();
 
-		foreach ($piece as $row) {
-			echo '<tr>';
+		echo '<div class="piece">';
 
-			if (is_array($row)) {
-				foreach ($row as $value) {
-					echo '<td style="padding:0;width:30px;height:30px;background:' . ($value ? (2 == $value ? 'red' : 'black') : 'white') . ';border:1px solid lightgray;">&nbsp;</td>';
-				}
+		foreach ($piece as $col => $row) {
+			echo '<div class="row">';
+
+			for ($i = 0; $i < $col; ++$i) {
+				echo '<div class="indent">&nbsp;</div>';
 			}
 
-			echo '</tr>';
+			foreach ($row as $value) {
+				echo '<div class="hex ' . ($value ? (2 == $value ? 'red' : 'black') : '') . '">&nbsp;</div>';
+			}
+
+			echo '</div>';
 		}
 
-		echo '</tbody></table>';
+		echo '</div>';
+	}
+
+	public static function printCSS( ) {
+		static $printed = false;
+		if ($printed) {
+			return;
+		}
+
+		echo <<< EOCSS
+		<style>
+			.piece-wrapper {
+				clear: both;
+				margin-bottom: 20px;
+				border-bottom: 1px solid darkgray;
+			}
+			.name {
+				font-weight: bold;
+				font-size: 1.5em;
+				margin-bottom: 10px;
+			}
+			.piece {
+				float: left;
+				padding: 10px;
+				border: 1px solid lightgoldenrodyellow;
+			}
+			.piece .row {
+				height: auto;
+				width: auto;
+			}
+			.indent {
+				display: inline-block;
+				width: 15px;
+				height: 30px;
+			}
+			.hex {
+				display: inline-block;
+				width: 30px;
+				height: 30px;
+				border-radius: 50%;
+				background: white;
+				border: 1px solid lightgray;
+			}
+			.hex.black {
+				background: black;
+			}
+			.hex.red {
+				background: red;
+			}
+		</style>
+		EOCSS;
+
+		$printed = true;
 	}
 
 }
