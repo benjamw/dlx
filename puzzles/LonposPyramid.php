@@ -18,7 +18,7 @@ class LonposPyramid extends Polyominoes3D
 {
 
 	/**
-	 * array(count, mirror, symmetry, points array)
+	 * [count, mirror, symmetry, points array]
 	 *     points are a 3D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the BNW corner
 	 *

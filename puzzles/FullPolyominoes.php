@@ -19,7 +19,7 @@ class FullPolyominoes extends Polyominoes
 	/**
 	 * This uses the FILNPTUVWXYZ naming scheme
 	 *
-	 * array(count, mirror, symmetry, points array)
+	 * [count, mirror, symmetry, points array]
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner
 	 *

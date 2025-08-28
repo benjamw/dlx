@@ -1,5 +1,7 @@
 <?php
 
+namespace DLX\Tests;
+
 // call these by using
 // $> vendor/bin/phpunit --coverage-html .\report tests\PentominoStaticTest.php
 // or
@@ -8,15 +10,15 @@
 
 use \DLX\Puzzles\Pentominoes;
 
-class PentominoStaticTest extends PHPUnit_Framework_TestCase {
+class PentominoStaticTest extends \PHPUnit\Framework\TestCase {
 
 	public function testRotatePiece0( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
 		$returned = Pentominoes::rotatePiece(0, $piece);
 
@@ -24,18 +26,18 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRotatePiece90( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
-		$expected = array(
-			array(9, 6, 3, 0),
-			array('a', 7, 4, 1),
-			array('b', 8, 5, 2),
-		);
+		$expected = [
+			[9, 6, 3, 0],
+			['a', 7, 4, 1],
+			['b', 8, 5, 2],
+		];
 
 		$returned = Pentominoes::rotatePiece(90, $piece);
 
@@ -43,18 +45,18 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRotatePieceNeg90( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
-		$expected = array(
-			array(2, 5, 8, 'b'),
-			array(1, 4, 7, 'a'),
-			array(0, 3, 6, 9),
-		);
+		$expected = [
+			[2, 5, 8, 'b'],
+			[1, 4, 7, 'a'],
+			[0, 3, 6, 9],
+		];
 
 		$returned = Pentominoes::rotatePiece(-90, $piece);
 
@@ -62,19 +64,19 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 	}
 
 	public function testRotatePiece180( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
-		$expected = array(
-			array('b', 'a', 9),
-			array(8, 7, 6),
-			array(5, 4, 3),
-			array(2, 1, 0),
-		);
+		$expected = [
+			['b', 'a', 9],
+			[8, 7, 6],
+			[5, 4, 3],
+			[2, 1, 0],
+		];
 
 		$returned = Pentominoes::rotatePiece(180, $piece);
 
@@ -85,30 +87,30 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 	 * @expectedException Exception
 	 */
 	public function testRotatePiece170( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
 		Pentominoes::rotatePiece(170, $piece);
 	}
 
 	public function testReflectPiece( ) {
-		$piece = array(
-			array(0, 1, 2),
-			array(3, 4, 5),
-			array(6, 7, 8),
-			array(9, 'a', 'b'),
-		);
+		$piece = [
+			[0, 1, 2],
+			[3, 4, 5],
+			[6, 7, 8],
+			[9, 'a', 'b'],
+		];
 
-		$expected = array(
-			array(9, 'a', 'b'),
-			array(6, 7, 8),
-			array(3, 4, 5),
-			array(0, 1, 2),
-		);
+		$expected = [
+			[9, 'a', 'b'],
+			[6, 7, 8],
+			[3, 4, 5],
+			[0, 1, 2],
+		];
 
 		$returned = Pentominoes::reflectPiece($piece);
 
@@ -130,17 +132,17 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 			. . . . . . . .
 		";
 
-		$expected = array(
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 0, 0, 0),
-			array(1, 1, 1, 0, 0, 0),
-			array(1, 1, 1, 0, 0, 0),
-		);
+		$expected = [
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 0, 0, 0],
+			[1, 1, 1, 0, 0, 0],
+			[1, 1, 1, 0, 0, 0],
+		];
 
 		$returned = Pentominoes::layoutToArray($string);
 
@@ -162,17 +164,17 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 			. . . . .
 		";
 
-		$expected = array(
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 0, 0, 0),
-			array(1, 1, 1, 0, 0, 0),
-			array(1, 1, 1, 0, 0, 0),
-		);
+		$expected = [
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 0, 0, 0],
+			[1, 1, 1, 0, 0, 0],
+			[1, 1, 1, 0, 0, 0],
+		];
 
 		$returned = Pentominoes::layoutToArray($string);
 
@@ -193,16 +195,16 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 			. . . . . . . . . .
 		";
 
-		$expected = array(
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-			array(1, 1, 0, 1, 1, 0, 1, 1),
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-			array(1, 1, 0, 1, 1, 0, 1, 1),
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-			array(1, 1, 1, 1, 1, 1, 1, 1),
-		);
+		$expected = [
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 1, 0, 1, 1, 0, 1, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 1, 0, 1, 1, 0, 1, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+			[1, 1, 1, 1, 1, 1, 1, 1],
+		];
 
 		$returned = Pentominoes::layoutToArray($string);
 
@@ -249,50 +251,50 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 		$FEN = Chess::packFEN($blank_expanded);
 		$this->assertEquals($blank_FEN, $FEN);
 
-		$FENs = array(
-			'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' => array(
+		$FENs = [
+			'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1' => [
 				'rnbqkbnrpppppppp00000000000000000000000000000000PPPPPPPPRNBQKBNR', // xFEN
 				'0', // item at pos 33
-				array( // board
-					array('R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'), // white
-					array('P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'),
-					array('0', '0', '0', '0', '0', '0', '0', '0'),
-					array('0', '0', '0', '0', '0', '0', '0', '0'),
-					array('0', '0', '0', '0', '0', '0', '0', '0'),
-					array('0', '0', '0', '0', '0', '0', '0', '0'),
-					array('p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'),
-					array('r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'), // black
-				),
-			),
-			'r1b1k3/pp3p1p/2p5/q3pp2/1b2P1r1/2N3P1/PPP1NPBP/R2QK2R w KQq - 0 13' => array(
+				[ // board
+				  ['R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R'], // white
+				  ['P', 'P', 'P', 'P', 'P', 'P', 'P', 'P'],
+				  ['0', '0', '0', '0', '0', '0', '0', '0'],
+				  ['0', '0', '0', '0', '0', '0', '0', '0'],
+				  ['0', '0', '0', '0', '0', '0', '0', '0'],
+				  ['0', '0', '0', '0', '0', '0', '0', '0'],
+				  ['p', 'p', 'p', 'p', 'p', 'p', 'p', 'p'],
+				  ['r', 'n', 'b', 'q', 'k', 'b', 'n', 'r'], // black
+				],
+			],
+			'r1b1k3/pp3p1p/2p5/q3pp2/1b2P1r1/2N3P1/PPP1NPBP/R2QK2R w KQq - 0 13' => [
 				'r0b0k000pp000p0p00p00000q000pp000b00P0r000N000P0PPP0NPBPR00QK00R', // xFEN
 				'b', // item at pos 33
-				array( // board
-					array('R', '0', '0', 'Q', 'K', '0', '0', 'R'), // white
-					array('P', 'P', 'P', '0', 'N', 'P', 'B', 'P'),
-					array('0', '0', 'N', '0', '0', '0', 'P', '0'),
-					array('0', 'b', '0', '0', 'P', '0', 'r', '0'),
-					array('q', '0', '0', '0', 'p', 'p', '0', '0'),
-					array('0', '0', 'p', '0', '0', '0', '0', '0'),
-					array('p', 'p', '0', '0', '0', 'p', '0', 'p'),
-					array('r', '0', 'b', '0', 'k', '0', '0', '0'), // black
-				),
-			),
-			'4r1k1/1b3p1p/ppq3p1/2p5/8/1P3R1Q/PBP3PP/7K' => array(
+				[ // board
+				  ['R', '0', '0', 'Q', 'K', '0', '0', 'R'], // white
+				  ['P', 'P', 'P', '0', 'N', 'P', 'B', 'P'],
+				  ['0', '0', 'N', '0', '0', '0', 'P', '0'],
+				  ['0', 'b', '0', '0', 'P', '0', 'r', '0'],
+				  ['q', '0', '0', '0', 'p', 'p', '0', '0'],
+				  ['0', '0', 'p', '0', '0', '0', '0', '0'],
+				  ['p', 'p', '0', '0', '0', 'p', '0', 'p'],
+				  ['r', '0', 'b', '0', 'k', '0', '0', '0'], // black
+				],
+			],
+			'4r1k1/1b3p1p/ppq3p1/2p5/8/1P3R1Q/PBP3PP/7K' => [
 				'0000r0k00b000p0pppq000p000p00000000000000P000R0QPBP000PP0000000K', // xFEN
 				'0', // item at pos 33
-				array( // board
-					array('0', '0', '0', '0', '0', '0', '0', 'K'), // white
-					array('P', 'B', 'P', '0', '0', '0', 'P', 'P'),
-					array('0', 'P', '0', '0', '0', 'R', '0', 'Q'),
-					array('0', '0', '0', '0', '0', '0', '0', '0'),
-					array('0', '0', 'p', '0', '0', '0', '0', '0'),
-					array('p', 'p', 'q', '0', '0', '0', 'p', '0'),
-					array('0', 'b', '0', '0', '0', 'p', '0', 'p'),
-					array('0', '0', '0', '0', 'r', '0', 'k', '0'), // black
-				),
-			),
-		);
+				[ // board
+				  ['0', '0', '0', '0', '0', '0', '0', 'K'], // white
+				  ['P', 'B', 'P', '0', '0', '0', 'P', 'P'],
+				  ['0', 'P', '0', '0', '0', 'R', '0', 'Q'],
+				  ['0', '0', '0', '0', '0', '0', '0', '0'],
+				  ['0', '0', 'p', '0', '0', '0', '0', '0'],
+				  ['p', 'p', 'q', '0', '0', '0', 'p', '0'],
+				  ['0', 'b', '0', '0', '0', 'p', '0', 'p'],
+				  ['0', '0', '0', '0', 'r', '0', 'k', '0'], // black
+				],
+			],
+		];
 
 		foreach ($FENs as $FEN => $expected) {
 			$xFEN = Chess::expandFEN($FEN);
@@ -338,13 +340,13 @@ class PentominoStaticTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('RNBQKBNR', $pos_blank);
 		$this->assertEquals('RNBQKBNR', $pos_standard);
 
-		$ids = array(
+		$ids = [
 			 18 => 'BNQNRBKR',
 			226 => 'BNRQKBNR',
 			493 => 'QRNBKNBR',
 			671 => 'RNKRNQBB',
 			800 => 'BBRKQNRN',
-		);
+		];
 
 		// random id
 		foreach ($ids as $id => $setup) {

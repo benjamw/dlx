@@ -1,0 +1,52 @@
+{
+    "name": "benjamw/dlx",
+    "description": "A collection of puzzle solvers using Dancing Links (DLX) algorithm, including polyomino, polyhex, and isometric puzzle solvers",
+    "type": "library",
+    "keywords": [
+        "puzzle",
+        "solver",
+        "dancing-links",
+        "dlx",
+        "polyomino",
+        "polyhex",
+        "isometric",
+        "kanoodle",
+        "sudoku",
+        "pentomino",
+        "tetris"
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Benjam Welker",
+            "homepage": "https://github.com/benjamw/dlx"
+        }
+    ],
+    "require": {
+        "php": ">=7.4"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DLX\\": "src/",
+            "DLX\\Puzzles\\": "puzzles/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DLX\\Tests\\": "tests/"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "test:coverage": "phpunit --coverage-html report"
+    },
+    "config": {
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "minimum-stability": "stable",
+    "prefer-stable": true
+}

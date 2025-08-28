@@ -143,7 +143,7 @@ class IQFit extends Polyominoes
 		$cntY = count($points[0]);
 
 		// this method is about 25% faster than the following:
-		// $pointsX = call_user_func_array('array_map', array(-1 => null) + array_reverse($points));
+		// $pointsX = call_user_func_array('array_map', [-1 => null] + array_reverse($points));
 
 		for ($y = 0; $y < $cntY; ++$y) {
 			for ($z = $cntZ - 1; $z >= 0; --$z) {

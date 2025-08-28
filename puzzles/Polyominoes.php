@@ -475,18 +475,25 @@ abstract class Polyominoes
 		foreach ($lines as & $line) { // mind the reference
 			$line = trim($line);
 
-			if ('.' !== $line[0]) {
+			// Skip empty lines
+			if (empty($line)) {
+				continue;
+			}
+
+			$tokens = preg_split('/\s+/', $line);
+
+			if ('.' !== $tokens[0]) {
 				$dots = false;
 				break;
 			}
 
-			if ('.' !== $line[strlen($line) - 1]) {
+			if ('.' !== $tokens[count($tokens) - 1]) {
 				$dots = false;
 				break;
 			}
 
-			if (strlen($line) > $len) {
-				$len = strlen($line);
+			if (count($tokens) > $len) {
+				$len = count($tokens);
 			}
 		}
 		unset($line); // kill the reference
@@ -494,11 +501,14 @@ abstract class Polyominoes
 		$len -= 2; // subtract two because dots
 
 		// make sure the top and bottom lines are all dots
-		if (false !== strpos($lines[0], '*')) {
+		$firstTokens = preg_split('/\s+/', trim($lines[0]));
+		$lastTokens = preg_split('/\s+/', trim($lines[count($lines) - 1]));
+		
+		if (false !== array_search('*', $firstTokens)) {
 			$dots = false;
 		}
 
-		if (false !== strpos($lines[count($lines) - 1], '*')) {
+		if (false !== array_search('*', $lastTokens)) {
 			$dots = false;
 		}
 
@@ -511,16 +521,21 @@ abstract class Polyominoes
 				continue;
 			}
 
+			$line = trim($line);
+			if (empty($line)) {
+				continue;
+			}
+
+			$tokens = preg_split('/\s+/', $line);
 			$row = array_fill(0, $len, 0);
 
 			$n = 0;
-			$chars = str_split($line);
-			foreach ($chars as $jdx => $char) {
-				if ((0 === $jdx) || ($jdx === (count($lines) - 1))) {
+			foreach ($tokens as $jdx => $token) {
+				if ((0 === $jdx) || ($jdx === (count($tokens) - 1))) {
 					continue;
 				}
 
-				if ('*' === $char) {
+				if ('*' === $token) {
 					$row[$n] = 1;
 				}
 

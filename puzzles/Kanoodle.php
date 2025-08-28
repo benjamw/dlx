@@ -19,7 +19,7 @@ class Kanoodle extends Polyhexes
 {
 
 	/**
-	 * array(count, mirror, symmetry, points array)
+	 * [count, mirror, symmetry, points array]
 	 *     points are a 2D array of values, 1 = on, 0 = off
 	 *     points were oriented to put a 1 value in the NW corner (where possible)
 	 *
@@ -29,19 +29,19 @@ class Kanoodle extends Polyhexes
 	 * @var array
 	 */
 	public static array $PIECES = [
-		'A' => [1, false, 6, [[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 1]]], // light green
-		'B' => [1, false, 6, [[1, 1, 1, 0], [0, 0, 1, 1]]], // yellow
-		'C' => [1,  true, 6, [[1, 1, 1], [1, 0, 0], [1, 0, 0]]], // dark blue
-		'D' => [1, false, 6, [[1, 1, 1, 1], [0, 1, 0, 0]]], // light blue
-		'E' => [1,  true, 6, [[1, 1, 1], [0, 1, 1]]], // red
-		'F' => [1,  true, 6, [[1, 1, 1, 1], [0, 0, 1, 0]]], // magenta
+		'A' => [1, true, 6, [[1, 0, 0], [1, 0, 0], [1, 1, 1]]], // dark blue
+		'B' => [1, false, 6, [[1, 0, 0], [1, 1, 1], [0, 1, 0]]], // light green
+		'C' => [1, false, 6, [[1, 0], [1, 1], [1, 1]]], // yellow
+		'D' => [1, false, 6, [[1, 1, 1, 1], [1, 0, 0, 0]]], // light blue
+		'E' => [1,  true, 6, [[1, 1], [1, 1], [1, 0]]], // red
+		'F' => [1,  true, 6, [[1, 1, 1, 1], [0, 1, 0, 0]]], // magenta
 		'G' => [1, false, 6, [[1, 1, 1], [1, 0, 1]]], // dark green
 
-		'H' => [1,  true, 6, [[1, 1, 1], [0, 1, 0], [0, 0, 1]]], // white
-		'I' => [1, false, 6, [[1, 1, 1], [1, 0, 0]]], // orange
-		'J' => [1, false, 3, [[1, 1, 0, 0], [0, 0, 1, 1]]], // pink
+		'H' => [1,  true, 6, [[1, 1, 1], [1, 0, 0], [1, 0, 0]]], // white
+		'I' => [1, false, 6, [[1, 0], [1, 0], [1, 1]]], // orange
+		'J' => [1, false, 3, [[1, 1, 0], [0, 1, 1]]], // pink
 		'K' => [1,  true, 3, [[1, 1], [1, 1]]], // gray
-		'L' => [1, false, 6, [[1, 1, 1], [0, 1, 0]]], // purple
+		'L' => [1, false, 6, [[1, 1, 1], [1, 0, 0]]], // purple
 	];
 
 	/**
@@ -55,37 +55,39 @@ class Kanoodle extends Polyhexes
 	/**
 		The layout to pass in for the Kanoodle Extreme would be the following:
 
-		$cols = array(
-			        array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
-			      array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0),
-			    array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
-			  array(0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0),
-			array(0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
-		);
+		$cols = [
+			[0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+			 [0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+			  [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0],
+			   [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+			    [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0],
+		];
 
 		- OR -
 
 		$cols = "
 			...............
-			.***********...
-			.***********...
-			.************..
-			..***********..
-			...***********.
-			...............
+			 ...***********.
+			  ..***********..
+			   .************..
+			    .***********...
+			     .***********...
+			      ...............
 		";
 
 	 	-- for the Kanoodle Genius --
 
-		$cols = array(
-			array(1, 1, 1, 1, 0, 0, 0),
-			array(1, 1, 1, 1, 1, 0, 0),
-			array(1, 1, 1, 1, 1, 1, 0),
-			array(0, 1, 1, 1, 1, 1, 0),
-			array(0, 1, 1, 1, 1, 1, 1),
-			array(0, 0, 1, 1, 1, 1, 1),
-			array(0, 0, 0, 1, 1, 1, 1),
-		);
+TODO: Fix this by canting it the other way
+
+		$cols = [
+			            [1, 1, 1, 1, 0, 0, 0],
+			          [1, 1, 1, 1, 1, 0, 0],
+			        [1, 1, 1, 1, 1, 1, 0],
+			      [0, 1, 1, 1, 1, 1, 0],
+			    [0, 1, 1, 1, 1, 1, 1],
+			  [0, 0, 1, 1, 1, 1, 1],
+			[0, 0, 0, 1, 1, 1, 1],
+		];
 
 		- OR -
 
@@ -135,12 +137,7 @@ class Kanoodle extends Polyhexes
 			$rows = 5;
 		}
 
-		try {
-			parent::__construct($cols, $rows, $symmetry);
-		}
-		catch (Exception $e) {
-			throw $e;
-		}
+		parent::__construct($cols, $rows, $symmetry);
 	}
 
 }
